@@ -105,6 +105,16 @@ sections:
               - Context_Create_LogFlag_OpensLogFile
               - IntegrationTest_LogFlag_WritesOutputToFile
 
+          - id: CACHE-REQ-001
+            title: The tool shall cache NuGet packages specified as [package-name]:[version] arguments.
+            justification: |
+              The core purpose of the tool is to ensure NuGet packages are cached in the
+              global packages folder for use by downstream build steps.
+            tests:
+              - Context_Create_PackageArgument_AddsToPackagesList
+              - IntegrationTest_CachePackage_OutputsPath
+              - NuGetCache_CachePackage
+
       - title: Platform Support
         requirements:
           - id: TMPL-REQ-008

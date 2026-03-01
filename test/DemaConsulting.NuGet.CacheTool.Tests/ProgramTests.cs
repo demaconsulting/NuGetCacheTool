@@ -112,7 +112,7 @@ public class ProgramTests
     }
 
     /// <summary>
-    ///     Test that Run with no arguments displays default behavior.
+    ///     Test that Run with no arguments displays the banner but does nothing else.
     /// </summary>
     [TestMethod]
     public void Program_Run_NoArguments_DisplaysDefaultBehavior()
@@ -128,7 +128,7 @@ public class ProgramTests
             // Act
             Program.Run(context);
 
-            // Assert
+            // Assert - banner is printed even with no package arguments
             var output = outWriter.ToString();
             Assert.Contains("NuGet Cache Tool version", output);
             Assert.Contains("Copyright", output);
@@ -137,6 +137,16 @@ public class ProgramTests
         {
             Console.SetOut(originalOut);
         }
+    }
+
+    /// <summary>
+    ///     Test that creating a context with an argument without a colon throws ArgumentException.
+    /// </summary>
+    [TestMethod]
+    public void Program_Run_WithInvalidPackageFormat_ThrowsArgumentException()
+    {
+        // Act & Assert
+        Assert.Throws<ArgumentException>(() => Context.Create(["notapackage"]));
     }
 
     /// <summary>

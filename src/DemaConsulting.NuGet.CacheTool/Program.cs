@@ -19,6 +19,7 @@
 // SOFTWARE.
 
 using System.Reflection;
+using DemaConsulting.NuGet.Caching;
 
 namespace DemaConsulting.NuGet.CacheTool;
 
@@ -142,17 +143,43 @@ internal static class Program
         context.WriteLine("  --validate                 Run self-validation");
         context.WriteLine("  --results <file>           Write validation results to file (.trx or .xml)");
         context.WriteLine("  --log <file>               Write output to log file");
+        context.WriteLine("  [package]:[version]        Cache the specified NuGet package");
     }
 
     /// <summary>
-    ///     Runs the main tool logic.
+    ///     Runs the main tool logic, caching all packages specified in the context.
     /// </summary>
     /// <param name="context">The context containing command line arguments and program state.</param>
     private static void RunToolLogic(Context context)
     {
-        context.WriteLine("NuGet Cache Tool - Demo Functionality");
-        context.WriteLine("This is a NuGet cache management tool.");
-        context.WriteLine("");
-        context.WriteLine("Replace this with your actual tool implementation.");
+        // Process each package specified on the command line
+        foreach (var package in context.Packages)
+        {
+            // Split the package argument into package ID and version
+            // The parser guarantees colonIndex > 0 and colonIndex < package.Length - 1
+            var colonIndex = package.IndexOf(':');
+            if (colonIndex <= 0 || colonIndex >= package.Length - 1)
+            {
+                context.WriteError($"Error: Invalid package format '{package}'. Expected [package-name]:[version].");
+                continue;
+            }
+
+            var packageId = package[..colonIndex];
+            var version = package[(colonIndex + 1)..];
+
+            try
+            {
+                // Ensure the package is cached and report its path.
+                // GetAwaiter().GetResult() is safe here because this is a console application
+                // with no synchronization context that could cause a deadlock.
+                var path = NuGetCache.EnsureCachedAsync(packageId, version).GetAwaiter().GetResult();
+                context.WriteLine(path);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Report the caching error and continue with remaining packages
+                context.WriteError($"Error caching {package}: {ex.Message}");
+            }
+        }
     }
 }
