@@ -54,7 +54,7 @@ Cache multiple packages in a single command:
 nuget-cache Newtonsoft.Json:13.0.3 NuGet.Common:6.12.1
 ```
 
-The tool outputs the path to each cached package on stdout.
+The tool outputs the path to each cached package to stdout. Error messages are written to stderr.
 
 ## Run Self-Validation
 
@@ -69,6 +69,9 @@ Save validation results to a file:
 ```bash
 nuget-cache --validate --results results.trx
 ```
+
+The results file format is determined by the file extension: `.trx` for TRX (MSTest) format,
+or `.xml` for JUnit format.
 
 ## Silent Mode
 
@@ -96,7 +99,7 @@ The following command-line options are supported:
 | `-?`, `-h`, `--help`      | Display help message                                         |
 | `--silent`                | Suppress console output                                      |
 | `--validate`              | Run self-validation                                          |
-| `--results <file>`        | Write validation results to file (TRX or JUnit format)       |
+| `--results <file>`        | Write validation results to file (.trx or .xml)              |
 | `--log <file>`            | Write output to log file                                     |
 | `[package]:[version]`     | Cache the specified NuGet package                            |
 

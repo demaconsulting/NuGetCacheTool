@@ -55,6 +55,7 @@ sections:
               - Context_Create_VersionFlag_SetsVersionTrue
               - Context_Create_ShortVersionFlag_SetsVersionTrue
               - Program_Run_WithVersionFlag_DisplaysVersionOnly
+              - Program_Version_ReturnsNonEmptyString
               - IntegrationTest_VersionFlag_OutputsVersion
 
           - id: NC-CLI-003
@@ -96,6 +97,7 @@ sections:
             tests:
               - Context_Create_ResultsFlag_SetsResultsFile
               - IntegrationTest_ValidateWithResults_GeneratesTrxFile
+              - IntegrationTest_ValidateWithResults_GeneratesJUnitFile
 
           - id: NC-CLI-007
             title: The tool shall support --log flag to write output to a log file.
@@ -114,6 +116,46 @@ sections:
               - Context_Create_PackageArgument_AddsToPackagesList
               - IntegrationTest_CachePackage_OutputsPath
               - NuGetCache_CachePackage
+
+          - id: NC-CLI-009
+            title: The tool shall report errors and return a non-zero exit code on failure.
+            justification: |
+              Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
+              programmatically via the process exit code, and error messages must be visible
+              to the user unless silent mode is active.
+            tests:
+              - Context_WriteError_SetsErrorExitCode
+              - Context_WriteError_NotSilent_WritesToConsole
+              - IntegrationTest_UnknownArgument_ReturnsError
+
+          - id: NC-CLI-010
+            title: The tool shall reject unknown or malformed command-line arguments with a descriptive error.
+            justification: |
+              Providing clear feedback for invalid arguments helps users quickly correct
+              mistakes and prevents silent misconfiguration.
+            tests:
+              - Context_Create_UnknownArgument_ThrowsArgumentException
+              - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
+              - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
+              - IntegrationTest_UnknownArgument_ReturnsError
+
+      - title: Security
+        requirements:
+          - id: NC-SEC-001
+            title: The tool shall prevent path traversal attacks when combining file paths.
+            justification: |
+              Accepting user-controlled path components without validation could allow
+              an attacker to read or write files outside intended directories.  The
+              SafePathCombine helper must reject absolute paths and parent-directory
+              references (e.g. "..") in the relative component.
+            tests:
+              - PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly
+              - PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_AbsolutePath_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly
+              - PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly
+              - PathHelpers_SafePathCombine_EmptyRelativePath_ReturnsBasePath
 
       - title: Platform Support
         requirements:
