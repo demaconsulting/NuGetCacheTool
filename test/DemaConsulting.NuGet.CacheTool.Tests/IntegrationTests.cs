@@ -294,9 +294,7 @@ public class IntegrationTests
     public void IntegrationTest_LogFlag_WithInvalidFilename_ReturnsError()
     {
         // Arrange - use a hard-coded path into a nonexistent directory to ensure failure
-        var invalidLogPath = OperatingSystem.IsWindows()
-            ? @"C:\nonexistent_dir_xyz_abc\invalid.log"
-            : "/nonexistent_dir_xyz_abc/invalid.log";
+        const string invalidLogPath = "/nonexistent_dir_xyz_abc/invalid.log";
 
         // Act
         var exitCode = Runner.Run(
