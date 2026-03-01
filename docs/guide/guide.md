@@ -8,6 +8,7 @@ NuGet Cache Tool is a NuGet cache management tool for DEMA Consulting .NET devel
 
 This user guide covers:
 
+- NuGet package caching to the global packages folder
 - Installation instructions
 - Usage examples for common tasks
 - Command-line options reference
@@ -38,6 +39,22 @@ Display usage information:
 ```bash
 nuget-cache --help
 ```
+
+## Cache Packages
+
+Cache a NuGet package to the global packages folder:
+
+```bash
+nuget-cache DemaConsulting.NuGet.Caching:0.1.0
+```
+
+Cache multiple packages in a single command:
+
+```bash
+nuget-cache Newtonsoft.Json:13.0.3 NuGet.Common:6.12.1
+```
+
+The tool outputs the path to each cached package on stdout.
 
 ## Run Self-Validation
 
@@ -73,14 +90,15 @@ nuget-cache --log output.log
 
 The following command-line options are supported:
 
-| Option               | Description                                                  |
-| -------------------- | ------------------------------------------------------------ |
-| `-v`, `--version`    | Display version information                                  |
-| `-?`, `-h`, `--help` | Display help message                                         |
-| `--silent`           | Suppress console output                                      |
-| `--validate`         | Run self-validation                                          |
-| `--results <file>`   | Write validation results to file (TRX or JUnit format)       |
-| `--log <file>`       | Write output to log file                                     |
+| Option                    | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `-v`, `--version`         | Display version information                                  |
+| `-?`, `-h`, `--help`      | Display help message                                         |
+| `--silent`                | Suppress console output                                      |
+| `--validate`              | Run self-validation                                          |
+| `--results <file>`        | Write validation results to file (TRX or JUnit format)       |
+| `--log <file>`            | Write output to log file                                     |
+| `[package]:[version]`     | Cache the specified NuGet package                            |
 
 # Examples
 
@@ -100,4 +118,12 @@ nuget-cache --validate --results validation-results.trx
 
 ```bash
 nuget-cache --silent --log tool-output.log
+```
+
+## Example 4: Cache Multiple Packages
+
+Cache several packages in one command and capture their paths:
+
+```bash
+nuget-cache Newtonsoft.Json:13.0.3 NuGet.Common:6.12.1 NuGet.Protocol:6.12.1
 ```
