@@ -15,15 +15,12 @@ DEMA Consulting NuGet cache management tool for .NET developers.
 
 This tool provides:
 
-- **Standardized Command-Line Interface**: Context class handling common arguments
-  (`--version`, `--help`, `--silent`, `--validate`, `--results`, `--log`)
+- **NuGet Package Caching**: Cache NuGet packages to the global packages folder
+- **Multiple Packages**: Specify multiple packages in a single command
+- **Package Path Output**: Output the path to each cached package
 - **Self-Validation**: Built-in validation tests with TRX/JUnit output
 - **Multi-Platform Support**: Builds and runs on Windows and Linux
 - **Multi-Runtime Support**: Targets .NET 8, 9, and 10
-- **Comprehensive CI/CD**: GitHub Actions workflows with quality checks, builds, and
-  integration tests
-- **Documentation Generation**: Automated build notes, user guide, code quality reports,
-  requirements, justifications, and trace matrix
 
 ## Installation
 
@@ -36,6 +33,12 @@ dotnet tool install -g DemaConsulting.NuGet.CacheTool
 ## Usage
 
 ```bash
+# Cache a specific NuGet package
+nuget-cache DemaConsulting.NuGet.Caching:0.1.0
+
+# Cache multiple packages
+nuget-cache Newtonsoft.Json:13.0.3 NuGet.Common:6.12.1
+
 # Display version
 nuget-cache --version
 
@@ -54,14 +57,15 @@ nuget-cache --silent --log output.log
 
 ## Command-Line Options
 
-| Option               | Description                                                  |
-| -------------------- | ------------------------------------------------------------ |
-| `-v`, `--version`    | Display version information                                  |
-| `-?`, `-h`, `--help` | Display help message                                         |
-| `--silent`           | Suppress console output                                      |
-| `--validate`         | Run self-validation                                          |
-| `--results <file>`   | Write validation results to file (TRX or JUnit format)       |
-| `--log <file>`       | Write output to log file                                     |
+| Option                    | Description                                                  |
+| ------------------------- | ------------------------------------------------------------ |
+| `-v`, `--version`         | Display version information                                  |
+| `-?`, `-h`, `--help`      | Display help message                                         |
+| `--silent`                | Suppress console output                                      |
+| `--validate`              | Run self-validation                                          |
+| `--results <file>`        | Write validation results to file (TRX or JUnit format)       |
+| `--log <file>`            | Write output to log file                                     |
+| `[package]:[version]`     | Cache the specified NuGet package                            |
 
 ## Documentation
 
