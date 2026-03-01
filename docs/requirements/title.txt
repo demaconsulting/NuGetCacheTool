@@ -1,11 +1,11 @@
 ---
-title: Template DotNet Tool Requirements
-subtitle: Requirements Specification for the Template DotNet Tool
+title: NuGet Cache Tool Requirements
+subtitle: Requirements Specification for the NuGet Cache Tool
 author: DEMA Consulting
-description: Requirements Specification for the Template DotNet Tool
+description: Requirements Specification for the NuGet Cache Tool
 lang: en-US
 keywords:
-  - Template DotNet Tool
+  - NuGet Cache Tool
   - Requirements
   - Specification
   - .NET

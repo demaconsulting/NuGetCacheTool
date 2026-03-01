@@ -1,7 +1,7 @@
 # Agent Quick Reference
 
-Project-specific guidance for agents working on Template DotNet Tool - a reference
-implementation demonstrating best practices for DEMA Consulting .NET CLI tools.
+Project-specific guidance for agents working on NuGet Cache Tool - a NuGet cache management
+tool for DEMA Consulting .NET developers.
 
 ## Available Specialized Agents
 
@@ -24,7 +24,7 @@ implementation demonstrating best practices for DEMA Consulting .NET CLI tools.
 
 ## Requirements
 
-- All requirements MUST be linked to tests (prefer `TemplateTool_*` self-validation tests)
+- All requirements MUST be linked to tests (prefer `NuGetCache_*` self-validation tests)
 - Not all tests need to be linked to requirements (tests may exist for corner cases, design testing, failure-testing, etc.)
 - Enforced in CI: `dotnet reqstream --requirements requirements.yaml --tests "test-results/**/*.trx" --enforce`
 - When adding features: add requirement + link to test
@@ -48,7 +48,7 @@ ensures the CI evidence comes specifically from the required environment.
 
 ## Testing
 
-- **Test Naming**: `TemplateTool_MethodUnderTest_Scenario` for self-validation tests
+- **Test Naming**: `NuGetCache_MethodUnderTest_Scenario` for self-validation tests
 - **Self-Validation**: All tests run via `--validate` flag and can output TRX/JUnit format
 - **Test Framework**: Uses DemaConsulting.TestResults library for test result generation
 
@@ -76,7 +76,7 @@ dotnet build --configuration Release
 dotnet test --configuration Release
 
 # Run self-validation
-dotnet run --project src/DemaConsulting.TemplateDotNetTool \
+dotnet run --project src/DemaConsulting.NuGet.CacheTool \
   --configuration Release --framework net10.0 --no-build -- --validate
 
 # Use convenience scripts

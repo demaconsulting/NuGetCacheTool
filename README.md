@@ -1,4 +1,4 @@
-# Template DotNet Tool
+# NuGet Cache Tool
 
 [![GitHub forks][badge-forks]][link-forks]
 [![GitHub stars][badge-stars]][link-stars]
@@ -9,11 +9,11 @@
 [![Security][badge-security]][link-security]
 [![NuGet][badge-nuget]][link-nuget]
 
-DEMA Consulting template project for DotNet Tools, demonstrating best practices for building command-line tools with .NET.
+DEMA Consulting NuGet cache management tool for .NET developers.
 
 ## Features
 
-This template demonstrates:
+This tool provides:
 
 - **Standardized Command-Line Interface**: Context class handling common arguments
   (`--version`, `--help`, `--silent`, `--validate`, `--results`, `--log`)
@@ -30,26 +30,26 @@ This template demonstrates:
 Install the tool globally using the .NET CLI:
 
 ```bash
-dotnet tool install -g DemaConsulting.TemplateDotNetTool
+dotnet tool install -g DemaConsulting.NuGet.CacheTool
 ```
 
 ## Usage
 
 ```bash
 # Display version
-templatetool --version
+nuget-cache --version
 
 # Display help
-templatetool --help
+nuget-cache --help
 
 # Run self-validation
-templatetool --validate
+nuget-cache --validate
 
 # Save validation results
-templatetool --validate --results results.trx
+nuget-cache --validate --results results.trx
 
 # Silent mode with logging
-templatetool --silent --log output.log
+nuget-cache --silent --log output.log
 ```
 
 ## Command-Line Options
@@ -81,21 +81,21 @@ Copyright (c) DEMA Consulting. Licensed under the MIT License. See [LICENSE][lin
 By contributing to this project, you agree that your contributions will be licensed under the MIT License.
 
 <!-- Badge References -->
-[badge-forks]: https://img.shields.io/github/forks/demaconsulting/TemplateDotNetTool?style=plastic
-[badge-stars]: https://img.shields.io/github/stars/demaconsulting/TemplateDotNetTool?style=plastic
-[badge-contributors]: https://img.shields.io/github/contributors/demaconsulting/TemplateDotNetTool?style=plastic
-[badge-license]: https://img.shields.io/github/license/demaconsulting/TemplateDotNetTool?style=plastic
-[badge-build]: https://img.shields.io/github/actions/workflow/status/demaconsulting/TemplateDotNetTool/build_on_push.yaml?style=plastic
-[badge-quality]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TemplateDotNetTool&metric=alert_status
-[badge-security]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_TemplateDotNetTool&metric=security_rating
-[badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.TemplateDotNetTool?style=plastic
+[badge-forks]: https://img.shields.io/github/forks/demaconsulting/NuGetCacheTool?style=plastic
+[badge-stars]: https://img.shields.io/github/stars/demaconsulting/NuGetCacheTool?style=plastic
+[badge-contributors]: https://img.shields.io/github/contributors/demaconsulting/NuGetCacheTool?style=plastic
+[badge-license]: https://img.shields.io/github/license/demaconsulting/NuGetCacheTool?style=plastic
+[badge-build]: https://img.shields.io/github/actions/workflow/status/demaconsulting/NuGetCacheTool/build_on_push.yaml?style=plastic
+[badge-quality]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_NuGetCacheTool&metric=alert_status
+[badge-security]: https://sonarcloud.io/api/project_badges/measure?project=demaconsulting_NuGetCacheTool&metric=security_rating
+[badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.NuGet.CacheTool?style=plastic
 
 <!-- Link References -->
-[link-forks]: https://github.com/demaconsulting/TemplateDotNetTool/network/members
-[link-stars]: https://github.com/demaconsulting/TemplateDotNetTool/stargazers
-[link-contributors]: https://github.com/demaconsulting/TemplateDotNetTool/graphs/contributors
-[link-license]: https://github.com/demaconsulting/TemplateDotNetTool/blob/main/LICENSE
-[link-build]: https://github.com/demaconsulting/TemplateDotNetTool/actions/workflows/build_on_push.yaml
-[link-quality]: https://sonarcloud.io/dashboard?id=demaconsulting_TemplateDotNetTool
-[link-security]: https://sonarcloud.io/dashboard?id=demaconsulting_TemplateDotNetTool
-[link-nuget]: https://www.nuget.org/packages/DemaConsulting.TemplateDotNetTool
+[link-forks]: https://github.com/demaconsulting/NuGetCacheTool/network/members
+[link-stars]: https://github.com/demaconsulting/NuGetCacheTool/stargazers
+[link-contributors]: https://github.com/demaconsulting/NuGetCacheTool/graphs/contributors
+[link-license]: https://github.com/demaconsulting/NuGetCacheTool/blob/main/LICENSE
+[link-build]: https://github.com/demaconsulting/NuGetCacheTool/actions/workflows/build_on_push.yaml
+[link-quality]: https://sonarcloud.io/dashboard?id=demaconsulting_NuGetCacheTool
+[link-security]: https://sonarcloud.io/dashboard?id=demaconsulting_NuGetCacheTool
+[link-nuget]: https://www.nuget.org/packages/DemaConsulting.NuGet.CacheTool

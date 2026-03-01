@@ -9,21 +9,21 @@
 
     <!-- NuGet Tool Package Configuration -->
     <PackAsTool>true</PackAsTool>
-    <ToolCommandName>templatetool</ToolCommandName>
-    <PackageId>DemaConsulting.TemplateDotNetTool</PackageId>
+    <ToolCommandName>nuget-cache</ToolCommandName>
+    <PackageId>DemaConsulting.NuGet.CacheTool</PackageId>
     <Version>0.0.0</Version>
     <Authors>DEMA Consulting</Authors>
     <Company>DEMA Consulting</Company>
-    <Description>Template project for DEMA Consulting DotNet Tools</Description>
+    <Description>NuGet cache management tool for DEMA Consulting</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/demaconsulting/TemplateDotNetTool</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/demaconsulting/TemplateDotNetTool</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/demaconsulting/NuGetCacheTool</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/demaconsulting/NuGetCacheTool</RepositoryUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>Icon.png</PackageIcon>
-    <PackageTags>template;dotnet-tool</PackageTags>
+    <PackageTags>nuget;cache;dotnet-tool</PackageTags>
     <Copyright>Copyright DEMA Consulting</Copyright>
-    <Title>Template DotNet Tool</Title>
-    <Product>DemaConsulting.TemplateDotNetTool</Product>
+    <Title>NuGet Cache Tool</Title>
+    <Product>DemaConsulting.NuGet.CacheTool</Product>
 
     <!-- Symbol Package Configuration -->
     <IncludeSymbols>true</IncludeSymbols>
@@ -76,7 +76,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="DemaConsulting.TemplateDotNetTool.Tests" />
+    <InternalsVisibleTo Include="DemaConsulting.NuGet.CacheTool.Tests" />
   </ItemGroup>
 
   <ItemGroup>

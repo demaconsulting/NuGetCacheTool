@@ -28,7 +28,7 @@
 #
 ---
 sections:
-  - title: Template DotNet Tool Requirements
+  - title: NuGet Cache Tool Requirements
     sections:
       - title: Command-Line Interface
         requirements:
@@ -113,8 +113,8 @@ sections:
               DEMA Consulting tools must support Windows as a major development platform.
             tests:
               # Tests link to "windows" to ensure results come from Windows platform
-              - "windows@TemplateTool_VersionDisplay"
-              - "windows@TemplateTool_HelpDisplay"
+              - "windows@NuGetCache_VersionDisplay"
+              - "windows@NuGetCache_HelpDisplay"
 
           - id: TMPL-REQ-009
             title: The tool shall build and run on Linux platforms.
@@ -122,29 +122,29 @@ sections:
               DEMA Consulting tools must support Linux for CI/CD and containerized environments.
             tests:
               # Tests link to "ubuntu" to ensure results come from Linux platform
-              - "ubuntu@TemplateTool_VersionDisplay"
-              - "ubuntu@TemplateTool_HelpDisplay"
+              - "ubuntu@NuGetCache_VersionDisplay"
+              - "ubuntu@NuGetCache_HelpDisplay"
 
           - id: TMPL-REQ-010
             title: The tool shall support .NET 8 runtime.
             justification: |
               .NET 8 is an LTS release providing long-term stability for enterprise users.
             tests:
-              - "dotnet8.x@TemplateTool_VersionDisplay"
-              - "dotnet8.x@TemplateTool_HelpDisplay"
+              - "dotnet8.x@NuGetCache_VersionDisplay"
+              - "dotnet8.x@NuGetCache_HelpDisplay"
 
           - id: TMPL-REQ-011
             title: The tool shall support .NET 9 runtime.
             justification: |
               .NET 9 support enables users to leverage the latest .NET features.
             tests:
-              - "dotnet9.x@TemplateTool_VersionDisplay"
-              - "dotnet9.x@TemplateTool_HelpDisplay"
+              - "dotnet9.x@NuGetCache_VersionDisplay"
+              - "dotnet9.x@NuGetCache_HelpDisplay"
 
           - id: TMPL-REQ-012
             title: The tool shall support .NET 10 runtime.
             justification: |
               .NET 10 support ensures the tool remains compatible with the latest .NET ecosystem.
             tests:
-              - "dotnet10.x@TemplateTool_VersionDisplay"
-              - "dotnet10.x@TemplateTool_HelpDisplay"
+              - "dotnet10.x@NuGetCache_VersionDisplay"
+              - "dotnet10.x@NuGetCache_HelpDisplay"
