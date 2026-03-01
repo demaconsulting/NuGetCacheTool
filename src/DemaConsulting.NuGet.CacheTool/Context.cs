@@ -118,7 +118,9 @@ internal sealed class Context : IDisposable
     {
         try
         {
-            _logWriter = new StreamWriter(logFile, append: false);
+            // Open with AutoFlush enabled so log entries are immediately written to disk
+            // even if the application terminates unexpectedly before Dispose is called
+            _logWriter = new StreamWriter(logFile, append: false) { AutoFlush = true };
         }
         // Generic catch is justified here to wrap any file system exception with context.
         // Expected exceptions include IOException, UnauthorizedAccessException, ArgumentException,
@@ -281,12 +283,12 @@ internal sealed class Context : IDisposable
         // Mark that we have encountered errors
         _hasErrors = true;
 
-        // Write to error console unless silent mode is enabled
+        // Write to error console (stderr) unless silent mode is enabled
         if (!Silent)
         {
             var previousColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
+            Console.Error.WriteLine(message);
             Console.ForegroundColor = previousColor;
         }
 

@@ -278,11 +278,11 @@ public class ContextTests
     public void Context_WriteError_SetsErrorExitCode()
     {
         // Arrange
-        var originalOut = Console.Out;
+        var originalError = Console.Error;
         try
         {
-            using var outWriter = new StringWriter();
-            Console.SetOut(outWriter);
+            using var errWriter = new StringWriter();
+            Console.SetError(errWriter);
             using var context = Context.Create([]);
 
             // Act
@@ -294,7 +294,7 @@ public class ContextTests
         }
         finally
         {
-            Console.SetOut(originalOut);
+            Console.SetError(originalError);
         }
     }
 
@@ -305,23 +305,23 @@ public class ContextTests
     public void Context_WriteError_NotSilent_WritesToConsole()
     {
         // Arrange
-        var originalOut = Console.Out;
+        var originalError = Console.Error;
         try
         {
-            using var outWriter = new StringWriter();
-            Console.SetOut(outWriter);
+            using var errWriter = new StringWriter();
+            Console.SetError(errWriter);
             using var context = Context.Create([]);
 
             // Act
             context.WriteError("Test error message");
 
             // Assert
-            var output = outWriter.ToString();
+            var output = errWriter.ToString();
             Assert.Contains("Test error message", output);
         }
         finally
         {
-            Console.SetOut(originalOut);
+            Console.SetError(originalError);
         }
     }
 
@@ -345,5 +345,63 @@ public class ContextTests
         // Act & Assert
         var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--results"]));
         Assert.Contains("--results", exception.Message);
+    }
+
+    /// <summary>
+    ///     Test WriteError does not write to console when silent.
+    /// </summary>
+    [TestMethod]
+    public void Context_WriteError_Silent_DoesNotWriteToConsole()
+    {
+        // Arrange
+        var originalError = Console.Error;
+        try
+        {
+            using var errWriter = new StringWriter();
+            Console.SetError(errWriter);
+            using var context = Context.Create(["--silent"]);
+
+            // Act
+            context.WriteError("Test error message");
+
+            // Assert - error output should be suppressed in silent mode
+            var output = errWriter.ToString();
+            Assert.DoesNotContain("Test error message", output);
+        }
+        finally
+        {
+            Console.SetError(originalError);
+        }
+    }
+
+    /// <summary>
+    ///     Test WriteError writes message to log file when logging is enabled.
+    /// </summary>
+    [TestMethod]
+    public void Context_WriteError_WritesToLogFile()
+    {
+        // Arrange
+        var logFile = Path.GetTempFileName();
+        try
+        {
+            // Act - use silent to avoid console output; verify the error still goes to the log
+            using (var context = Context.Create(["--silent", "--log", logFile]))
+            {
+                context.WriteError("Test error in log");
+                Assert.AreEqual(1, context.ExitCode);
+            }
+
+            // Assert - log file should contain the error message
+            Assert.IsTrue(File.Exists(logFile));
+            var logContent = File.ReadAllText(logFile);
+            Assert.Contains("Test error in log", logContent);
+        }
+        finally
+        {
+            if (File.Exists(logFile))
+            {
+                File.Delete(logFile);
+            }
+        }
     }
 }

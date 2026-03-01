@@ -65,20 +65,20 @@ internal static class Program
         }
         catch (ArgumentException ex)
         {
-            // Print expected argument exceptions and return error code
-            Console.WriteLine($"Error: {ex.Message}");
+            // Print expected argument exceptions to stderr and return error code
+            Console.Error.WriteLine($"Error: {ex.Message}");
             return 1;
         }
         catch (InvalidOperationException ex)
         {
-            // Print expected operation exceptions and return error code
-            Console.WriteLine($"Error: {ex.Message}");
+            // Print expected operation exceptions to stderr and return error code
+            Console.Error.WriteLine($"Error: {ex.Message}");
             return 1;
         }
         catch (Exception ex)
         {
-            // Print unexpected exceptions and re-throw to generate event logs
-            Console.WriteLine($"Unexpected error: {ex.Message}");
+            // Print unexpected exceptions to stderr and re-throw to generate event logs
+            Console.Error.WriteLine($"Unexpected error: {ex.Message}");
             throw;
         }
     }
