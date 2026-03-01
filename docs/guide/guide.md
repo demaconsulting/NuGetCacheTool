@@ -2,8 +2,7 @@
 
 ## Purpose
 
-Template DotNet Tool is a demonstration project that showcases best practices for DEMA
-Consulting DotNet Tools.
+NuGet Cache Tool is a NuGet cache management tool for DEMA Consulting .NET developers.
 
 ## Scope
 
@@ -19,7 +18,7 @@ This user guide covers:
 Install the tool globally using the .NET CLI:
 
 ```bash
-dotnet tool install -g DemaConsulting.TemplateDotNetTool
+dotnet tool install -g DemaConsulting.NuGet.CacheTool
 ```
 
 # Usage
@@ -29,7 +28,7 @@ dotnet tool install -g DemaConsulting.TemplateDotNetTool
 Display the tool version:
 
 ```bash
-templatetool --version
+nuget-cache --version
 ```
 
 ## Display Help
@@ -37,7 +36,7 @@ templatetool --version
 Display usage information:
 
 ```bash
-templatetool --help
+nuget-cache --help
 ```
 
 ## Run Self-Validation
@@ -45,13 +44,13 @@ templatetool --help
 Run self-validation tests:
 
 ```bash
-templatetool --validate
+nuget-cache --validate
 ```
 
 Save validation results to a file:
 
 ```bash
-templatetool --validate --results results.trx
+nuget-cache --validate --results results.trx
 ```
 
 ## Silent Mode
@@ -59,7 +58,7 @@ templatetool --validate --results results.trx
 Suppress console output:
 
 ```bash
-templatetool --silent
+nuget-cache --silent
 ```
 
 ## Logging
@@ -67,7 +66,7 @@ templatetool --silent
 Write output to a log file:
 
 ```bash
-templatetool --log output.log
+nuget-cache --log output.log
 ```
 
 # Command-Line Options
@@ -88,17 +87,17 @@ The following command-line options are supported:
 ## Example 1: Basic Usage
 
 ```bash
-templatetool
+nuget-cache
 ```
 
 ## Example 2: Self-Validation with Results
 
 ```bash
-templatetool --validate --results validation-results.trx
+nuget-cache --validate --results validation-results.trx
 ```
 
 ## Example 3: Silent Mode with Logging
 
 ```bash
-templatetool --silent --log tool-output.log
+nuget-cache --silent --log tool-output.log
 ```

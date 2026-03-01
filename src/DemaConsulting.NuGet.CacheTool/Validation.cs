@@ -21,10 +21,10 @@
 using System.Runtime.InteropServices;
 using DemaConsulting.TestResults.IO;
 
-namespace DemaConsulting.TemplateDotNetTool;
+namespace DemaConsulting.NuGet.CacheTool;
 
 /// <summary>
-///     Provides self-validation functionality for the Template DotNet Tool.
+///     Provides self-validation functionality for the NuGet Cache Tool.
 /// </summary>
 internal static class Validation
 {
@@ -43,7 +43,7 @@ internal static class Validation
         // Create test results collection
         var testResults = new DemaConsulting.TestResults.TestResults
         {
-            Name = "Template DotNet Tool Self-Validation"
+            Name = "NuGet Cache Tool Self-Validation"
         };
 
         // Run core functionality tests
@@ -81,7 +81,7 @@ internal static class Validation
     /// <param name="context">The context for output.</param>
     private static void PrintValidationHeader(Context context)
     {
-        context.WriteLine("# DEMA Consulting Template DotNet Tool");
+        context.WriteLine("# DEMA Consulting NuGet Cache Tool");
         context.WriteLine("");
         context.WriteLine("| Information         | Value                                              |");
         context.WriteLine("| :------------------ | :------------------------------------------------- |");
@@ -101,7 +101,7 @@ internal static class Validation
     private static void RunVersionTest(Context context, DemaConsulting.TestResults.TestResults testResults)
     {
         var startTime = DateTime.UtcNow;
-        var test = CreateTestResult("TemplateTool_VersionDisplay");
+        var test = CreateTestResult("NuGetCache_VersionDisplay");
 
         try
         {
@@ -169,7 +169,7 @@ internal static class Validation
     private static void RunHelpTest(Context context, DemaConsulting.TestResults.TestResults testResults)
     {
         var startTime = DateTime.UtcNow;
-        var test = CreateTestResult("TemplateTool_HelpDisplay");
+        var test = CreateTestResult("NuGetCache_HelpDisplay");
 
         try
         {
@@ -281,7 +281,7 @@ internal static class Validation
         {
             Name = testName,
             ClassName = "Validation",
-            CodeBase = "TemplateDotNetTool"
+            CodeBase = "NuGetCacheTool"
         };
     }
 
@@ -333,7 +333,7 @@ internal static class Validation
         /// </summary>
         public TemporaryDirectory()
         {
-            DirectoryPath = PathHelpers.SafePathCombine(Path.GetTempPath(), $"templatetool_validation_{Guid.NewGuid()}");
+            DirectoryPath = PathHelpers.SafePathCombine(Path.GetTempPath(), $"nugetcache_validation_{Guid.NewGuid()}");
 
             try
             {

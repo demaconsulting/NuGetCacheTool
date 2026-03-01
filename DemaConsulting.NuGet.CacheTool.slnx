@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/DemaConsulting.NuGet.CacheTool/DemaConsulting.NuGet.CacheTool.csproj" />
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/DemaConsulting.NuGet.CacheTool.Tests/DemaConsulting.NuGet.CacheTool.Tests.csproj" />
+  </Folder>
+</Solution>
