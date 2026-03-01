@@ -270,4 +270,80 @@ public class ContextTests
             Console.SetOut(originalOut);
         }
     }
+
+    /// <summary>
+    ///     Test WriteError sets exit code to 1.
+    /// </summary>
+    [TestMethod]
+    public void Context_WriteError_SetsErrorExitCode()
+    {
+        // Arrange
+        var originalOut = Console.Out;
+        try
+        {
+            using var outWriter = new StringWriter();
+            Console.SetOut(outWriter);
+            using var context = Context.Create([]);
+
+            // Act
+            Assert.AreEqual(0, context.ExitCode);
+            context.WriteError("Test error");
+
+            // Assert
+            Assert.AreEqual(1, context.ExitCode);
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
+
+    /// <summary>
+    ///     Test WriteError writes message to console when not silent.
+    /// </summary>
+    [TestMethod]
+    public void Context_WriteError_NotSilent_WritesToConsole()
+    {
+        // Arrange
+        var originalOut = Console.Out;
+        try
+        {
+            using var outWriter = new StringWriter();
+            Console.SetOut(outWriter);
+            using var context = Context.Create([]);
+
+            // Act
+            context.WriteError("Test error message");
+
+            // Assert
+            var output = outWriter.ToString();
+            Assert.Contains("Test error message", output);
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
+
+    /// <summary>
+    ///     Test creating a context with --log flag but no value throws ArgumentException.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_LogFlag_WithoutValue_ThrowsArgumentException()
+    {
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--log"]));
+        Assert.Contains("--log", exception.Message);
+    }
+
+    /// <summary>
+    ///     Test creating a context with --results flag but no value throws ArgumentException.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException()
+    {
+        // Act & Assert
+        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--results"]));
+        Assert.Contains("--results", exception.Message);
+    }
 }

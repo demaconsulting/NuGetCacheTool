@@ -161,4 +161,30 @@ public class ProgramTests
         // Assert
         Assert.IsFalse(string.IsNullOrWhiteSpace(version));
     }
+
+    /// <summary>
+    ///     Test that Run with validate flag and unsupported results format sets error exit code.
+    /// </summary>
+    [TestMethod]
+    public void Program_Run_WithValidateAndUnsupportedResultsFormat_SetsErrorExitCode()
+    {
+        // Arrange
+        var originalOut = Console.Out;
+        try
+        {
+            using var outWriter = new StringWriter();
+            Console.SetOut(outWriter);
+            using var context = Context.Create(["--validate", "--silent", "--results", "output.json"]);
+
+            // Act
+            Program.Run(context);
+
+            // Assert - unsupported format should cause an error
+            Assert.AreEqual(1, context.ExitCode);
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
 }
