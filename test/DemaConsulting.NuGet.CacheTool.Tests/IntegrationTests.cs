@@ -268,4 +268,44 @@ public class IntegrationTests
         Assert.IsFalse(string.IsNullOrWhiteSpace(output));
         Assert.DoesNotContain("Error", output);
     }
+
+    /// <summary>
+    ///     Test that attempting to cache a nonexistent package returns an error.
+    /// </summary>
+    [TestMethod]
+    public void IntegrationTest_CacheNonexistentPackage_ReturnsError()
+    {
+        // Act
+        var exitCode = Runner.Run(
+            out var output,
+            "dotnet",
+            _dllPath,
+            "DemaConsulting.NonExistent.Package.XYZ:99.99.99");
+
+        // Assert
+        Assert.AreNotEqual(0, exitCode);
+        Assert.Contains("Error", output);
+    }
+
+    /// <summary>
+    ///     Test that specifying an invalid log file path returns an error.
+    /// </summary>
+    [TestMethod]
+    public void IntegrationTest_LogFlag_WithInvalidFilename_ReturnsError()
+    {
+        // Arrange - use a hard-coded path into a nonexistent directory to ensure failure
+        const string invalidLogPath = "/nonexistent_dir_xyz_abc/invalid.log";
+
+        // Act
+        var exitCode = Runner.Run(
+            out var output,
+            "dotnet",
+            _dllPath,
+            "--log",
+            invalidLogPath);
+
+        // Assert
+        Assert.AreNotEqual(0, exitCode);
+        Assert.Contains("Error", output);
+    }
 }
