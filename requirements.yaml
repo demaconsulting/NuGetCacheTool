@@ -106,6 +106,7 @@ sections:
             tests:
               - Context_Create_LogFlag_OpensLogFile
               - IntegrationTest_LogFlag_WritesOutputToFile
+              - IntegrationTest_LogFlag_WithInvalidFilename_ReturnsError
 
           - id: NC-CLI-008
             title: The tool shall cache NuGet packages specified as [package-name]:[version] arguments.
@@ -127,6 +128,7 @@ sections:
               - Context_WriteError_SetsErrorExitCode
               - Context_WriteError_NotSilent_WritesToConsole
               - IntegrationTest_UnknownArgument_ReturnsError
+              - IntegrationTest_CacheNonexistentPackage_ReturnsError
 
           - id: NC-CLI-010
             title: The tool shall reject unknown or malformed command-line arguments with a descriptive error.
