@@ -204,6 +204,20 @@ public class ContextTests
     }
 
     /// <summary>
+    ///     Test creating a context with a package argument adds it to the Packages list.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_PackageArgument_AddsToPackagesList()
+    {
+        // Arrange & Act
+        using var context = Context.Create(["DemaConsulting.NuGet.Caching:0.1.0"]);
+
+        // Assert
+        Assert.AreEqual(1, context.Packages.Count);
+        Assert.AreEqual("DemaConsulting.NuGet.Caching:0.1.0", context.Packages[0]);
+    }
+
+    /// <summary>
     ///     Test WriteLine writes to console output when not silent.
     /// </summary>
     [TestMethod]

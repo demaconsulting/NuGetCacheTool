@@ -210,4 +210,23 @@ public class IntegrationTests
         Assert.AreNotEqual(0, exitCode);
         Assert.Contains("Error", output);
     }
+
+    /// <summary>
+    ///     Test that a package argument caches the package and outputs the path.
+    /// </summary>
+    [TestMethod]
+    public void IntegrationTest_CachePackage_OutputsPath()
+    {
+        // Act
+        var exitCode = Runner.Run(
+            out var output,
+            "dotnet",
+            _dllPath,
+            "DemaConsulting.NuGet.Caching:0.1.0");
+
+        // Assert
+        Assert.AreEqual(0, exitCode);
+        Assert.IsFalse(string.IsNullOrWhiteSpace(output));
+        Assert.DoesNotContain("Error", output);
+    }
 }

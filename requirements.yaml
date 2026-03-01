@@ -32,7 +32,7 @@ sections:
     sections:
       - title: Command-Line Interface
         requirements:
-          - id: TMPL-REQ-001
+          - id: NC-CLI-001
             title: The tool shall implement a Context class for command-line argument handling.
             justification: |
               Provides a standardized approach to command-line argument parsing and output
@@ -46,7 +46,7 @@ sections:
               - Context_Create_ResultsFlag_SetsResultsFile
               - Context_Create_LogFlag_OpensLogFile
 
-          - id: TMPL-REQ-002
+          - id: NC-CLI-002
             title: The tool shall support -v and --version flags to display version information.
             justification: |
               Users need to quickly identify the version of the tool they are using for
@@ -57,7 +57,7 @@ sections:
               - Program_Run_WithVersionFlag_DisplaysVersionOnly
               - IntegrationTest_VersionFlag_OutputsVersion
 
-          - id: TMPL-REQ-003
+          - id: NC-CLI-003
             title: The tool shall support -?, -h, and --help flags to display usage information.
             justification: |
               Users need access to command-line usage documentation without requiring
@@ -69,7 +69,7 @@ sections:
               - Program_Run_WithHelpFlag_DisplaysUsageInformation
               - IntegrationTest_HelpFlag_OutputsUsageInformation
 
-          - id: TMPL-REQ-004
+          - id: NC-CLI-004
             title: The tool shall support --silent flag to suppress console output.
             justification: |
               Enables automated scripts and CI/CD pipelines to run the tool without
@@ -79,7 +79,7 @@ sections:
               - Context_WriteLine_Silent_DoesNotWriteToConsole
               - IntegrationTest_SilentFlag_SuppressesOutput
 
-          - id: TMPL-REQ-005
+          - id: NC-CLI-005
             title: The tool shall support --validate flag to run self-validation tests.
             justification: |
               Provides a built-in mechanism to verify the tool is functioning correctly
@@ -89,7 +89,7 @@ sections:
               - Program_Run_WithValidateFlag_RunsValidation
               - IntegrationTest_ValidateFlag_RunsValidation
 
-          - id: TMPL-REQ-006
+          - id: NC-CLI-006
             title: The tool shall support --results flag to write validation results in TRX or JUnit format.
             justification: |
               Enables integration with CI/CD systems that expect standard test result formats.
@@ -97,7 +97,7 @@ sections:
               - Context_Create_ResultsFlag_SetsResultsFile
               - IntegrationTest_ValidateWithResults_GeneratesTrxFile
 
-          - id: TMPL-REQ-007
+          - id: NC-CLI-007
             title: The tool shall support --log flag to write output to a log file.
             justification: |
               Provides persistent logging for debugging and audit trails.
@@ -105,9 +105,19 @@ sections:
               - Context_Create_LogFlag_OpensLogFile
               - IntegrationTest_LogFlag_WritesOutputToFile
 
+          - id: NC-CLI-008
+            title: The tool shall cache NuGet packages specified as [package-name]:[version] arguments.
+            justification: |
+              The core purpose of the tool is to ensure NuGet packages are cached in the
+              global packages folder for use by downstream build steps.
+            tests:
+              - Context_Create_PackageArgument_AddsToPackagesList
+              - IntegrationTest_CachePackage_OutputsPath
+              - NuGetCache_CachePackage
+
       - title: Platform Support
         requirements:
-          - id: TMPL-REQ-008
+          - id: NC-PLT-001
             title: The tool shall build and run on Windows platforms.
             justification: |
               DEMA Consulting tools must support Windows as a major development platform.
@@ -116,7 +126,7 @@ sections:
               - "windows@NuGetCache_VersionDisplay"
               - "windows@NuGetCache_HelpDisplay"
 
-          - id: TMPL-REQ-009
+          - id: NC-PLT-002
             title: The tool shall build and run on Linux platforms.
             justification: |
               DEMA Consulting tools must support Linux for CI/CD and containerized environments.
@@ -125,7 +135,7 @@ sections:
               - "ubuntu@NuGetCache_VersionDisplay"
               - "ubuntu@NuGetCache_HelpDisplay"
 
-          - id: TMPL-REQ-010
+          - id: NC-PLT-003
             title: The tool shall support .NET 8 runtime.
             justification: |
               .NET 8 is an LTS release providing long-term stability for enterprise users.
@@ -133,7 +143,7 @@ sections:
               - "dotnet8.x@NuGetCache_VersionDisplay"
               - "dotnet8.x@NuGetCache_HelpDisplay"
 
-          - id: TMPL-REQ-011
+          - id: NC-PLT-004
             title: The tool shall support .NET 9 runtime.
             justification: |
               .NET 9 support enables users to leverage the latest .NET features.
@@ -141,7 +151,7 @@ sections:
               - "dotnet9.x@NuGetCache_VersionDisplay"
               - "dotnet9.x@NuGetCache_HelpDisplay"
 
-          - id: TMPL-REQ-012
+          - id: NC-PLT-005
             title: The tool shall support .NET 10 runtime.
             justification: |
               .NET 10 support ensures the tool remains compatible with the latest .NET ecosystem.

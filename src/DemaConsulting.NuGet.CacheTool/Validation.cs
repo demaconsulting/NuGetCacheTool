@@ -49,6 +49,7 @@ internal static class Validation
         // Run core functionality tests
         RunVersionTest(context, testResults);
         RunHelpTest(context, testResults);
+        RunCachePackageTest(context, testResults);
 
         // Calculate totals
         var totalTests = testResults.Results.Count;
@@ -223,6 +224,73 @@ internal static class Validation
         catch (Exception ex)
         {
             HandleTestException(test, context, "Help Display Test", ex);
+        }
+
+        FinalizeTestResult(test, startTime, testResults);
+    }
+
+    /// <summary>
+    ///     Runs a test for NuGet package caching functionality.
+    /// </summary>
+    /// <param name="context">The context for output.</param>
+    /// <param name="testResults">The test results collection.</param>
+    private static void RunCachePackageTest(Context context, DemaConsulting.TestResults.TestResults testResults)
+    {
+        var startTime = DateTime.UtcNow;
+        var test = CreateTestResult("NuGetCache_CachePackage");
+
+        try
+        {
+            using var tempDir = new TemporaryDirectory();
+            var logFile = PathHelpers.SafePathCombine(tempDir.DirectoryPath, "cache-package-test.log");
+
+            // Build command line arguments to cache a known package
+            var args = new List<string>
+            {
+                "--silent",
+                "--log", logFile,
+                "DemaConsulting.NuGet.Caching:0.1.0"
+            };
+
+            // Run the program
+            int exitCode;
+            using (var testContext = Context.Create([.. args]))
+            {
+                Program.Run(testContext);
+                exitCode = testContext.ExitCode;
+            }
+
+            // Check if execution succeeded
+            if (exitCode == 0)
+            {
+                // Read log content to verify a path was written
+                var logContent = File.ReadAllText(logFile);
+
+                // Verify that a non-empty path was written to the log
+                if (!string.IsNullOrWhiteSpace(logContent))
+                {
+                    test.Outcome = DemaConsulting.TestResults.TestOutcome.Passed;
+                    context.WriteLine($"✓ Cache Package Test - PASSED");
+                }
+                else
+                {
+                    test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
+                    test.ErrorMessage = "Package path not found in log";
+                    context.WriteError($"✗ Cache Package Test - FAILED: Package path not found in log");
+                }
+            }
+            else
+            {
+                test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
+                test.ErrorMessage = $"Program exited with code {exitCode}";
+                context.WriteError($"✗ Cache Package Test - FAILED: Exit code {exitCode}");
+            }
+        }
+        // Generic catch is justified here as this is a test framework - any exception should be
+        // recorded as a test failure to ensure robust test execution and reporting.
+        catch (Exception ex)
+        {
+            HandleTestException(test, context, "Cache Package Test", ex);
         }
 
         FinalizeTestResult(test, startTime, testResults);

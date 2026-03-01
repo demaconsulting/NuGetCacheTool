@@ -61,6 +61,11 @@ internal sealed class Context : IDisposable
     public string? ResultsFile { get; private init; }
 
     /// <summary>
+    ///     Gets the list of NuGet packages to cache, in [package-name]:[version] format.
+    /// </summary>
+    public IReadOnlyList<string> Packages { get; private init; } = [];
+
+    /// <summary>
     ///     Gets the proposed exit code for the application (0 for success, 1 for errors).
     /// </summary>
     public int ExitCode => _hasErrors ? 1 : 0;
@@ -92,7 +97,8 @@ internal sealed class Context : IDisposable
             Help = parser.Help,
             Silent = parser.Silent,
             Validate = parser.Validate,
-            ResultsFile = parser.ResultsFile
+            ResultsFile = parser.ResultsFile,
+            Packages = [.. parser.Packages]
         };
 
         // Open log file if specified
@@ -159,6 +165,11 @@ internal sealed class Context : IDisposable
         public string? ResultsFile { get; private set; }
 
         /// <summary>
+        ///     Gets the list of NuGet packages to cache, in [package-name]:[version] format.
+        /// </summary>
+        public List<string> Packages { get; } = [];
+
+        /// <summary>
         ///     Parses command-line arguments
         /// </summary>
         /// <param name="args">Command-line arguments.</param>
@@ -214,6 +225,14 @@ internal sealed class Context : IDisposable
                     return index + 1;
 
                 default:
+                    // Accept [package-name]:[version] format arguments; validate both parts are non-empty
+                    var colonIndex = arg.IndexOf(':');
+                    if (colonIndex > 0 && colonIndex < arg.Length - 1)
+                    {
+                        Packages.Add(arg);
+                        return index;
+                    }
+
                     throw new ArgumentException($"Unsupported argument '{arg}'", nameof(args));
             }
         }
