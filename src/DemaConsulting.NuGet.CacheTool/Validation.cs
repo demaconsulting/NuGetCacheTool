@@ -101,65 +101,22 @@ internal static class Validation
     /// <param name="testResults">The test results collection.</param>
     private static void RunVersionTest(Context context, DemaConsulting.TestResults.TestResults testResults)
     {
-        var startTime = DateTime.UtcNow;
-        var test = CreateTestResult("NuGetCache_VersionDisplay");
-
-        try
-        {
-            using var tempDir = new TemporaryDirectory();
-            var logFile = PathHelpers.SafePathCombine(tempDir.DirectoryPath, "version-test.log");
-
-            // Build command line arguments
-            var args = new List<string>
+        RunValidationTest(
+            context,
+            testResults,
+            "NuGetCache_VersionDisplay",
+            "Version Display Test",
+            ["--version"],
+            logContent =>
             {
-                "--silent",
-                "--log", logFile,
-                "--version"
-            };
-
-            // Run the program
-            int exitCode;
-            using (var testContext = Context.Create([.. args]))
-            {
-                Program.Run(testContext);
-                exitCode = testContext.ExitCode;
-            }
-
-            // Check if execution succeeded
-            if (exitCode == 0)
-            {
-                // Read log content
-                var logContent = File.ReadAllText(logFile);
-
                 // Verify version string is in log (version contains dots like 0.0.0)
-                if (!string.IsNullOrWhiteSpace(logContent) &&
-                    logContent.Split('.').Length >= 3)
+                if (!string.IsNullOrWhiteSpace(logContent) && logContent.Split('.').Length >= 3)
                 {
-                    test.Outcome = DemaConsulting.TestResults.TestOutcome.Passed;
-                    context.WriteLine($"✓ Version Display Test - PASSED");
+                    return null;
                 }
-                else
-                {
-                    test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
-                    test.ErrorMessage = "Version string not found in log";
-                    context.WriteError($"✗ Version Display Test - FAILED: Version string not found in log");
-                }
-            }
-            else
-            {
-                test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
-                test.ErrorMessage = $"Program exited with code {exitCode}";
-                context.WriteError($"✗ Version Display Test - FAILED: Exit code {exitCode}");
-            }
-        }
-        // Generic catch is justified here as this is a test framework - any exception should be
-        // recorded as a test failure to ensure robust test execution and reporting.
-        catch (Exception ex)
-        {
-            HandleTestException(test, context, "Version Display Test", ex);
-        }
 
-        FinalizeTestResult(test, startTime, testResults);
+                return "Version string not found in log";
+            });
     }
 
     /// <summary>
@@ -169,64 +126,22 @@ internal static class Validation
     /// <param name="testResults">The test results collection.</param>
     private static void RunHelpTest(Context context, DemaConsulting.TestResults.TestResults testResults)
     {
-        var startTime = DateTime.UtcNow;
-        var test = CreateTestResult("NuGetCache_HelpDisplay");
-
-        try
-        {
-            using var tempDir = new TemporaryDirectory();
-            var logFile = PathHelpers.SafePathCombine(tempDir.DirectoryPath, "help-test.log");
-
-            // Build command line arguments
-            var args = new List<string>
+        RunValidationTest(
+            context,
+            testResults,
+            "NuGetCache_HelpDisplay",
+            "Help Display Test",
+            ["--help"],
+            logContent =>
             {
-                "--silent",
-                "--log", logFile,
-                "--help"
-            };
-
-            // Run the program
-            int exitCode;
-            using (var testContext = Context.Create([.. args]))
-            {
-                Program.Run(testContext);
-                exitCode = testContext.ExitCode;
-            }
-
-            // Check if execution succeeded
-            if (exitCode == 0)
-            {
-                // Read log content
-                var logContent = File.ReadAllText(logFile);
-
                 // Verify help text is in log
                 if (logContent.Contains("Usage:") && logContent.Contains("Options:"))
                 {
-                    test.Outcome = DemaConsulting.TestResults.TestOutcome.Passed;
-                    context.WriteLine($"✓ Help Display Test - PASSED");
+                    return null;
                 }
-                else
-                {
-                    test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
-                    test.ErrorMessage = "Help text not found in log";
-                    context.WriteError($"✗ Help Display Test - FAILED: Help text not found in log");
-                }
-            }
-            else
-            {
-                test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
-                test.ErrorMessage = $"Program exited with code {exitCode}";
-                context.WriteError($"✗ Help Display Test - FAILED: Exit code {exitCode}");
-            }
-        }
-        // Generic catch is justified here as this is a test framework - any exception should be
-        // recorded as a test failure to ensure robust test execution and reporting.
-        catch (Exception ex)
-        {
-            HandleTestException(test, context, "Help Display Test", ex);
-        }
 
-        FinalizeTestResult(test, startTime, testResults);
+                return "Help text not found in log";
+            });
     }
 
     /// <summary>
@@ -236,21 +151,55 @@ internal static class Validation
     /// <param name="testResults">The test results collection.</param>
     private static void RunCachePackageTest(Context context, DemaConsulting.TestResults.TestResults testResults)
     {
+        RunValidationTest(
+            context,
+            testResults,
+            "NuGetCache_CachePackage",
+            "Cache Package Test",
+            ["DemaConsulting.NuGet.Caching:0.1.0"],
+            logContent =>
+            {
+                // Verify that a non-empty path was written to the log
+                if (!string.IsNullOrWhiteSpace(logContent))
+                {
+                    return null;
+                }
+
+                return "Package path not found in log";
+            });
+    }
+
+    /// <summary>
+    ///     Runs a validation test with common test execution logic.
+    /// </summary>
+    /// <param name="context">The context for output.</param>
+    /// <param name="testResults">The test results collection.</param>
+    /// <param name="testName">The name of the test.</param>
+    /// <param name="displayName">The display name for console output.</param>
+    /// <param name="additionalArgs">Additional command-line arguments for the test.</param>
+    /// <param name="validator">
+    ///     Function to validate test results. Receives log content and returns null on
+    ///     success or an error message on failure.
+    /// </param>
+    private static void RunValidationTest(
+        Context context,
+        DemaConsulting.TestResults.TestResults testResults,
+        string testName,
+        string displayName,
+        string[] additionalArgs,
+        Func<string, string?> validator)
+    {
         var startTime = DateTime.UtcNow;
-        var test = CreateTestResult("NuGetCache_CachePackage");
+        var test = CreateTestResult(testName);
 
         try
         {
             using var tempDir = new TemporaryDirectory();
-            var logFile = PathHelpers.SafePathCombine(tempDir.DirectoryPath, "cache-package-test.log");
+            var logFile = PathHelpers.SafePathCombine(tempDir.DirectoryPath, $"{testName}.log");
 
-            // Build command line arguments to cache a known package
-            var args = new List<string>
-            {
-                "--silent",
-                "--log", logFile,
-                "DemaConsulting.NuGet.Caching:0.1.0"
-            };
+            // Build command line arguments: always use --silent and --log for consistent capture
+            var args = new List<string> { "--silent", "--log", logFile };
+            args.AddRange(additionalArgs);
 
             // Run the program
             int exitCode;
@@ -263,34 +212,34 @@ internal static class Validation
             // Check if execution succeeded
             if (exitCode == 0)
             {
-                // Read log content to verify a path was written
+                // Read log content and invoke the validator
                 var logContent = File.ReadAllText(logFile);
+                var errorMessage = validator(logContent);
 
-                // Verify that a non-empty path was written to the log
-                if (!string.IsNullOrWhiteSpace(logContent))
+                if (errorMessage == null)
                 {
                     test.Outcome = DemaConsulting.TestResults.TestOutcome.Passed;
-                    context.WriteLine($"✓ Cache Package Test - PASSED");
+                    context.WriteLine($"✓ {displayName} - PASSED");
                 }
                 else
                 {
                     test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
-                    test.ErrorMessage = "Package path not found in log";
-                    context.WriteError($"✗ Cache Package Test - FAILED: Package path not found in log");
+                    test.ErrorMessage = errorMessage;
+                    context.WriteError($"✗ {displayName} - FAILED: {errorMessage}");
                 }
             }
             else
             {
                 test.Outcome = DemaConsulting.TestResults.TestOutcome.Failed;
                 test.ErrorMessage = $"Program exited with code {exitCode}";
-                context.WriteError($"✗ Cache Package Test - FAILED: Exit code {exitCode}");
+                context.WriteError($"✗ {displayName} - FAILED: Exit code {exitCode}");
             }
         }
         // Generic catch is justified here as this is a test framework - any exception should be
         // recorded as a test failure to ensure robust test execution and reporting.
         catch (Exception ex)
         {
-            HandleTestException(test, context, "Cache Package Test", ex);
+            HandleTestException(test, context, displayName, ex);
         }
 
         FinalizeTestResult(test, startTime, testResults);
