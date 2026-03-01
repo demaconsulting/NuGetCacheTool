@@ -213,7 +213,7 @@ public class ContextTests
         using var context = Context.Create(["DemaConsulting.NuGet.Caching:0.1.0"]);
 
         // Assert
-        Assert.AreEqual(1, context.Packages.Count);
+        Assert.HasCount(1, context.Packages);
         Assert.AreEqual("DemaConsulting.NuGet.Caching:0.1.0", context.Packages[0]);
     }
 
