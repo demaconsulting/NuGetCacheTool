@@ -19,7 +19,7 @@ This tool provides:
 - **Multiple Packages**: Specify multiple packages in a single command
 - **Package Path Output**: Output the path to each cached package
 - **Self-Validation**: Built-in validation tests with TRX/JUnit output
-- **Multi-Platform Support**: Builds and runs on Windows and Linux
+- **Multi-Platform Support**: Builds and runs on Windows, Linux, and macOS
 - **Multi-Runtime Support**: Targets .NET 8, 9, and 10
 
 ## Installation
