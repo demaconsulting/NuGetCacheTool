@@ -33,7 +33,7 @@ sections:
     sections:
       - title: Command-Line Interface
         requirements:
-          - id: NC-CLI-001
+          - id: NuGetCache-Cmd-Context
             title: The tool shall implement a Context class for command-line argument handling.
             justification: |
               Provides a standardized approach to command-line argument parsing and output
@@ -47,7 +47,7 @@ sections:
               - Context_Create_ResultsFlag_SetsResultsFile
               - Context_Create_LogFlag_OpensLogFile
 
-          - id: NC-CLI-002
+          - id: NuGetCache-Cmd-Version
             title: The tool shall support -v and --version flags to display version information.
             justification: |
               Users need to quickly identify the version of the tool they are using for
@@ -59,7 +59,7 @@ sections:
               - Program_Version_ReturnsNonEmptyString
               - IntegrationTest_VersionFlag_OutputsVersion
 
-          - id: NC-CLI-003
+          - id: NuGetCache-Cmd-Help
             title: The tool shall support -?, -h, and --help flags to display usage information.
             justification: |
               Users need access to command-line usage documentation without requiring
@@ -71,7 +71,7 @@ sections:
               - Program_Run_WithHelpFlag_DisplaysUsageInformation
               - IntegrationTest_HelpFlag_OutputsUsageInformation
 
-          - id: NC-CLI-004
+          - id: NuGetCache-Cmd-Silent
             title: The tool shall support --silent flag to suppress console output.
             justification: |
               Enables automated scripts and CI/CD pipelines to run the tool without
@@ -81,7 +81,7 @@ sections:
               - Context_WriteLine_Silent_DoesNotWriteToConsole
               - IntegrationTest_SilentFlag_SuppressesOutput
 
-          - id: NC-CLI-005
+          - id: NuGetCache-Cmd-Validate
             title: The tool shall support --validate flag to run self-validation tests.
             justification: |
               Provides a built-in mechanism to verify the tool is functioning correctly
@@ -91,7 +91,7 @@ sections:
               - Program_Run_WithValidateFlag_RunsValidation
               - IntegrationTest_ValidateFlag_RunsValidation
 
-          - id: NC-CLI-006
+          - id: NuGetCache-Cmd-Results
             title: The tool shall support --results flag to write validation results in TRX or JUnit format.
             justification: |
               Enables integration with CI/CD systems that expect standard test result formats.
@@ -100,7 +100,7 @@ sections:
               - IntegrationTest_ValidateWithResults_GeneratesTrxFile
               - IntegrationTest_ValidateWithResults_GeneratesJUnitFile
 
-          - id: NC-CLI-007
+          - id: NuGetCache-Cmd-Log
             title: The tool shall support --log flag to write output to a log file.
             justification: |
               Provides persistent logging for debugging and audit trails.
@@ -109,7 +109,7 @@ sections:
               - IntegrationTest_LogFlag_WritesOutputToFile
               - IntegrationTest_LogFlag_WithInvalidFilename_ReturnsError
 
-          - id: NC-CLI-008
+          - id: NuGetCache-Cmd-Cache
             title: The tool shall cache NuGet packages specified as [package-name]:[version] arguments.
             justification: |
               The core purpose of the tool is to ensure NuGet packages are cached in the
@@ -119,7 +119,7 @@ sections:
               - IntegrationTest_CachePackage_OutputsPath
               - NuGetCache_CachePackage
 
-          - id: NC-CLI-009
+          - id: NuGetCache-Cmd-ErrorOutput
             title: The tool shall report errors and return a non-zero exit code on failure.
             justification: |
               Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
@@ -131,7 +131,7 @@ sections:
               - IntegrationTest_UnknownArgument_ReturnsError
               - IntegrationTest_CacheNonexistentPackage_ReturnsError
 
-          - id: NC-CLI-010
+          - id: NuGetCache-Cmd-InvalidArgs
             title: The tool shall reject unknown or malformed command-line arguments with a descriptive error.
             justification: |
               Providing clear feedback for invalid arguments helps users quickly correct
@@ -144,7 +144,7 @@ sections:
 
       - title: Security
         requirements:
-          - id: NC-SEC-001
+          - id: NuGetCache-Sec-PathTraversal
             title: The tool shall prevent path traversal attacks when combining file paths.
             justification: |
               Accepting user-controlled path components without validation could allow
@@ -162,7 +162,7 @@ sections:
 
       - title: Platform Support
         requirements:
-          - id: NC-PLT-001
+          - id: NuGetCache-Platform-Windows
             title: The tool shall build and run on Windows platforms.
             justification: |
               DEMA Consulting tools must support Windows as a major development platform.
@@ -171,7 +171,7 @@ sections:
               - "windows@NuGetCache_VersionDisplay"
               - "windows@NuGetCache_HelpDisplay"
 
-          - id: NC-PLT-002
+          - id: NuGetCache-Platform-Linux
             title: The tool shall build and run on Linux platforms.
             justification: |
               DEMA Consulting tools must support Linux for CI/CD and containerized environments.
@@ -180,7 +180,7 @@ sections:
               - "ubuntu@NuGetCache_VersionDisplay"
               - "ubuntu@NuGetCache_HelpDisplay"
 
-          - id: NC-PLT-006
+          - id: NuGetCache-Platform-MacOS
             title: The tool shall build and run on macOS platforms.
             justification: |
               DEMA Consulting tools must support macOS for developers using Apple platforms.
@@ -189,7 +189,7 @@ sections:
               - "macos@NuGetCache_VersionDisplay"
               - "macos@NuGetCache_HelpDisplay"
 
-          - id: NC-PLT-003
+          - id: NuGetCache-Platform-Net8
             title: The tool shall support .NET 8 runtime.
             justification: |
               .NET 8 is an LTS release providing long-term stability for enterprise users.
@@ -197,7 +197,7 @@ sections:
               - "dotnet8.x@NuGetCache_VersionDisplay"
               - "dotnet8.x@NuGetCache_HelpDisplay"
 
-          - id: NC-PLT-004
+          - id: NuGetCache-Platform-Net9
             title: The tool shall support .NET 9 runtime.
             justification: |
               .NET 9 support enables users to leverage the latest .NET features.
@@ -205,7 +205,7 @@ sections:
               - "dotnet9.x@NuGetCache_VersionDisplay"
               - "dotnet9.x@NuGetCache_HelpDisplay"
 
-          - id: NC-PLT-005
+          - id: NuGetCache-Platform-Net10
             title: The tool shall support .NET 10 runtime.
             justification: |
               .NET 10 support ensures the tool remains compatible with the latest .NET ecosystem.
