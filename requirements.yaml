@@ -162,7 +162,7 @@ sections:
 
       - title: Platform Support
         requirements:
-          - id: NuGetCache-Platform-Windows
+          - id: NuGetCache-PLT-Windows
             title: The tool shall build and run on Windows platforms.
             justification: |
               DEMA Consulting tools must support Windows as a major development platform.
@@ -171,7 +171,7 @@ sections:
               - "windows@NuGetCache_VersionDisplay"
               - "windows@NuGetCache_HelpDisplay"
 
-          - id: NuGetCache-Platform-Linux
+          - id: NuGetCache-PLT-Linux
             title: The tool shall build and run on Linux platforms.
             justification: |
               DEMA Consulting tools must support Linux for CI/CD and containerized environments.
@@ -180,7 +180,7 @@ sections:
               - "ubuntu@NuGetCache_VersionDisplay"
               - "ubuntu@NuGetCache_HelpDisplay"
 
-          - id: NuGetCache-Platform-MacOS
+          - id: NuGetCache-PLT-MacOS
             title: The tool shall build and run on macOS platforms.
             justification: |
               DEMA Consulting tools must support macOS for developers using Apple platforms.
@@ -189,7 +189,7 @@ sections:
               - "macos@NuGetCache_VersionDisplay"
               - "macos@NuGetCache_HelpDisplay"
 
-          - id: NuGetCache-Platform-Net8
+          - id: NuGetCache-PLT-Net8
             title: The tool shall support .NET 8 runtime.
             justification: |
               .NET 8 is an LTS release providing long-term stability for enterprise users.
@@ -197,7 +197,7 @@ sections:
               - "dotnet8.x@NuGetCache_VersionDisplay"
               - "dotnet8.x@NuGetCache_HelpDisplay"
 
-          - id: NuGetCache-Platform-Net9
+          - id: NuGetCache-PLT-Net9
             title: The tool shall support .NET 9 runtime.
             justification: |
               .NET 9 support enables users to leverage the latest .NET features.
@@ -205,7 +205,7 @@ sections:
               - "dotnet9.x@NuGetCache_VersionDisplay"
               - "dotnet9.x@NuGetCache_HelpDisplay"
 
-          - id: NuGetCache-Platform-Net10
+          - id: NuGetCache-PLT-Net10
             title: The tool shall support .NET 10 runtime.
             justification: |
               .NET 10 support ensures the tool remains compatible with the latest .NET ecosystem.
