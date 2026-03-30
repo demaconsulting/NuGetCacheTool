@@ -86,6 +86,6 @@
     "package-lock.json",
     "yarn.lock",
     "AGENT_REPORT_*.md",
-    ".agent-logs/"
+    "**/.agent-logs/**"
   ]
 }

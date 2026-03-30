@@ -1,4 +1,6 @@
 {
+  "noBanner": true,
+  "noProgress": true,
   "config": {
     "default": true,
     "MD003": { "style": "atx" },
