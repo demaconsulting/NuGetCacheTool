@@ -19,9 +19,10 @@ sections:
             tests:
               - Context_Create_NoArguments_ReturnsDefaultContext
               - Context_Create_VersionFlag_SetsVersionTrue
+              - Context_Create_HelpFlag_SetsHelpTrue
               - Context_Create_SilentFlag_SetsSilentTrue
+              - Context_Create_ValidateFlag_SetsValidateTrue
+              - Context_Create_ResultsFlag_SetsResultsFile
               - Context_Create_LogFlag_OpensLogFile
               - Context_Create_UnknownArgument_ThrowsArgumentException
-              - IntegrationTest_VersionFlag_OutputsVersion
-              - IntegrationTest_ValidateFlag_RunsValidation
-              - Validation_Run_WithSilentContext_PrintsSummary
+              - Context_Create_ShortVersionFlag_SetsVersionTrue
