@@ -599,7 +599,7 @@ jobs:
           --filter node_modules/.bin/mermaid-filter.cmd
           --metadata version="${{ inputs.version }}"
           --metadata date="$(date +'%Y-%m-%d')"
-          --output docs/build_notes/buildnotes.html
+          --output docs/build_notes/build_notes.html
 
       - name: Generate Guide HTML with Pandoc
         shell: bash
