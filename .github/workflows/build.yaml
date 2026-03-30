@@ -669,7 +669,7 @@ jobs:
         run: >
           dotnet weasyprint
           --pdf-variant pdf/a-3u
-          docs/build_notes/buildnotes.html
+          docs/build_notes/build_notes.html
           "docs/NuGetCacheTool Build Notes.pdf"
 
       - name: Generate Guide PDF with Weasyprint

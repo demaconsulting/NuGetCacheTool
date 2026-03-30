@@ -6,8 +6,10 @@
 # Patterns identifying all files that require review.
 # Processed in order; prefix a pattern with '!' to exclude.
 needs-review:
-  - "**/*.cs"                    # All C# source and test files
+  - "requirements.yaml"          # Requirement (top-level)
   - "docs/reqstream/**/*.yaml"   # Requirements files
+  - "docs/design/**/*.md"        # Design documentation
+  - "**/*.cs"                    # All C# source and test files
   - "!**/obj/**"                 # Exclude build output
   - "!**/bin/**"                 # Exclude build output
 

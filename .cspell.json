@@ -51,6 +51,7 @@
     "ReviewMark",
     "Sarif",
     "SarifMark",
+    "sarifmark",
     "SBOM",
     "Semgrep",
     "semver",
@@ -75,6 +76,8 @@
     "vbproj",
     "vcxproj",
     "Weasyprint",
+    "versionmark",
+    "VersionMark",
     "yamllint"
   ],
   "ignorePaths": [

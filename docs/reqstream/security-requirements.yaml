@@ -1,0 +1,25 @@
+---
+# NuGet Cache Tool Security Requirements
+#
+# Requirements for the security functionality of the NuGet Cache Tool.
+
+sections:
+  - title: NuGet Cache Tool Requirements
+    sections:
+      - title: Security
+        requirements:
+          - id: NuGetCache-Sec-PathTraversal
+            title: The tool shall prevent path traversal attacks when combining file paths.
+            justification: |
+              Accepting user-controlled path components without validation could allow
+              an attacker to read or write files outside intended directories.  The
+              SafePathCombine helper must reject absolute paths and parent-directory
+              references (e.g. "..") in the relative component.
+            tests:
+              - PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly
+              - PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_AbsolutePath_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly
+              - PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly
+              - PathHelpers_SafePathCombine_EmptyRelativePath_ReturnsBasePath
