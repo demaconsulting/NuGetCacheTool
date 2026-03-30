@@ -4,6 +4,9 @@
 
 extends: default
 
+ignore: |
+  .agent-logs/
+
 rules:
   # Allow 'on:' in GitHub Actions workflows (not a boolean value)
   truthy:
