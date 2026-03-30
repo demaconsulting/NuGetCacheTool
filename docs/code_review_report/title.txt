@@ -1,0 +1,13 @@
+---
+title: NuGet Cache Tool Review Report
+subtitle: File Review Report for the NuGet Cache Tool
+author: DEMA Consulting
+description: File Review Report for the NuGet Cache Tool
+lang: en-US
+keywords:
+  - NuGet Cache Tool
+  - Review Report
+  - File Reviews
+  - .NET
+  - Tool
+---

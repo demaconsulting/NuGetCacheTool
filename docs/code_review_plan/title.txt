@@ -1,0 +1,13 @@
+---
+title: NuGet Cache Tool Review Plan
+subtitle: File Review Plan for the NuGet Cache Tool
+author: DEMA Consulting
+description: File Review Plan for the NuGet Cache Tool
+lang: en-US
+keywords:
+  - NuGet Cache Tool
+  - Review Plan
+  - File Reviews
+  - .NET
+  - Tool
+---
