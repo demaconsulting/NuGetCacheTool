@@ -46,6 +46,23 @@ args
 - Exit codes are normally controlled via `Context.ExitCode`; `Program.Main` may return
   a non-zero exit code directly when `Context` cannot be created
 
+## Self-Validation Tests
+
+When invoked with `--validate`, the tool executes three built-in self-validation
+tests that exercise the full application stack within the deployment environment.
+These tests use the same `Program.Run` path as normal usage, capturing output via
+`--silent --log` and asserting on the log contents.
+
+| Test Name | Command | Validates |
+| --------- | ------- | --------- |
+| `NuGetCache_VersionDisplay` | `--version` | Version string is present and contains dots |
+| `NuGetCache_HelpDisplay` | `--help` | Output contains `Usage:` and `Options:` |
+| `NuGetCache_CachePackage` | `DemaConsulting.NuGet.Caching:0.1.0` | A non-empty package path is returned |
+
+These tests are emitted as TRX test results (when `--results` is supplied) and
+serve as system-level evidence that all units work correctly together in the
+target environment.
+
 ## Integration Patterns
 
 The tool integrates with the NuGet ecosystem via `DemaConsulting.NuGet.Caching` and
