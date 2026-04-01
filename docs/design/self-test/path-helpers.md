@@ -12,9 +12,11 @@ attacks when user-controlled path components are combined with a trusted base pa
 1. **Reject `..` segments**: throws `ArgumentException` if `relativePath` contains `..`
 2. **Reject absolute paths**: throws `ArgumentException` if `Path.IsPathRooted(relativePath)` is true
 3. **Combine paths**: calls `Path.Combine(basePath, relativePath)`
-4. **GetFullPath check**: calls `Path.GetFullPath` on the result and verifies the
-   combined path starts with the fully-resolved `basePath`, providing defence-in-depth
-   against OS-specific traversal sequences
+4. **GetFullPath / GetRelativePath check**: calls `Path.GetFullPath` on both
+   `basePath` and the combined path, then uses `Path.GetRelativePath` to verify
+   the combined path is contained within `basePath` (i.e. the relative path does
+   not start with `..` and is not rooted), providing defence-in-depth against
+   OS-specific traversal sequences
 
 ## Security Properties
 
@@ -22,7 +24,7 @@ attacks when user-controlled path components are combined with a trusted base pa
 | -------- | --------- |
 | No parent traversal | `..` in relative path is rejected before combination |
 | No absolute override | Absolute relative paths cannot escape the base directory |
-| Canonicalisation check | `GetFullPath` resolves symlinks and OS quirks as a final guard |
+| Canonicalisation check | `GetFullPath` normalizes paths; `GetRelativePath` confirms path stays within `basePath` |
 
 ## Interactions
 
