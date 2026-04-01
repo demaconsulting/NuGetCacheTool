@@ -15,7 +15,7 @@ the entry point and all operational units.
 | `Silent` | `bool` | True when `--silent` flag is present; suppresses console output |
 | `Validate` | `bool` | True when `--validate` flag is present |
 | `ResultsFile` | `string?` | Path from `--results` flag; null if not specified |
-| `Packages` | `IReadOnlyList<(string, string)>` | Parsed `[package]:[version]` pairs |
+| `Packages` | `IReadOnlyList<string>` | Package arguments in `[package]:[version]` form |
 | `ExitCode` | `int` | Process exit code; set to 1 on any error |
 | `_logWriter` | `StreamWriter?` | Log file writer; null if `--log` not specified |
 | `_hasErrors` | `bool` | Internal flag set by `WriteError`; drives `ExitCode` |
