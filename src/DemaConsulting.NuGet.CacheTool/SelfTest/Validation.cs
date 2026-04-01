@@ -19,9 +19,10 @@
 // SOFTWARE.
 
 using System.Runtime.InteropServices;
+using DemaConsulting.NuGet.CacheTool.Cli;
 using DemaConsulting.TestResults.IO;
 
-namespace DemaConsulting.NuGet.CacheTool;
+namespace DemaConsulting.NuGet.CacheTool.SelfTest;
 
 /// <summary>
 ///     Provides self-validation functionality for the NuGet Cache Tool.

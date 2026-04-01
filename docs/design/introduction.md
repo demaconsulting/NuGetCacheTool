@@ -28,13 +28,17 @@ NuGetCacheTool (System)
 
 ```text
 src/DemaConsulting.NuGet.CacheTool/
-├── Context.cs               — CLI subsystem: argument parsing and output management
-├── PathHelpers.cs           — SelfTest subsystem: safe path combination utilities
-├── Program.cs               — top-level entry point and application orchestration
-└── Validation.cs            — SelfTest subsystem: self-validation test execution
+├── Cli/
+│   └── Context.cs               — CLI subsystem: argument parsing and output management
+├── SelfTest/
+│   ├── PathHelpers.cs           — SelfTest subsystem: safe path combination utilities
+│   └── Validation.cs            — SelfTest subsystem: self-validation test execution
+└── Program.cs                   — top-level entry point and application orchestration
 test/DemaConsulting.NuGet.CacheTool.Tests/
-├── ContextTests.cs          — unit tests for Context class
-├── IntegrationTests.cs      — end-to-end integration tests
-├── PathHelpersTests.cs      — unit tests for PathHelpers class
-└── ProgramTests.cs          — unit tests for Program class
+├── Cli/
+│   └── ContextTests.cs          — unit tests for Context class
+├── SelfTest/
+│   └── PathHelpersTests.cs      — unit tests for PathHelpers class
+├── IntegrationTests.cs          — end-to-end integration tests
+└── ProgramTests.cs              — unit tests for Program class
 ```
