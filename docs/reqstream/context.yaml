@@ -1,0 +1,70 @@
+---
+# NuGet Cache Tool Context Unit Requirements
+#
+# Requirements for the Context class: command-line argument parsing and output management.
+
+sections:
+  - title: NuGet Cache Tool Requirements
+    sections:
+      - title: Context
+        requirements:
+          - id: NuGetCache-Context-ArgumentParsing
+            title: The Context class shall parse command-line arguments for the tool.
+            justification: |
+              Provides a standardized approach to command-line argument parsing and output
+              handling across all DEMA Consulting DotNet Tools. The Context factory method
+              accepts the raw args array and produces a validated, immutable context object.
+            tests:
+              - Context_Create_NoArguments_ReturnsDefaultContext
+              - Context_Create_VersionFlag_SetsVersionTrue
+              - Context_Create_ShortVersionFlag_SetsVersionTrue
+              - Context_Create_HelpFlag_SetsHelpTrue
+              - Context_Create_ShortHelpFlag_H_SetsHelpTrue
+              - Context_Create_ShortHelpFlag_Question_SetsHelpTrue
+              - Context_Create_SilentFlag_SetsSilentTrue
+              - Context_Create_ValidateFlag_SetsValidateTrue
+              - Context_Create_ResultsFlag_SetsResultsFile
+              - Context_Create_LogFlag_OpensLogFile
+              - Context_Create_PackageArgument_AddsToPackagesList
+
+          - id: NuGetCache-Context-SilentOutput
+            title: The Context class shall suppress console output when --silent is specified.
+            justification: |
+              Enables automated scripts and CI/CD pipelines to run the tool without
+              cluttering output logs. Silent mode applies to both standard output and
+              error output written through the Context.
+            tests:
+              - Context_Create_SilentFlag_SetsSilentTrue
+              - Context_WriteLine_Silent_DoesNotWriteToConsole
+              - IntegrationTest_SilentFlag_SuppressesOutput
+
+          - id: NuGetCache-Context-LogFile
+            title: The Context class shall write output to a log file when --log is specified.
+            justification: |
+              Provides persistent logging for debugging and audit trails. The log file
+              captures all output (standard and error) regardless of silent mode.
+            tests:
+              - Context_Create_LogFlag_OpensLogFile
+              - IntegrationTest_LogFlag_WritesOutputToFile
+              - IntegrationTest_LogFlag_WithInvalidFilename_ReturnsError
+
+          - id: NuGetCache-Context-ErrorTracking
+            title: The Context class shall track errors and expose a non-zero exit code on failure.
+            justification: |
+              Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
+              programmatically via the process exit code, and error messages must be visible
+              on stderr unless silent mode is active.
+            tests:
+              - Context_WriteError_SetsErrorExitCode
+              - Context_WriteError_NotSilent_WritesToConsole
+
+          - id: NuGetCache-Context-InvalidArguments
+            title: The Context class shall reject unknown or malformed command-line arguments with a descriptive error.
+            justification: |
+              Providing clear feedback for invalid arguments helps users quickly correct
+              mistakes and prevents silent misconfiguration.
+            tests:
+              - Context_Create_UnknownArgument_ThrowsArgumentException
+              - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
+              - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
+              - IntegrationTest_UnknownArgument_ReturnsError

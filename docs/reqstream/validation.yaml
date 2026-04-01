@@ -1,0 +1,29 @@
+---
+# NuGet Cache Tool Validation Unit Requirements
+#
+# Requirements for the Validation class: self-validation test execution and results reporting.
+
+sections:
+  - title: NuGet Cache Tool Requirements
+    sections:
+      - title: Validation
+        requirements:
+          - id: NuGetCache-Validation-SelfValidation
+            title: The Validation class shall execute self-validation tests when --validate is specified.
+            justification: |
+              Provides a built-in mechanism to verify the tool is functioning correctly
+              in the deployment environment. Self-validation runs the core operations
+              end-to-end and reports pass/fail results.
+            tests:
+              - Program_Run_WithValidateFlag_RunsValidation
+              - IntegrationTest_ValidateFlag_RunsValidation
+
+          - id: NuGetCache-Validation-ResultsFile
+            title: The Validation class shall write validation results in TRX or JUnit format.
+            justification: |
+              Enables integration with CI/CD systems that expect standard test result formats,
+              allowing self-validation outcomes to feed into requirements traceability pipelines.
+              The --results flag specifies the output file; .trx uses TRX format, .xml uses JUnit.
+            tests:
+              - IntegrationTest_ValidateWithResults_GeneratesTrxFile
+              - IntegrationTest_ValidateWithResults_GeneratesJUnitFile

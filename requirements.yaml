@@ -30,8 +30,10 @@
 ---
 # Root requirements file - includes all subsystem, platform, and OTS requirements
 includes:
-  - docs/reqstream/cmd-requirements.yaml
-  - docs/reqstream/security-requirements.yaml
+  - docs/reqstream/context.yaml
+  - docs/reqstream/program.yaml
+  - docs/reqstream/validation.yaml
+  - docs/reqstream/path-helpers.yaml
   - docs/reqstream/platform-requirements.yaml
   - docs/reqstream/system.yaml
   - docs/reqstream/ots/mstest.yaml

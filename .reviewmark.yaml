@@ -52,7 +52,7 @@ reviews:
     title: Review of NuGet Cache Tool Context Unit
     paths:
       - "docs/design/context.md"
-      - "docs/reqstream/cmd-requirements.yaml"
+      - "docs/reqstream/context.yaml"
       - "src/**/Context.cs"
       - "test/**/ContextTests.cs"
 
@@ -60,6 +60,7 @@ reviews:
     title: Review of NuGet Cache Tool Program Unit
     paths:
       - "docs/design/program.md"
+      - "docs/reqstream/program.yaml"
       - "src/**/Program.cs"
       - "test/**/ProgramTests.cs"
       - "test/**/IntegrationTests.cs"
@@ -69,13 +70,14 @@ reviews:
     title: Review of NuGet Cache Tool Validation Unit
     paths:
       - "docs/design/validation.md"
+      - "docs/reqstream/validation.yaml"
       - "src/**/Validation.cs"
 
   - id: NuGetCacheTool-PathHelpers
     title: Review of NuGet Cache Tool PathHelpers Unit
     paths:
       - "docs/design/path-helpers.md"
-      - "docs/reqstream/security-requirements.yaml"
+      - "docs/reqstream/path-helpers.yaml"
       - "src/**/PathHelpers.cs"
       - "test/**/PathHelpersTests.cs"
 
