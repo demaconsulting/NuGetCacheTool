@@ -59,9 +59,9 @@ These tests use the same `Program.Run` path as normal usage, capturing output vi
 | `NuGetCache_HelpDisplay` | `--help` | Output contains `Usage:` and `Options:` |
 | `NuGetCache_CachePackage` | `DemaConsulting.NuGet.Caching:0.1.0` | A non-empty package path is returned |
 
-These tests are emitted as TRX test results (when `--results` is supplied) and
-serve as system-level evidence that all units work correctly together in the
-target environment.
+When `--results` is supplied, these tests are emitted as test results (TRX (`.trx`)
+or JUnit XML (`.xml`), depending on the `--results` file extension) and serve as
+system-level evidence that all units work correctly together in the target environment.
 
 ## Integration Patterns
 
