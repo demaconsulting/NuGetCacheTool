@@ -38,10 +38,12 @@ sections:
               - NuGetCache_CachePackage
 
           - id: NuGetCache-Program-Banner
-            title: The Program shall display a banner with version and copyright information on startup when not invoked with the version flag.
+            title: The Program shall display a banner with version and copyright information
+              when not invoked with the version flag.
             justification: |
               Users running the tool interactively benefit from seeing the tool version and
-              copyright notice at startup during normal runs, providing quick identification and attribution without affecting version-only output.
+              copyright notice at startup during normal runs, providing quick identification
+              and attribution without affecting version-only output.
             tests:
               - Program_Run_NoArguments_DisplaysDefaultBehavior
 
