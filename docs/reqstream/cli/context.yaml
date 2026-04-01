@@ -35,7 +35,9 @@ sections:
               error output written through the Context.
             tests:
               - Context_Create_SilentFlag_SetsSilentTrue
+              - Context_WriteLine_NotSilent_WritesToConsole
               - Context_WriteLine_Silent_DoesNotWriteToConsole
+              - Context_WriteError_Silent_DoesNotWriteToConsole
               - IntegrationTest_SilentFlag_SuppressesOutput
 
           - id: NuGetCache-Context-LogFile
@@ -45,6 +47,7 @@ sections:
               captures all output (standard and error) regardless of silent mode.
             tests:
               - Context_Create_LogFlag_OpensLogFile
+              - Context_WriteError_WritesToLogFile
               - IntegrationTest_LogFlag_WritesOutputToFile
               - IntegrationTest_LogFlag_WithInvalidFilename_ReturnsError
 
@@ -67,4 +70,5 @@ sections:
               - Context_Create_UnknownArgument_ThrowsArgumentException
               - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
               - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
+              - Program_Run_WithInvalidPackageFormat_ThrowsArgumentException
               - IntegrationTest_UnknownArgument_ReturnsError
