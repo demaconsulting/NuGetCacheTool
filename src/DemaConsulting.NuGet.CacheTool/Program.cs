@@ -19,6 +19,8 @@
 // SOFTWARE.
 
 using System.Reflection;
+using DemaConsulting.NuGet.CacheTool.Cli;
+using DemaConsulting.NuGet.CacheTool.SelfTest;
 using DemaConsulting.NuGet.Caching;
 
 namespace DemaConsulting.NuGet.CacheTool;

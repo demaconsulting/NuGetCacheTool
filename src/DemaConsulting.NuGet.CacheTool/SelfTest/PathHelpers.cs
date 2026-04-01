@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-namespace DemaConsulting.NuGet.CacheTool;
+namespace DemaConsulting.NuGet.CacheTool.SelfTest;
 
 /// <summary>
 ///     Helper utilities for safe path operations.

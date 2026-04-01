@@ -18,6 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using DemaConsulting.NuGet.CacheTool.SelfTest;
+
 namespace DemaConsulting.NuGet.CacheTool.Tests;
 
 /// <summary>
