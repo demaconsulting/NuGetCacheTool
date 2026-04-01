@@ -42,7 +42,7 @@ args
 
 ## Integration Patterns
 
-The tool integrates with the NuGet ecosystem via `DemaConsulting.NuGet.Cache` and
+The tool integrates with the NuGet ecosystem via `DemaConsulting.NuGet.Caching` and
 with CI/CD test infrastructure via `DemaConsulting.TestResults`. Self-validation
 tests use the tool's own binary to verify end-to-end behavior in the deployment
 environment.
