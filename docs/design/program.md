@@ -27,8 +27,9 @@ regardless of other flags.
 ## Exception Handling Strategy
 
 `Program.Main` wraps `Program.Run` in a try/catch for `ArgumentException` and
-`InvalidOperationException`. Caught exceptions are forwarded to `context.WriteError`,
-which sets the exit code to 1 and writes the message to stderr.
+`InvalidOperationException`. In these catch blocks, `Main` writes the exception
+message directly to `Console.Error` and returns an exit code of 1; `context` is
+not available in this scope, so `context.WriteError` is not used.
 
 ## RunToolLogic
 
