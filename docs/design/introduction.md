@@ -34,11 +34,4 @@ src/DemaConsulting.NuGet.CacheTool/
 │   ├── PathHelpers.cs           — SelfTest subsystem: safe path combination utilities
 │   └── Validation.cs            — SelfTest subsystem: self-validation test execution
 └── Program.cs                   — top-level entry point and application orchestration
-test/DemaConsulting.NuGet.CacheTool.Tests/
-├── Cli/
-│   └── ContextTests.cs          — unit tests for Context class
-├── SelfTest/
-│   └── PathHelpersTests.cs      — unit tests for PathHelpers class
-├── IntegrationTests.cs          — end-to-end integration tests
-└── ProgramTests.cs              — unit tests for Program class
 ```
