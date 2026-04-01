@@ -40,8 +40,8 @@ args
 - Two subsystems: `CLI` (argument parsing and output) and `SelfTest` (self-validation)
 - `Program` is the top-level unit (entry point and orchestration), not in a subsystem
 - Single assembly, with subsystem namespaces: `DemaConsulting.NuGet.CacheTool.Cli` and `DemaConsulting.NuGet.CacheTool.SelfTest`
-- Console output is managed exclusively through `Context.WriteLine` and `Context.WriteError`
-- Exit codes are set only through `Context.ExitCode` and `Context.WriteError`
+- Console output is normally managed through `Context.WriteLine` and `Context.WriteError`; `Program.Main` may write directly to `Console.Error` if `Context` creation fails or has not yet completed
+- Exit codes are normally controlled via `Context.ExitCode`; `Program.Main` may return a non-zero exit code directly when `Context` cannot be created
 
 ## Integration Patterns
 
