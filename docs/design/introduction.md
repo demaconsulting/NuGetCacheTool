@@ -16,20 +16,22 @@ It applies to the current release and all subsequent releases until superseded.
 
 ```text
 NuGetCacheTool (System)
-├── Context (Unit)
-├── Program (Unit)
-├── Validation (Unit)
-└── PathHelpers (Unit)
+├── CLI (Subsystem)
+│   └── Context (Unit)
+├── SelfTest (Subsystem)
+│   ├── Validation (Unit)
+│   └── PathHelpers (Unit)
+└── Program (Unit)
 ```
 
 ## Folder Layout
 
 ```text
 src/DemaConsulting.NuGet.CacheTool/
-├── Context.cs               — command-line argument parsing and output management
-├── PathHelpers.cs           — safe path combination utilities (prevents path traversal)
-├── Program.cs               — main entry point and application orchestration
-└── Validation.cs            — self-validation test execution
+├── Context.cs               — CLI subsystem: argument parsing and output management
+├── PathHelpers.cs           — SelfTest subsystem: safe path combination utilities
+├── Program.cs               — top-level entry point and application orchestration
+└── Validation.cs            — SelfTest subsystem: self-validation test execution
 test/DemaConsulting.NuGet.CacheTool.Tests/
 ├── ContextTests.cs          — unit tests for Context class
 ├── IntegrationTests.cs      — end-to-end integration tests

@@ -47,14 +47,29 @@ reviews:
       - "requirements.yaml"
       - "docs/reqstream/**/*.yaml"
 
-  # Software unit reviews - one per class
-  - id: NuGetCacheTool-Context
-    title: Review of NuGet Cache Tool Context Unit
+  # Software subsystem and unit reviews
+  - id: NuGetCacheTool-Cli
+    title: Review of NuGet Cache Tool CLI Subsystem
     paths:
-      - "docs/design/context.md"
-      - "docs/reqstream/context.yaml"
+      - "docs/design/cli/cli.md"
+      - "docs/reqstream/cli/cli.yaml"
+      - "docs/design/cli/context.md"
+      - "docs/reqstream/cli/context.yaml"
       - "src/**/Context.cs"
       - "test/**/ContextTests.cs"
+
+  - id: NuGetCacheTool-SelfTest
+    title: Review of NuGet Cache Tool SelfTest Subsystem
+    paths:
+      - "docs/design/self-test/self-test.md"
+      - "docs/reqstream/self-test/self-test.yaml"
+      - "docs/design/self-test/validation.md"
+      - "docs/reqstream/self-test/validation.yaml"
+      - "src/**/Validation.cs"
+      - "docs/design/self-test/path-helpers.md"
+      - "docs/reqstream/self-test/path-helpers.yaml"
+      - "src/**/PathHelpers.cs"
+      - "test/**/PathHelpersTests.cs"
 
   - id: NuGetCacheTool-Program
     title: Review of NuGet Cache Tool Program Unit
@@ -65,21 +80,6 @@ reviews:
       - "test/**/ProgramTests.cs"
       - "test/**/IntegrationTests.cs"
       - "test/**/AssemblyInfo.cs"
-
-  - id: NuGetCacheTool-Validation
-    title: Review of NuGet Cache Tool Validation Unit
-    paths:
-      - "docs/design/validation.md"
-      - "docs/reqstream/validation.yaml"
-      - "src/**/Validation.cs"
-
-  - id: NuGetCacheTool-PathHelpers
-    title: Review of NuGet Cache Tool PathHelpers Unit
-    paths:
-      - "docs/design/path-helpers.md"
-      - "docs/reqstream/path-helpers.yaml"
-      - "src/**/PathHelpers.cs"
-      - "test/**/PathHelpersTests.cs"
 
   # OTS dependency review
   - id: NuGetCacheTool-OTS
