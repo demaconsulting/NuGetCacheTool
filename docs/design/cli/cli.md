@@ -3,16 +3,16 @@
 ## Purpose
 
 The CLI subsystem provides command-line interface functionality for the NuGet Cache Tool.
-It handles argument parsing, output management, and the main entry point, translating
-raw command-line arguments into structured requests for execution by the core subsystems.
+It handles argument parsing and output management, translating raw command-line arguments
+into structured options and commands that are executed by the top-level `Program` unit.
 
 ## Responsibilities
 
 - Parse and validate all command-line arguments
 - Manage output channels (console, log file, silent mode)
 - Track error state and determine the process exit code
-- Orchestrate the top-level execution flow: version display, help display, package caching,
-  and self-validation dispatch
+- Provide structured command/context information for top-level operations such as version
+  display, help display, package caching, and self-validation
 
 ## Units
 
