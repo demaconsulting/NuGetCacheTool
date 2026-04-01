@@ -2,17 +2,19 @@
 
 ## Architecture
 
-The NuGet Cache Tool is a flat-structured .NET global tool with four top-level units
-and no subsystems. All units reside in a single assembly and collaborate directly.
+The NuGet Cache Tool is a .NET global tool organized into two subsystems and one
+top-level unit, all residing in a single assembly.
 
 ### Major Components
 
-| Unit | Responsibility |
-| ---- | -------------- |
-| Context | Command-line argument parsing and output management |
-| Program | Main entry point and application orchestration |
-| Validation | Self-validation test execution |
-| PathHelpers | Safe path combination utilities |
+| Subsystem / Unit | Responsibility |
+| ---------------- | -------------- |
+| **CLI** (subsystem) | Argument parsing and output management |
+| └─ Context | Command-line argument parsing and output management |
+| **SelfTest** (subsystem) | Self-validation test execution and utilities |
+| └─ Validation | Self-validation test execution |
+| └─ PathHelpers | Safe path combination utilities |
+| **Program** (top-level unit) | Main entry point and application orchestration |
 
 ## External Interfaces
 
@@ -35,8 +37,9 @@ args
 
 ## Design Constraints
 
-- No subsystems: all units are top-level within the system
-- Flat assembly structure: single project, single namespace
+- Two subsystems: `CLI` (argument parsing and output) and `SelfTest` (self-validation)
+- `Program` is the top-level unit (entry point and orchestration), not in a subsystem
+- Single assembly, with subsystem namespaces: `DemaConsulting.NuGet.CacheTool.Cli` and `DemaConsulting.NuGet.CacheTool.SelfTest`
 - Console output is managed exclusively through `Context.WriteLine` and `Context.WriteError`
 - Exit codes are set only through `Context.ExitCode` and `Context.WriteError`
 
