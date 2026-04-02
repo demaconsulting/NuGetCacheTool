@@ -10,8 +10,12 @@ sections:
             justification: |
               System integration validation confirms that all software units (Context, Program,
               Validation, PathHelpers) work together correctly in the target deployment environment.
-              Self-validation tests execute the full application stack and verify observable outputs.
+              Integration tests launch the full application via dotnet and verify observable outputs.
+              Self-validation tests exercise the full application stack within the deployed binary.
             tests:
+              - IntegrationTest_VersionFlag_OutputsVersion
+              - IntegrationTest_HelpFlag_OutputsUsageInformation
+              - IntegrationTest_CachePackage_OutputsPath
               - NuGetCache_VersionDisplay
               - NuGetCache_HelpDisplay
               - NuGetCache_CachePackage

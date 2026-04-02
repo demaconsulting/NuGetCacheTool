@@ -37,11 +37,22 @@ sections:
               - IntegrationTest_CachePackage_OutputsPath
               - NuGetCache_CachePackage
 
+          - id: NuGetCache-Program-Banner
+            title: The Program shall display a banner with version and copyright information
+              when not invoked with the version flag.
+            justification: |
+              Users running the tool interactively benefit from seeing the tool version and
+              copyright notice at startup during normal runs, providing quick identification
+              and attribution without affecting version-only output.
+            tests:
+              - Program_Run_NoArguments_DisplaysDefaultBehavior
+
           - id: NuGetCache-Program-ErrorOutput
             title: The Program shall report errors and return a non-zero exit code on failure.
             justification: |
               Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
               programmatically via the process exit code.
             tests:
+              - Program_Run_WithValidateAndUnsupportedResultsFormat_SetsErrorExitCode
               - IntegrationTest_UnknownArgument_ReturnsError
               - IntegrationTest_CacheNonexistentPackage_ReturnsError
