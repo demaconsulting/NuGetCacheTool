@@ -9,18 +9,25 @@ attacks when user-controlled path components are combined with a trusted base pa
 
 `SafePathCombine(basePath, relativePath)` applies the following steps:
 
-1. **Reject null inputs**: throws `ArgumentNullException` via `ArgumentNullException.ThrowIfNull` if either argument is `null`
-2. **Combine paths**: calls `Path.Combine(basePath, relativePath)` to produce the candidate path (preserving the caller's relative/absolute style)
-3. **Resolve to absolute form**: calls `Path.GetFullPath` on both `basePath` and the combined path
-4. **GetRelativePath containment check**: calls `Path.GetRelativePath(absoluteBase, absoluteCombined)` and rejects the input if the result is exactly `".."`, starts with `".."` followed by `Path.DirectorySeparatorChar` or `Path.AltDirectorySeparatorChar`, or is itself rooted (absolute), which would indicate the combined path escapes the base directory
+1. **Reject null inputs**: throws `ArgumentNullException` via
+   `ArgumentNullException.ThrowIfNull` if either argument is `null`
+2. **Combine paths**: calls `Path.Combine(basePath, relativePath)` to produce the
+   candidate path (preserving the caller's relative/absolute style)
+3. **Resolve to absolute form**: calls `Path.GetFullPath` on both `basePath` and the
+   combined path
+4. **GetRelativePath containment check**: calls
+   `Path.GetRelativePath(absoluteBase, absoluteCombined)` and rejects the input if the
+   result is exactly `".."`, starts with `".."` followed by `Path.DirectorySeparatorChar`
+   or `Path.AltDirectorySeparatorChar`, or is itself rooted (absolute), which would
+   indicate the combined path escapes the base directory
 
 ## Security Properties
 
 | Property | Guarantee |
 | -------- | --------- |
 | No parent traversal | Post-combine `GetRelativePath` check detects any traversal that escapes the base directory |
-| No absolute override | Rooted `checkRelative` result is detected and rejected |
-| Canonicalisation check | `GetFullPath` normalizes paths; `GetRelativePath` confirms path stays within `basePath` |
+| No absolute override | Escape detected via `GetRelativePath` `..` prefix (same-root) or rooted result (cross-root) |
+| Canonicalisation check | `GetFullPath` normalizes paths; `GetRelativePath` checks `..`, `..`+sep, or rooted |
 | Valid names with `..` prefix | Names like `..data` stay within the base and are correctly accepted |
 
 ## Design Decisions
