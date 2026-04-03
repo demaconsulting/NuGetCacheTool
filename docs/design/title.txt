@@ -1,0 +1,13 @@
+---
+title: NuGet Cache Tool Software Design Document
+subtitle: A .NET Global Tool for NuGet Package Caching
+author: DEMA Consulting
+description: Detailed design document for the NuGet Cache Tool
+lang: en-US
+keywords:
+  - NuGet Cache Tool
+  - .NET
+  - Command-Line Tool
+  - Design
+  - Software Design Document
+---
