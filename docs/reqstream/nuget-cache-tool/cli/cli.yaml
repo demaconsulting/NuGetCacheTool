@@ -50,7 +50,6 @@ sections:
             tests:
               - Context_Create_PackageArgument_AddsToPackagesList
               - IntegrationTest_CachePackage_OutputsPath
-              - NuGetCache_CachePackage
 
           - id: NuGetCache-Cli-ErrorOutput
             title: The CLI shall report errors and return a non-zero exit code on failure.
