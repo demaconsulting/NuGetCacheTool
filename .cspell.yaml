@@ -17,8 +17,12 @@ words:
   - Blockquotes
   - buildmark
   - buildtransitive
+  - Canonicalisation
+  - centralised
   - contentfiles
   - dcterms
+  - defence
+  - defences
   - DEMA
   - Dema
   - doctitle
@@ -26,13 +30,18 @@ words:
   - errorlevel
   - MSTEST
   - nameof
+  - Newtonsoft
+  - notapackage
+  - nugetcache
   - pagetitle
   - Pandoc
   - Qube
+  - recognising
   - reqstream
   - reviewmark
   - SARIF
   - sarifmark
+  - serialised
   - setlocal
   - snupkg
   - sonarmark
