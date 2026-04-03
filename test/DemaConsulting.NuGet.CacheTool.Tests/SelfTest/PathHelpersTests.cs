@@ -151,4 +151,21 @@ public class PathHelpersTests
         // Assert
         Assert.AreEqual(Path.Combine(basePath, relativePath), result);
     }
+
+    /// <summary>
+    ///     Test that SafePathCombine correctly handles filenames that start with double dots but stay within the base directory.
+    /// </summary>
+    [TestMethod]
+    public void PathHelpers_SafePathCombine_DoubleDotPrefix_CombinesCorrectly()
+    {
+        // Arrange
+        var basePath = "/home/user/project";
+        var relativePath = "..data/file.txt";
+
+        // Act
+        var result = PathHelpers.SafePathCombine(basePath, relativePath);
+
+        // Assert
+        Assert.AreEqual(Path.Combine(basePath, relativePath), result);
+    }
 }
