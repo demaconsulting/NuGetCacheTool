@@ -30,14 +30,14 @@
 ---
 # Root requirements file - includes all subsystem, platform, and OTS requirements
 includes:
-  - docs/reqstream/cli/cli.yaml
-  - docs/reqstream/cli/context.yaml
-  - docs/reqstream/self-test/self-test.yaml
-  - docs/reqstream/self-test/validation.yaml
-  - docs/reqstream/self-test/path-helpers.yaml
-  - docs/reqstream/program.yaml
-  - docs/reqstream/platform-requirements.yaml
-  - docs/reqstream/system.yaml
+  - docs/reqstream/nuget-cache-tool/cli/cli.yaml
+  - docs/reqstream/nuget-cache-tool/cli/context.yaml
+  - docs/reqstream/nuget-cache-tool/self-test/self-test.yaml
+  - docs/reqstream/nuget-cache-tool/self-test/validation.yaml
+  - docs/reqstream/nuget-cache-tool/self-test/path-helpers.yaml
+  - docs/reqstream/nuget-cache-tool/program.yaml
+  - docs/reqstream/nuget-cache-tool/platform-requirements.yaml
+  - docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml
   - docs/reqstream/ots/mstest.yaml
   - docs/reqstream/ots/reqstream.yaml
   - docs/reqstream/ots/buildmark.yaml
