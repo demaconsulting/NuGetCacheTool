@@ -40,8 +40,10 @@ attacks when user-controlled path components are combined with a trusted base pa
 - **Post-combine canonical-path check**: Resolving paths after combining handles all traversal
   patterns — `../`, embedded `/../`, absolute-path overrides, and platform edge cases —
   without fragile pre-combine string inspection of `relativePath`.
-- **ArgumentException on invalid input**: Callers receive a specific `ArgumentException`
-  identifying `relativePath` as the problematic parameter, making debugging straightforward.
+- **Specific exception for containment-check failure**: When the post-combine
+  `GetRelativePath` containment check determines the combined path escapes the base
+  directory, `SafePathCombine` throws a specific `ArgumentException` identifying
+  `relativePath` as the problematic parameter, making debugging straightforward.
 - **No logging or error accumulation**: `SafePathCombine` is a pure utility method that throws
   on invalid input; it does not interact with the `Context` or any output mechanism.
 
