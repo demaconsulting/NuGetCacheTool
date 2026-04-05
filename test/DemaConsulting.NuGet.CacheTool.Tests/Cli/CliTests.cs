@@ -205,8 +205,10 @@ public class CliTests
     [TestMethod]
     public void Cli_UnknownArgument_ThrowsArgumentException()
     {
-        // Act & Assert
+        // Act: verify that an unknown argument throws
         var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--unknown-flag"]));
+
+        // Assert: the exception message mentions the unsupported argument
         Assert.Contains("Unsupported argument", exception.Message);
     }
 
@@ -216,7 +218,7 @@ public class CliTests
     [TestMethod]
     public void Cli_LogFlagWithoutValue_ThrowsArgumentException()
     {
-        // Act & Assert
+        // Act & Assert: verify that --log without a value throws
         Assert.Throws<ArgumentException>(() => Context.Create(["--log"]));
     }
 
@@ -226,7 +228,7 @@ public class CliTests
     [TestMethod]
     public void Cli_ResultsFlagWithoutValue_ThrowsArgumentException()
     {
-        // Act & Assert
+        // Act & Assert: verify that --results without a value throws
         Assert.Throws<ArgumentException>(() => Context.Create(["--results"]));
     }
 }

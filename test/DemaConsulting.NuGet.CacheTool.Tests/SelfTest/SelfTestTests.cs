@@ -174,7 +174,7 @@ public class SelfTestTests
         // Arrange: prepare a base path and a traversal attempt
         var basePath = Path.GetTempPath();
 
-        // Act & Assert: verify that path traversal is rejected with an exception
+        // Act: verify that path traversal is rejected with an exception
         Assert.Throws<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, "../traversal/attempt"));
     }

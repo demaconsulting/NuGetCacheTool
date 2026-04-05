@@ -355,7 +355,7 @@ public class ContextTests
     [TestMethod]
     public void Context_Create_InvalidPackageFormat_ThrowsArgumentException()
     {
-        // Act & Assert: verify that a package argument without a colon throws
+        // Act: verify that a package argument without a colon throws
         Assert.Throws<ArgumentException>(() => Context.Create(["notapackage"]));
     }
 

@@ -96,6 +96,7 @@ reviews:
       - "docs/reqstream/nuget-cache-tool/self-test/validation.yaml"
       - "docs/design/nuget-cache-tool/self-test/validation.md"
       - "src/**/SelfTest/Validation.cs"
+      - "test/**/SelfTest/ValidationTests.cs"
 
   # PathHelpers unit review: proves the PathHelpers unit is correctly implemented
   - id: NuGetCacheTool-SelfTest-PathHelpers
