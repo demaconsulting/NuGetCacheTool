@@ -70,7 +70,7 @@ reviews:
     paths:
       - "docs/reqstream/nuget-cache-tool/cli/cli.yaml"
       - "docs/design/nuget-cache-tool/cli/cli.md"
-      - "test/**/Cli/ContextTests.cs"
+      - "test/**/Cli/CliTests.cs"
 
   # Context unit review: proves the Context unit is correctly implemented
   - id: NuGetCacheTool-Cli-Context
@@ -87,6 +87,7 @@ reviews:
     paths:
       - "docs/reqstream/nuget-cache-tool/self-test/self-test.yaml"
       - "docs/design/nuget-cache-tool/self-test/self-test.md"
+      - "test/**/SelfTest/SelfTestTests.cs"
 
   # Validation unit review: proves the Validation unit is correctly implemented
   - id: NuGetCacheTool-SelfTest-Validation

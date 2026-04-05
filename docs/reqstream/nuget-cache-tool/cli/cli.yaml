@@ -16,8 +16,8 @@ sections:
             children:
               - NuGetCache-Context-ArgumentParsing
             tests:
-              - Context_Create_VersionFlag_SetsVersionTrue
-              - Context_Create_ShortVersionFlag_SetsVersionTrue
+              - Cli_VersionFlag_SetsVersionOnContext
+              - Cli_ShortVersionFlag_SetsVersionOnContext
 
           - id: NuGetCache-Cli-HelpFlag
             title: The CLI shall support -?, -h, and --help flags to display usage information.
@@ -27,9 +27,8 @@ sections:
             children:
               - NuGetCache-Context-ArgumentParsing
             tests:
-              - Context_Create_HelpFlag_SetsHelpTrue
-              - Context_Create_ShortHelpFlag_H_SetsHelpTrue
-              - Context_Create_ShortHelpFlag_Question_SetsHelpTrue
+              - Cli_HelpFlag_SetsHelpOnContext
+              - Cli_ShortHelpFlag_SetsHelpOnContext
 
           - id: NuGetCache-Cli-SilentFlag
             title: The CLI shall support --silent flag to suppress console output.
@@ -39,8 +38,7 @@ sections:
             children:
               - NuGetCache-Context-SilentOutput
             tests:
-              - Context_Create_SilentFlag_SetsSilentTrue
-              - Context_WriteLine_Silent_DoesNotWriteToConsole
+              - Cli_SilentFlag_SuppressesAllOutput
 
           - id: NuGetCache-Cli-CachePackages
             title: The CLI shall accept [package-name]:[version] arguments to cache NuGet packages.
@@ -50,7 +48,7 @@ sections:
             children:
               - NuGetCache-Context-ArgumentParsing
             tests:
-              - Context_Create_PackageArgument_AddsToPackagesList
+              - Cli_PackageArgument_AddedToPackagesList
 
           - id: NuGetCache-Cli-ErrorOutput
             title: The CLI shall report errors and return a non-zero exit code on failure.
@@ -60,8 +58,8 @@ sections:
             children:
               - NuGetCache-Context-ErrorTracking
             tests:
-              - Context_WriteError_SetsErrorExitCode
-              - Context_WriteError_NotSilent_WritesToConsole
+              - Cli_ErrorOutput_SetsNonZeroExitCode
+              - Cli_ErrorOutput_WritesMessageToConsole
 
           - id: NuGetCache-Cli-InvalidArguments
             title: The CLI shall reject unknown or malformed command-line arguments with a descriptive error.
@@ -71,6 +69,6 @@ sections:
             children:
               - NuGetCache-Context-InvalidArguments
             tests:
-              - Context_Create_UnknownArgument_ThrowsArgumentException
-              - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
-              - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
+              - Cli_UnknownArgument_ThrowsArgumentException
+              - Cli_LogFlagWithoutValue_ThrowsArgumentException
+              - Cli_ResultsFlagWithoutValue_ThrowsArgumentException

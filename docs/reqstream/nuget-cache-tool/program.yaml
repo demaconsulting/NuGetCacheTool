@@ -30,8 +30,6 @@ sections:
             justification: |
               The core purpose of the tool is to ensure NuGet packages are cached in the
               global packages folder for use by downstream build steps.
-            children:
-              - NuGetCache-Cli-CachePackages
             tests:
               - Program_Run_WithInvalidPackageFormat_ThrowsArgumentException
 
