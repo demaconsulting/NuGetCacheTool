@@ -29,6 +29,11 @@ namespace DemaConsulting.NuGet.CacheTool.Tests;
 public class ProgramTests
 {
     /// <summary>
+    ///     Known package used for caching tests: a stable, small package available on NuGet.
+    /// </summary>
+    private const string TestPackageArg = "DemaConsulting.NuGet.Caching:0.1.0";
+
+    /// <summary>
     ///     Test that Run with version flag displays version only.
     /// </summary>
     [TestMethod]
@@ -153,7 +158,7 @@ public class ProgramTests
         {
             using var outWriter = new StringWriter();
             Console.SetOut(outWriter);
-            using var context = Context.Create(["DemaConsulting.NuGet.Caching:0.1.0"]);
+            using var context = Context.Create([TestPackageArg]);
 
             // Act
             Program.Run(context);
