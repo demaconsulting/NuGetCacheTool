@@ -200,7 +200,7 @@ public class CliTests
     {
         // Act & Assert
         var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--unknown-flag"]));
-        Assert.IsFalse(string.IsNullOrWhiteSpace(exception.Message));
+        Assert.Contains("Unsupported argument", exception.Message);
     }
 
     /// <summary>
