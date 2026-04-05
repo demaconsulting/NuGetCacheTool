@@ -28,7 +28,8 @@ sections:
               - NuGetCache-Context-ArgumentParsing
             tests:
               - Cli_HelpFlag_SetsHelpOnContext
-              - Cli_ShortHelpFlag_SetsHelpOnContext
+              - Cli_ShortHelpFlagH_SetsHelpOnContext
+              - Cli_ShortHelpFlagQuestionMark_SetsHelpOnContext
 
           - id: NuGetCache-Cli-SilentFlag
             title: The CLI shall support --silent flag to suppress console output.

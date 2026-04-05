@@ -34,10 +34,10 @@ public class CliTests
     [TestMethod]
     public void Cli_VersionFlag_SetsVersionOnContext()
     {
-        // Act
+        // Act: create context with --version flag
         using var context = Context.Create(["--version"]);
 
-        // Assert
+        // Assert: verify version flag is set and other flags are unset
         Assert.IsTrue(context.Version);
         Assert.IsFalse(context.Help);
         Assert.IsFalse(context.Silent);
@@ -50,10 +50,10 @@ public class CliTests
     [TestMethod]
     public void Cli_ShortVersionFlag_SetsVersionOnContext()
     {
-        // Act
+        // Act: create context with -v flag
         using var context = Context.Create(["-v"]);
 
-        // Assert
+        // Assert: verify version flag is set on context
         Assert.IsTrue(context.Version);
         Assert.AreEqual(0, context.ExitCode);
     }
@@ -64,34 +64,41 @@ public class CliTests
     [TestMethod]
     public void Cli_HelpFlag_SetsHelpOnContext()
     {
-        // Act
+        // Act: create context with --help flag
         using var context = Context.Create(["--help"]);
 
-        // Assert
+        // Assert: verify help flag is set and other flags are unset
         Assert.IsTrue(context.Help);
         Assert.IsFalse(context.Version);
         Assert.AreEqual(0, context.ExitCode);
     }
 
     /// <summary>
-    ///     Test that the CLI accepts the short -h and -? flags and configures the context for help display.
+    ///     Test that the CLI accepts the short -h flag and configures the context for help display.
     /// </summary>
     [TestMethod]
-    public void Cli_ShortHelpFlag_SetsHelpOnContext()
+    public void Cli_ShortHelpFlagH_SetsHelpOnContext()
     {
-        // Act - test -h form
-        using var contextH = Context.Create(["-h"]);
+        // Act: create context with -h flag
+        using var context = Context.Create(["-h"]);
 
-        // Assert
-        Assert.IsTrue(contextH.Help);
-        Assert.AreEqual(0, contextH.ExitCode);
+        // Assert: verify help flag is set on context
+        Assert.IsTrue(context.Help);
+        Assert.AreEqual(0, context.ExitCode);
+    }
 
-        // Act - test -? form
-        using var contextQ = Context.Create(["-?"]);
+    /// <summary>
+    ///     Test that the CLI accepts the short -? flag and configures the context for help display.
+    /// </summary>
+    [TestMethod]
+    public void Cli_ShortHelpFlagQuestionMark_SetsHelpOnContext()
+    {
+        // Act: create context with -? flag
+        using var context = Context.Create(["-?"]);
 
-        // Assert
-        Assert.IsTrue(contextQ.Help);
-        Assert.AreEqual(0, contextQ.ExitCode);
+        // Assert: verify help flag is set on context
+        Assert.IsTrue(context.Help);
+        Assert.AreEqual(0, context.ExitCode);
     }
 
     /// <summary>
@@ -100,7 +107,7 @@ public class CliTests
     [TestMethod]
     public void Cli_SilentFlag_SuppressesAllOutput()
     {
-        // Arrange
+        // Arrange: redirect stdout and stderr to capture output
         var originalOut = Console.Out;
         var originalError = Console.Error;
         try
@@ -111,11 +118,11 @@ public class CliTests
             Console.SetError(errWriter);
             using var context = Context.Create(["--silent"]);
 
-            // Act - write to both output channels
+            // Act: write to both output channels
             context.WriteLine("Standard output message");
             context.WriteError("Error output message");
 
-            // Assert - both channels must be suppressed
+            // Assert: verify both channels are suppressed
             Assert.DoesNotContain("Standard output message", outWriter.ToString());
             Assert.DoesNotContain("Error output message", errWriter.ToString());
         }
@@ -132,10 +139,10 @@ public class CliTests
     [TestMethod]
     public void Cli_PackageArgument_AddedToPackagesList()
     {
-        // Act
+        // Act: create context with two package arguments
         using var context = Context.Create(["Package.One:1.0.0", "Package.Two:2.3.4"]);
 
-        // Assert
+        // Assert: verify both packages are added to the packages list
         Assert.HasCount(2, context.Packages);
         Assert.AreEqual("Package.One:1.0.0", context.Packages[0]);
         Assert.AreEqual("Package.Two:2.3.4", context.Packages[1]);
@@ -147,17 +154,17 @@ public class CliTests
     [TestMethod]
     public void Cli_ErrorOutput_SetsNonZeroExitCode()
     {
-        // Arrange
+        // Arrange: redirect stderr to suppress output during test
         var originalError = Console.Error;
         try
         {
             Console.SetError(new StringWriter());
             using var context = Context.Create([]);
 
-            // Act
+            // Act: trigger an error via WriteError
             context.WriteError("Something went wrong");
 
-            // Assert
+            // Assert: verify exit code is non-zero
             Assert.AreNotEqual(0, context.ExitCode);
         }
         finally
@@ -172,7 +179,7 @@ public class CliTests
     [TestMethod]
     public void Cli_ErrorOutput_WritesMessageToConsole()
     {
-        // Arrange
+        // Arrange: redirect stderr to capture error output
         var originalError = Console.Error;
         try
         {
@@ -180,10 +187,10 @@ public class CliTests
             Console.SetError(errWriter);
             using var context = Context.Create([]);
 
-            // Act
+            // Act: trigger an error via WriteError
             context.WriteError("Error details here");
 
-            // Assert
+            // Assert: verify error message appears in stderr
             Assert.Contains("Error details here", errWriter.ToString());
         }
         finally

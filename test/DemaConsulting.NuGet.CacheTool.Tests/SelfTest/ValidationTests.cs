@@ -35,16 +35,16 @@ public class ValidationTests
     [TestMethod]
     public void Validation_ResultsFile_WritesTrxFile()
     {
-        // Arrange
+        // Arrange: prepare a temporary TRX results file path
         var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".trx"));
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
 
-            // Act
+            // Act: run validation with TRX results output
             Validation.Run(context);
 
-            // Assert
+            // Assert: verify TRX results file is created with expected XML structure
             Assert.AreEqual(0, context.ExitCode);
             Assert.IsTrue(File.Exists(resultsFile), "TRX results file was not created");
 
@@ -67,16 +67,16 @@ public class ValidationTests
     [TestMethod]
     public void Validation_ResultsFile_WritesJUnitFile()
     {
-        // Arrange
+        // Arrange: prepare a temporary JUnit XML results file path
         var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".xml"));
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
 
-            // Act
+            // Act: run validation with JUnit XML results output
             Validation.Run(context);
 
-            // Assert
+            // Assert: verify JUnit results file is created with expected XML structure
             Assert.AreEqual(0, context.ExitCode);
             Assert.IsTrue(File.Exists(resultsFile), "JUnit results file was not created");
 
@@ -100,13 +100,13 @@ public class ValidationTests
     [TestMethod]
     public void Validation_ResultsFile_RejectsUnsupportedFormat()
     {
-        // Arrange
+        // Arrange: create context requesting an unsupported results format
         using var context = Context.Create(["--validate", "--silent", "--results", "output.json"]);
 
-        // Act
+        // Act: run validation with an unsupported results format
         Validation.Run(context);
 
-        // Assert - unsupported format should cause an error exit code
+        // Assert: verify unsupported format causes a non-zero exit code
         Assert.AreNotEqual(0, context.ExitCode);
     }
 }

@@ -35,7 +35,7 @@ public class SelfTestTests
     [TestMethod]
     public void SelfTest_Validation_ExecutesSelfValidationTests()
     {
-        // Arrange
+        // Arrange: redirect stdout to capture validation output
         var originalOut = Console.Out;
         try
         {
@@ -43,10 +43,10 @@ public class SelfTestTests
             Console.SetOut(outWriter);
             using var context = Context.Create(["--validate"]);
 
-            // Act
+            // Act: run self-validation
             Validation.Run(context);
 
-            // Assert
+            // Assert: verify validation summary appears in output
             var output = outWriter.ToString();
             Assert.Contains("Total Tests:", output);
             Assert.Contains("Passed:", output);
@@ -63,7 +63,7 @@ public class SelfTestTests
     [TestMethod]
     public void SelfTest_Validation_ReportsPassFail()
     {
-        // Arrange
+        // Arrange: redirect stdout to suppress validation output
         var originalOut = Console.Out;
         try
         {
@@ -71,10 +71,10 @@ public class SelfTestTests
             Console.SetOut(outWriter);
             using var context = Context.Create(["--validate"]);
 
-            // Act
+            // Act: run self-validation
             Validation.Run(context);
 
-            // Assert - all self-validation tests must pass
+            // Assert: all self-validation tests must pass with zero exit code
             Assert.AreEqual(0, context.ExitCode);
         }
         finally
@@ -89,16 +89,16 @@ public class SelfTestTests
     [TestMethod]
     public void SelfTest_ResultsFile_GeneratesTrxFile()
     {
-        // Arrange
+        // Arrange: prepare a temporary TRX results file path
         var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".trx"));
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
 
-            // Act
+            // Act: run self-validation with TRX results output
             Validation.Run(context);
 
-            // Assert
+            // Assert: verify TRX results file is created with expected content
             Assert.AreEqual(0, context.ExitCode);
             Assert.IsTrue(File.Exists(resultsFile), "TRX results file was not created");
 
@@ -121,16 +121,16 @@ public class SelfTestTests
     [TestMethod]
     public void SelfTest_ResultsFile_GeneratesJUnitFile()
     {
-        // Arrange
+        // Arrange: prepare a temporary JUnit XML results file path
         var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".xml"));
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
 
-            // Act
+            // Act: run self-validation with JUnit XML results output
             Validation.Run(context);
 
-            // Assert
+            // Assert: verify JUnit results file is created with expected content
             Assert.AreEqual(0, context.ExitCode);
             Assert.IsTrue(File.Exists(resultsFile), "JUnit results file was not created");
 
@@ -154,14 +154,14 @@ public class SelfTestTests
     [TestMethod]
     public void SelfTest_SafePathCombine_AcceptsValidPaths()
     {
-        // Arrange
+        // Arrange: prepare a base path and a valid relative path
         var basePath = Path.GetTempPath();
         var relativePath = "valid-subdir/file.txt";
 
-        // Act
+        // Act: combine the base path and relative path safely
         var result = PathHelpers.SafePathCombine(basePath, relativePath);
 
-        // Assert
+        // Assert: verify the combined path matches the expected result
         Assert.AreEqual(Path.Combine(basePath, relativePath), result);
     }
 
@@ -171,10 +171,10 @@ public class SelfTestTests
     [TestMethod]
     public void SelfTest_SafePathCombine_RejectsPathTraversal()
     {
-        // Arrange
+        // Arrange: prepare a base path and a traversal attempt
         var basePath = Path.GetTempPath();
 
-        // Act & Assert
+        // Act & Assert: verify that path traversal is rejected with an exception
         Assert.Throws<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, "../traversal/attempt"));
     }

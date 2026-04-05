@@ -32,7 +32,6 @@ sections:
               global packages folder for use by downstream build steps.
             tests:
               - Program_Run_WithPackageArgument_CachesPackage
-              - Program_Run_WithInvalidPackageFormat_ThrowsArgumentException
 
           - id: NuGetCache-Program-Banner
             title: The Program shall display a banner with version and copyright information

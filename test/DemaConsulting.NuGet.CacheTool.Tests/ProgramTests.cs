@@ -152,7 +152,7 @@ public class ProgramTests
     [TestMethod]
     public void Program_Run_WithPackageArgument_CachesPackage()
     {
-        // Arrange
+        // Arrange: redirect stdout to capture program output
         var originalOut = Console.Out;
         try
         {
@@ -160,10 +160,10 @@ public class ProgramTests
             Console.SetOut(outWriter);
             using var context = Context.Create([TestPackageArg]);
 
-            // Act
+            // Act: run program with a valid package argument
             Program.Run(context);
 
-            // Assert - program should output the cached package path containing the package ID and version
+            // Assert: verify output contains the cached package ID and version
             Assert.AreEqual(0, context.ExitCode);
             var output = outWriter.ToString();
             var normalizedOutput = output.ToLowerInvariant();
