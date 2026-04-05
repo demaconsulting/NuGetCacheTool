@@ -12,6 +12,15 @@ sections:
               Validation, PathHelpers) work together correctly in the target deployment environment.
               Integration tests launch the full application via dotnet and verify observable outputs.
               Self-validation tests exercise the full application stack within the deployed binary.
+            children:
+              - NuGetCache-Cli-VersionFlag
+              - NuGetCache-Cli-HelpFlag
+              - NuGetCache-Cli-CachePackages
+              - NuGetCache-Cli-ErrorOutput
+              - NuGetCache-SelfTest-Validation
+              - NuGetCache-Program-VersionDisplay
+              - NuGetCache-Program-HelpDisplay
+              - NuGetCache-Program-CachePackages
             tests:
               - IntegrationTest_VersionFlag_OutputsVersion
               - IntegrationTest_HelpFlag_OutputsUsageInformation
@@ -19,3 +28,15 @@ sections:
               - NuGetCache_VersionDisplay
               - NuGetCache_HelpDisplay
               - NuGetCache_CachePackage
+
+          - id: NuGetCache-Sys-ValidateResults
+            title: The NuGet Cache Tool shall write self-validation results in TRX or JUnit XML format.
+            justification: |
+              Enables integration with CI/CD systems that expect standard test result formats,
+              allowing self-validation outcomes to feed into requirements traceability pipelines.
+              The --results flag specifies the output file; .trx produces TRX format, .xml produces JUnit XML.
+            children:
+              - NuGetCache-SelfTest-ResultsFile
+            tests:
+              - IntegrationTest_ValidateWithResults_GeneratesTrxFile
+              - IntegrationTest_ValidateWithResults_GeneratesJUnitFile

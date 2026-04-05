@@ -38,7 +38,6 @@ sections:
               - Context_WriteLine_NotSilent_WritesToConsole
               - Context_WriteLine_Silent_DoesNotWriteToConsole
               - Context_WriteError_Silent_DoesNotWriteToConsole
-              - IntegrationTest_SilentFlag_SuppressesOutput
 
           - id: NuGetCache-Context-LogFile
             title: The Context class shall write output to a log file when --log is specified.
@@ -48,8 +47,6 @@ sections:
             tests:
               - Context_Create_LogFlag_OpensLogFile
               - Context_WriteError_WritesToLogFile
-              - IntegrationTest_LogFlag_WritesOutputToFile
-              - IntegrationTest_LogFlag_WithInvalidFilename_ReturnsError
 
           - id: NuGetCache-Context-ErrorTracking
             title: The Context class shall track errors and expose a non-zero exit code on failure.
@@ -70,5 +67,3 @@ sections:
               - Context_Create_UnknownArgument_ThrowsArgumentException
               - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
               - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
-              - Program_Run_WithInvalidPackageFormat_ThrowsArgumentException
-              - IntegrationTest_UnknownArgument_ReturnsError
