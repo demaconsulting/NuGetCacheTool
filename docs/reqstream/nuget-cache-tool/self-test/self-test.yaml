@@ -14,9 +14,11 @@ sections:
               Provides a built-in mechanism to verify the tool is functioning correctly
               in the deployment environment. Self-validation runs the core operations
               end-to-end and reports pass/fail results.
+            children:
+              - NuGetCache-Validation-SelfValidation
             tests:
-              - Program_Run_WithValidateFlag_RunsValidation
-              - IntegrationTest_ValidateFlag_RunsValidation
+              - SelfTest_Validation_ExecutesSelfValidationTests
+              - SelfTest_Validation_ReportsPassFail
 
           - id: NuGetCache-SelfTest-ResultsFile
             title: The SelfTest subsystem shall write validation results in TRX or JUnit format.
@@ -24,9 +26,11 @@ sections:
               Enables integration with CI/CD systems that expect standard test result formats,
               allowing self-validation outcomes to feed into requirements traceability pipelines.
               The --results flag specifies the output file; .trx uses TRX format, .xml uses JUnit.
+            children:
+              - NuGetCache-Validation-ResultsFile
             tests:
-              - IntegrationTest_ValidateWithResults_GeneratesTrxFile
-              - IntegrationTest_ValidateWithResults_GeneratesJUnitFile
+              - SelfTest_ResultsFile_GeneratesTrxFile
+              - SelfTest_ResultsFile_GeneratesJUnitFile
 
           - id: NuGetCache-SelfTest-SafePathCombine
             title: The SelfTest subsystem shall prevent path traversal attacks when combining file paths.
@@ -35,12 +39,8 @@ sections:
               an attacker to read or write files outside intended directories. The
               SafePathCombine method must reject absolute paths and parent-directory
               references (e.g. "..") in the relative component.
+            children:
+              - NuGetCache-PathHelpers-SafePathCombine
             tests:
-              - PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly
-              - PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException
-              - PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException
-              - PathHelpers_SafePathCombine_AbsolutePath_ThrowsArgumentException
-              - PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly
-              - PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly
-              - PathHelpers_SafePathCombine_EmptyRelativePath_ReturnsBasePath
-              - PathHelpers_SafePathCombine_DoubleDotPrefix_CombinesCorrectly
+              - SelfTest_SafePathCombine_AcceptsValidPaths
+              - SelfTest_SafePathCombine_RejectsPathTraversal

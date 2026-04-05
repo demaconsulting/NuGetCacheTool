@@ -350,6 +350,16 @@ public class ContextTests
     }
 
     /// <summary>
+    ///     Test creating a context with a package argument that is missing the colon separator throws ArgumentException.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_InvalidPackageFormat_ThrowsArgumentException()
+    {
+        // Act: verify that a package argument without a colon throws
+        Assert.Throws<ArgumentException>(() => Context.Create(["notapackage"]));
+    }
+
+    /// <summary>
     ///     Test WriteError does not write to console when silent.
     /// </summary>
     [TestMethod]

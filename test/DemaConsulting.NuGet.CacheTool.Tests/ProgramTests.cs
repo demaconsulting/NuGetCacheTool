@@ -29,6 +29,11 @@ namespace DemaConsulting.NuGet.CacheTool.Tests;
 public class ProgramTests
 {
     /// <summary>
+    ///     Known package used for caching tests: a stable, small package available on NuGet.
+    /// </summary>
+    private const string TestPackageArg = "DemaConsulting.NuGet.Caching:0.1.0";
+
+    /// <summary>
     ///     Test that Run with version flag displays version only.
     /// </summary>
     [TestMethod]
@@ -134,6 +139,36 @@ public class ProgramTests
             var output = outWriter.ToString();
             Assert.Contains("NuGet Cache Tool version", output);
             Assert.Contains("Copyright", output);
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
+
+    /// <summary>
+    ///     Test that Run with a valid package argument caches the package and outputs its path.
+    /// </summary>
+    [TestMethod]
+    public void Program_Run_WithPackageArgument_CachesPackage()
+    {
+        // Arrange: redirect stdout to capture program output
+        var originalOut = Console.Out;
+        try
+        {
+            using var outWriter = new StringWriter();
+            Console.SetOut(outWriter);
+            using var context = Context.Create([TestPackageArg]);
+
+            // Act: run program with a valid package argument
+            Program.Run(context);
+
+            // Assert: verify output contains the cached package ID and version
+            Assert.AreEqual(0, context.ExitCode);
+            var output = outWriter.ToString();
+            var normalizedOutput = output.ToLowerInvariant();
+            Assert.Contains("demaconsulting.nuget.caching", normalizedOutput);
+            Assert.Contains("0.1.0", normalizedOutput);
         }
         finally
         {

@@ -13,62 +13,63 @@ sections:
             justification: |
               Users need to quickly identify the version of the tool they are using for
               troubleshooting and compatibility verification.
+            children:
+              - NuGetCache-Context-ArgumentParsing
             tests:
-              - Context_Create_VersionFlag_SetsVersionTrue
-              - Context_Create_ShortVersionFlag_SetsVersionTrue
-              - Program_Run_WithVersionFlag_DisplaysVersionOnly
-              - Program_Version_ReturnsNonEmptyString
-              - IntegrationTest_VersionFlag_OutputsVersion
+              - Cli_VersionFlag_SetsVersionOnContext
+              - Cli_ShortVersionFlag_SetsVersionOnContext
 
           - id: NuGetCache-Cli-HelpFlag
             title: The CLI shall support -?, -h, and --help flags to display usage information.
             justification: |
               Users need access to command-line usage documentation without requiring
               external resources.
+            children:
+              - NuGetCache-Context-ArgumentParsing
             tests:
-              - Context_Create_HelpFlag_SetsHelpTrue
-              - Context_Create_ShortHelpFlag_H_SetsHelpTrue
-              - Context_Create_ShortHelpFlag_Question_SetsHelpTrue
-              - Program_Run_WithHelpFlag_DisplaysUsageInformation
-              - IntegrationTest_HelpFlag_OutputsUsageInformation
+              - Cli_HelpFlag_SetsHelpOnContext
+              - Cli_ShortHelpFlagH_SetsHelpOnContext
+              - Cli_ShortHelpFlagQuestionMark_SetsHelpOnContext
 
           - id: NuGetCache-Cli-SilentFlag
             title: The CLI shall support --silent flag to suppress console output.
             justification: |
               Enables automated scripts and CI/CD pipelines to run the tool without
               cluttering output logs.
+            children:
+              - NuGetCache-Context-SilentOutput
             tests:
-              - Context_Create_SilentFlag_SetsSilentTrue
-              - Context_WriteLine_Silent_DoesNotWriteToConsole
-              - IntegrationTest_SilentFlag_SuppressesOutput
+              - Cli_SilentFlag_SuppressesAllOutput
 
           - id: NuGetCache-Cli-CachePackages
             title: The CLI shall accept [package-name]:[version] arguments to cache NuGet packages.
             justification: |
               The core purpose of the tool is to ensure NuGet packages are cached in the
               global packages folder for use by downstream build steps.
+            children:
+              - NuGetCache-Context-ArgumentParsing
             tests:
-              - Context_Create_PackageArgument_AddsToPackagesList
-              - IntegrationTest_CachePackage_OutputsPath
+              - Cli_PackageArgument_AddedToPackagesList
 
           - id: NuGetCache-Cli-ErrorOutput
             title: The CLI shall report errors and return a non-zero exit code on failure.
             justification: |
               Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
               programmatically via the process exit code.
+            children:
+              - NuGetCache-Context-ErrorTracking
             tests:
-              - Context_WriteError_SetsErrorExitCode
-              - Context_WriteError_NotSilent_WritesToConsole
-              - IntegrationTest_UnknownArgument_ReturnsError
-              - IntegrationTest_CacheNonexistentPackage_ReturnsError
+              - Cli_ErrorOutput_SetsNonZeroExitCode
+              - Cli_ErrorOutput_WritesMessageToConsole
 
           - id: NuGetCache-Cli-InvalidArguments
             title: The CLI shall reject unknown or malformed command-line arguments with a descriptive error.
             justification: |
               Providing clear feedback for invalid arguments helps users quickly correct
               mistakes and prevents silent misconfiguration.
+            children:
+              - NuGetCache-Context-InvalidArguments
             tests:
-              - Context_Create_UnknownArgument_ThrowsArgumentException
-              - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
-              - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
-              - IntegrationTest_UnknownArgument_ReturnsError
+              - Cli_UnknownArgument_ThrowsArgumentException
+              - Cli_LogFlagWithoutValue_ThrowsArgumentException
+              - Cli_ResultsFlagWithoutValue_ThrowsArgumentException

@@ -10,6 +10,7 @@ needs-review:
   - "requirements.yaml"                  # Requirement (top-level)
   - "docs/reqstream/**/*.yaml"           # Requirements files
   - "docs/design/**/*.md"               # Design documentation
+  - "docs/user_guide/**/*.md"           # User guide
   - "**/*.cs"                            # All C# source and test files
   - "!**/obj/**"                         # Exclude build output
   - "!**/bin/**"                         # Exclude build output
@@ -23,80 +24,97 @@ evidence-source:
   location: https://raw.githubusercontent.com/demaconsulting/NuGetCacheTool/reviews/index.json
 
 # Review sets grouping files by logical unit of review.
-# Each review-set groups requirements, source, and tests for a coherent software unit
-# so that an AI-assisted review can verify consistency across the full evidence chain.
+# Organized following the hierarchical scope principle:
+#   - Higher-level reviews exclude lower-level implementation details
+#   - Only unit reviews include actual source code files
 reviews:
-  # System architecture review
+  # Purpose review: proves that advertised features match system design
+  - id: Purpose
+    title: Review that Advertised Features Match System Design
+    paths:
+      - "README.md"
+      - "docs/user_guide/**/*.md"
+      - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
+      - "docs/design/introduction.md"
+      - "docs/design/nuget-cache-tool/nuget-cache-tool.md"
+
+  # System architecture review: proves the system is designed and tested to satisfy its requirements
   - id: NuGetCacheTool-Architecture
-    title: Review of NuGet Cache Tool System Architecture
+    title: Review that NuGet Cache Tool Architecture Satisfies Requirements
     paths:
       - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
       - "docs/design/introduction.md"
       - "docs/design/nuget-cache-tool/nuget-cache-tool.md"
       - "test/**/IntegrationTests.cs"
 
-  # Design documentation review
+  # System design review: proves the system design is consistent and complete
   - id: NuGetCacheTool-Design
-    title: Review of NuGet Cache Tool Design Documentation
+    title: Review that NuGet Cache Tool Design is Consistent and Complete
     paths:
-      - "docs/design/**/*.md"
+      - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
+      - "docs/reqstream/nuget-cache-tool/platform-requirements.yaml"
+      - "docs/design/introduction.md"
+      - "docs/design/nuget-cache-tool/**/*.md"
 
-  # All requirements review
+  # All requirements review: proves requirements are consistent and complete
   - id: NuGetCacheTool-AllRequirements
-    title: Review of All NuGet Cache Tool Requirements
+    title: Review that All NuGet Cache Tool Requirements are Complete
     paths:
       - "requirements.yaml"
       - "docs/reqstream/nuget-cache-tool/**/*.yaml"
+      - "docs/reqstream/ots/**/*.yaml"
 
-  # CLI subsystem review
+  # CLI subsystem review: proves the CLI subsystem satisfies its requirements
   - id: NuGetCacheTool-Cli
-    title: Review of NuGet Cache Tool CLI Subsystem
+    title: Review that NuGet Cache Tool CLI Satisfies Subsystem Requirements
     paths:
       - "docs/reqstream/nuget-cache-tool/cli/cli.yaml"
       - "docs/design/nuget-cache-tool/cli/cli.md"
+      - "test/**/Cli/CliTests.cs"
 
-  # Context unit review
+  # Context unit review: proves the Context unit is correctly implemented
   - id: NuGetCacheTool-Cli-Context
-    title: Review of NuGet Cache Tool Context Unit
+    title: Review that NuGet Cache Tool CLI Context Implementation is Correct
     paths:
       - "docs/reqstream/nuget-cache-tool/cli/context.yaml"
       - "docs/design/nuget-cache-tool/cli/context.md"
       - "src/**/Cli/Context.cs"
       - "test/**/Cli/ContextTests.cs"
 
-  # SelfTest subsystem review
+  # SelfTest subsystem review: proves the SelfTest subsystem satisfies its requirements
   - id: NuGetCacheTool-SelfTest
-    title: Review of NuGet Cache Tool SelfTest Subsystem
+    title: Review that NuGet Cache Tool SelfTest Satisfies Subsystem Requirements
     paths:
       - "docs/reqstream/nuget-cache-tool/self-test/self-test.yaml"
       - "docs/design/nuget-cache-tool/self-test/self-test.md"
+      - "test/**/SelfTest/SelfTestTests.cs"
 
-  # Validation unit review
+  # Validation unit review: proves the Validation unit is correctly implemented
   - id: NuGetCacheTool-SelfTest-Validation
-    title: Review of NuGet Cache Tool Validation Unit
+    title: Review that NuGet Cache Tool SelfTest Validation Implementation is Correct
     paths:
       - "docs/reqstream/nuget-cache-tool/self-test/validation.yaml"
       - "docs/design/nuget-cache-tool/self-test/validation.md"
       - "src/**/SelfTest/Validation.cs"
+      - "test/**/SelfTest/ValidationTests.cs"
 
-  # PathHelpers unit review
+  # PathHelpers unit review: proves the PathHelpers unit is correctly implemented
   - id: NuGetCacheTool-SelfTest-PathHelpers
-    title: Review of NuGet Cache Tool PathHelpers Unit
+    title: Review that NuGet Cache Tool SelfTest PathHelpers Implementation is Correct
     paths:
       - "docs/reqstream/nuget-cache-tool/self-test/path-helpers.yaml"
       - "docs/design/nuget-cache-tool/self-test/path-helpers.md"
       - "src/**/SelfTest/PathHelpers.cs"
       - "test/**/SelfTest/PathHelpersTests.cs"
 
-  # Program unit review
+  # Program unit review: proves the Program unit is correctly implemented
   - id: NuGetCacheTool-Program
-    title: Review of NuGet Cache Tool Program Unit
+    title: Review that NuGet Cache Tool Program Implementation is Correct
     paths:
       - "docs/reqstream/nuget-cache-tool/program.yaml"
       - "docs/design/nuget-cache-tool/program.md"
       - "src/**/Program.cs"
       - "test/**/ProgramTests.cs"
-      - "test/**/IntegrationTests.cs"
       - "test/**/AssemblyInfo.cs"
 
   # OTS dependency review

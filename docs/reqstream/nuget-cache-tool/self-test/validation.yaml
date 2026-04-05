@@ -14,16 +14,23 @@ sections:
               Provides a built-in mechanism to verify the tool is functioning correctly
               in the deployment environment. Self-validation runs the core operations
               end-to-end and reports pass/fail results.
+              The NuGetCache_* tests are defined within Validation.cs and are produced by
+              the Validation class itself when run. They constitute the dedicated test suite
+              for the Validation unit, exercising version display, help display, and package
+              caching through the tool's own execution path.
             tests:
-              - Program_Run_WithValidateFlag_RunsValidation
-              - IntegrationTest_ValidateFlag_RunsValidation
+              - NuGetCache_VersionDisplay
+              - NuGetCache_HelpDisplay
+              - NuGetCache_CachePackage
 
           - id: NuGetCache-Validation-ResultsFile
-            title: The Validation class shall write validation results in TRX or JUnit format.
+            title: The Validation class shall write validation results to a file in TRX or JUnit format.
             justification: |
               Enables integration with CI/CD systems that expect standard test result formats,
               allowing self-validation outcomes to feed into requirements traceability pipelines.
-              The --results flag specifies the output file; .trx uses TRX format, .xml uses JUnit.
+              The --results flag specifies the output file; .trx produces TRX format, .xml produces
+              JUnit XML. An unsupported extension results in an error.
             tests:
-              - IntegrationTest_ValidateWithResults_GeneratesTrxFile
-              - IntegrationTest_ValidateWithResults_GeneratesJUnitFile
+              - Validation_ResultsFile_WritesTrxFile
+              - Validation_ResultsFile_WritesJUnitFile
+              - Validation_ResultsFile_RejectsUnsupportedFormat
