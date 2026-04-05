@@ -35,8 +35,6 @@ sections:
               Enables integration with CI/CD systems that expect standard test result formats,
               allowing self-validation outcomes to feed into requirements traceability pipelines.
               The --results flag specifies the output file; .trx produces TRX format, .xml produces JUnit XML.
-            children:
-              - NuGetCache-SelfTest-ResultsFile
             tests:
               - IntegrationTest_ValidateWithResults_GeneratesTrxFile
               - IntegrationTest_ValidateWithResults_GeneratesJUnitFile

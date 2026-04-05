@@ -14,19 +14,8 @@ sections:
               Provides a built-in mechanism to verify the tool is functioning correctly
               in the deployment environment. Self-validation runs the core operations
               end-to-end and reports pass/fail results.
-            children:
-              - NuGetCache-Validation-SelfValidation
-            tests:
-              - NuGetCache_VersionDisplay
-              - NuGetCache_HelpDisplay
-              - NuGetCache_CachePackage
-
-          - id: NuGetCache-SelfTest-ResultsFile
-            title: The SelfTest subsystem shall write validation results in TRX or JUnit format.
-            justification: |
-              Enables integration with CI/CD systems that expect standard test result formats,
-              allowing self-validation outcomes to feed into requirements traceability pipelines.
-              The --results flag specifies the output file; .trx uses TRX format, .xml uses JUnit.
+              The NuGetCache_* tests are produced and run by the Validation class itself;
+              they constitute the SelfTest subsystem's dedicated self-test suite.
             children:
               - NuGetCache-Validation-SelfValidation
             tests:
