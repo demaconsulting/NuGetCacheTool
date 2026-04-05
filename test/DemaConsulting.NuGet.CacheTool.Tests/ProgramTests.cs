@@ -142,6 +142,34 @@ public class ProgramTests
     }
 
     /// <summary>
+    ///     Test that Run with a valid package argument caches the package and outputs its path.
+    /// </summary>
+    [TestMethod]
+    public void Program_Run_WithPackageArgument_CachesPackage()
+    {
+        // Arrange
+        var originalOut = Console.Out;
+        try
+        {
+            using var outWriter = new StringWriter();
+            Console.SetOut(outWriter);
+            using var context = Context.Create(["DemaConsulting.NuGet.Caching:0.1.0"]);
+
+            // Act
+            Program.Run(context);
+
+            // Assert - program should output the cached package path
+            Assert.AreEqual(0, context.ExitCode);
+            var output = outWriter.ToString();
+            Assert.IsFalse(string.IsNullOrWhiteSpace(output));
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
+
+    /// <summary>
     ///     Test that creating a context with an argument without a colon throws ArgumentException.
     /// </summary>
     [TestMethod]

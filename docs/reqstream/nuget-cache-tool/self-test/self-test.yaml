@@ -27,7 +27,7 @@ sections:
               allowing self-validation outcomes to feed into requirements traceability pipelines.
               The --results flag specifies the output file; .trx uses TRX format, .xml uses JUnit.
             children:
-              - NuGetCache-Validation-SelfValidation
+              - NuGetCache-Validation-ResultsFile
             tests:
               - SelfTest_ResultsFile_GeneratesTrxFile
               - SelfTest_ResultsFile_GeneratesJUnitFile

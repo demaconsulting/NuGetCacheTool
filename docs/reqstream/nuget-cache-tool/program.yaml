@@ -31,6 +31,7 @@ sections:
               The core purpose of the tool is to ensure NuGet packages are cached in the
               global packages folder for use by downstream build steps.
             tests:
+              - Program_Run_WithPackageArgument_CachesPackage
               - Program_Run_WithInvalidPackageFormat_ThrowsArgumentException
 
           - id: NuGetCache-Program-Banner

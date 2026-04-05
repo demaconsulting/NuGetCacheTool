@@ -22,3 +22,15 @@ sections:
               - NuGetCache_VersionDisplay
               - NuGetCache_HelpDisplay
               - NuGetCache_CachePackage
+
+          - id: NuGetCache-Validation-ResultsFile
+            title: The Validation class shall write validation results to a file in TRX or JUnit format.
+            justification: |
+              Enables integration with CI/CD systems that expect standard test result formats,
+              allowing self-validation outcomes to feed into requirements traceability pipelines.
+              The --results flag specifies the output file; .trx produces TRX format, .xml produces
+              JUnit XML. An unsupported extension results in an error.
+            tests:
+              - Validation_ResultsFile_WritesTrxFile
+              - Validation_ResultsFile_WritesJUnitFile
+              - Validation_ResultsFile_RejectsUnsupportedFormat
