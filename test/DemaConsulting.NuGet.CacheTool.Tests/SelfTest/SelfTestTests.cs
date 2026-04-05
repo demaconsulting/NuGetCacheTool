@@ -90,7 +90,7 @@ public class SelfTestTests
     public void SelfTest_ResultsFile_GeneratesTrxFile()
     {
         // Arrange
-        var resultsFile = Path.ChangeExtension(Path.GetTempFileName(), ".trx");
+        var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".trx"));
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
@@ -122,7 +122,7 @@ public class SelfTestTests
     public void SelfTest_ResultsFile_GeneratesJUnitFile()
     {
         // Arrange
-        var resultsFile = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
+        var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".xml"));
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);

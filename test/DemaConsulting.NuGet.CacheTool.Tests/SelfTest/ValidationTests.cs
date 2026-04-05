@@ -36,7 +36,7 @@ public class ValidationTests
     public void Validation_ResultsFile_WritesTrxFile()
     {
         // Arrange
-        var resultsFile = Path.ChangeExtension(Path.GetTempFileName(), ".trx");
+        var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".trx"));
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
@@ -68,7 +68,7 @@ public class ValidationTests
     public void Validation_ResultsFile_WritesJUnitFile()
     {
         // Arrange
-        var resultsFile = Path.ChangeExtension(Path.GetTempFileName(), ".xml");
+        var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".xml"));
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);

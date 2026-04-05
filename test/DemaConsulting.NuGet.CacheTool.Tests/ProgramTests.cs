@@ -158,10 +158,12 @@ public class ProgramTests
             // Act
             Program.Run(context);
 
-            // Assert - program should output the cached package path
+            // Assert - program should output the cached package path containing the package ID and version
             Assert.AreEqual(0, context.ExitCode);
             var output = outWriter.ToString();
-            Assert.IsFalse(string.IsNullOrWhiteSpace(output));
+            var normalizedOutput = output.ToLowerInvariant();
+            Assert.Contains("demaconsulting.nuget.caching", normalizedOutput);
+            Assert.Contains("0.1.0", normalizedOutput);
         }
         finally
         {
