@@ -45,6 +45,8 @@ reviews:
       - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
       - "docs/design/introduction.md"
       - "docs/design/nuget-cache-tool/nuget-cache-tool.md"
+      - "test/**/AssemblyInfo.cs"
+      - "test/**/Runner.cs"
       - "test/**/IntegrationTests.cs"
 
   # System design review: proves the system design is consistent and complete
@@ -115,7 +117,6 @@ reviews:
       - "docs/design/nuget-cache-tool/program.md"
       - "src/**/Program.cs"
       - "test/**/ProgramTests.cs"
-      - "test/**/AssemblyInfo.cs"
 
   # OTS dependency review
   - id: NuGetCacheTool-OTS
