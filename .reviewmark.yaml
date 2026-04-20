@@ -6,14 +6,14 @@
 # Patterns identifying all files that require review.
 # Processed in order; prefix a pattern with '!' to exclude.
 needs-review:
-  - "README.md"                          # Root README
-  - "requirements.yaml"                  # Requirement (top-level)
-  - "docs/reqstream/**/*.yaml"           # Requirements files
-  - "docs/design/**/*.md"               # Design documentation
-  - "docs/user_guide/**/*.md"           # User guide
-  - "**/*.cs"                            # All C# source and test files
-  - "!**/obj/**"                         # Exclude build output
-  - "!**/bin/**"                         # Exclude build output
+  - "README.md"                  # Project readme
+  - "**/*.cs"                    # All C# source and test files
+  - "requirements.yaml"          # Root requirements file
+  - "docs/reqstream/**/*.yaml"   # Requirements files
+  - "docs/user_guide/**/*.md"    # User guide documents
+  - "docs/design/**/*.md"        # Design documents
+  - "!**/obj/**"                 # Exclude build output
+  - "!**/bin/**"                 # Exclude build output
 
 # Evidence source: review data and index.json are located in the 'reviews' branch
 # of this repository, accessed through the GitHub public HTTPS raw content access.
@@ -23,14 +23,11 @@ evidence-source:
   type: url
   location: https://raw.githubusercontent.com/demaconsulting/NuGetCacheTool/reviews/index.json
 
-# Review sets grouping files by logical unit of review.
-# Organized following the hierarchical scope principle:
-#   - Higher-level reviews exclude lower-level implementation details
-#   - Only unit reviews include actual source code files
+# Review sets following standardized patterns for hierarchical compliance coverage
 reviews:
-  # Purpose review: proves that advertised features match system design
+  # Purpose Review (only one per repository)
   - id: Purpose
-    title: Review that Advertised Features Match System Design
+    title: Review of user-facing capabilities and system promises
     paths:
       - "README.md"
       - "docs/user_guide/**/*.md"
@@ -38,9 +35,9 @@ reviews:
       - "docs/design/introduction.md"
       - "docs/design/nuget-cache-tool/nuget-cache-tool.md"
 
-  # System architecture review: proves the system is designed and tested to satisfy its requirements
+  # TemplateTool-Architecture Review (one per system)
   - id: NuGetCacheTool-Architecture
-    title: Review that NuGet Cache Tool Architecture Satisfies Requirements
+    title: Review of NuGet Cache Tool system architecture and operational validation
     paths:
       - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
       - "docs/design/introduction.md"

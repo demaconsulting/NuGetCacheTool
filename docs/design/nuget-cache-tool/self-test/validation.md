@@ -37,8 +37,8 @@ test isolation and clean-up even when tests fail.
 After all tests complete, `Validation.Run` writes the results file if
 `context.ResultsFile` is non-null:
 
-- `.trx` extension → serialised using `TrxSerializer`
-- `.xml` extension → serialised using `JUnitSerializer`
+- `.trx` extension → serialized using `TrxSerializer`
+- `.xml` extension → serialized using `JUnitSerializer`
 - any other extension → treated as an error (unsupported results file extension)
 
 ## Interactions

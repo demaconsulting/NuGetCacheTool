@@ -14,42 +14,26 @@ language: en
 
 # Project-specific technical terms and tool names
 words:
-  - Blockquotes
   - buildmark
-  - buildtransitive
-  - Canonicalisation
-  - centralised
-  - contentfiles
-  - dcterms
-  - defence
-  - defences
   - DEMA
   - Dema
   - demaconsulting
-  - doctitle
-  - docversion
-  - errorlevel
-  - MSTEST
-  - nameof
+  - fileassert
+  - mstest
   - Newtonsoft
   - notapackage
   - nugetcache
-  - pagetitle
   - Pandoc
-  - Qube
-  - recognising
   - reqstream
   - reviewmark
   - SARIF
+  - Sarif
   - sarifmark
-  - serialised
-  - setlocal
-  - snupkg
   - sonarmark
-  - templatetool
-  - venv
   - versionmark
+  - Weasy
   - Weasyprint
+  - yamlfix
 
 # Exclude common build artifacts, dependencies, and vendored third-party code
 ignorePaths:
