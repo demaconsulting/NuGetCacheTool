@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The `Context` class provides command-line argument parsing and centralised output
+The `Context` class provides command-line argument parsing and centralized output
 management for the NuGet Cache Tool. It acts as the primary data carrier between
 the entry point and all operational units.
 
@@ -23,7 +23,7 @@ the entry point and all operational units.
 ## ArgumentParser Inner Class
 
 `ArgumentParser` is a private inner class that implements the argument parsing
-state machine. It processes `string[] args` sequentially, recognising flags and
+state machine. It processes `string[] args` sequentially, recognizing flags and
 package arguments:
 
 - `-v`, `--version` → sets `Version = true`

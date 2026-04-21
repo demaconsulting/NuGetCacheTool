@@ -27,7 +27,7 @@ attacks when user-controlled path components are combined with a trusted base pa
 | -------- | --------- |
 | No parent traversal | Post-combine `GetRelativePath` check detects any traversal that escapes the base directory |
 | No absolute override | Escape detected via `GetRelativePath` `..` prefix (same-root) or rooted result (cross-root) |
-| Canonicalisation check | `GetFullPath` normalizes paths; `GetRelativePath` checks `..`, `..`+sep, or rooted |
+| Canonicalization check | `GetFullPath` normalizes paths; `GetRelativePath` checks `..`, `..`+sep, or rooted |
 | Valid names with `..` prefix | Names like `..data` stay within the base and are correctly accepted |
 
 ## Design Decisions
