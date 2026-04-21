@@ -3,6 +3,7 @@
 # PURPOSE:
 #   Unified cross-platform build script (replaces build.bat and build.sh).
 #   Builds the solution in Release configuration and runs all unit tests.
+#   Self-validation is exercised by the unit test suite and is not run as a separate step.
 #
 # EXTENSION POINTS:
 #   Search for "[PROJECT-SPECIFIC]" comments to find the designated locations

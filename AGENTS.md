@@ -11,9 +11,9 @@
 │   ├── requirements_report/
 │   └── reqstream/
 ├── src/
-│   └── DemaConsulting.NuGetCacheTool/
+│   └── DemaConsulting.NuGet.CacheTool/
 └── test/
-    └── DemaConsulting.NuGetCacheTool.Tests/
+    └── DemaConsulting.NuGet.CacheTool.Tests/
 ```
 
 # Codebase Navigation (ALL Agents)
@@ -36,6 +36,7 @@ before searching the filesystem.
 - **`package.json`** - Node.js dependencies for formatting tools
 - **`requirements.yaml`** - Root requirements file with includes
 - **`pip-requirements.txt`** - Python dependencies for yamllint and yamlfix
+- **`lint.ps1`** - Lint and merge-gate script used by CI.
 - **`fix.ps1`** - Applies all auto-fixers silently (dotnet format, markdown, YAML). Always exits 0.
 - **`build.ps1`** - Builds the solution and runs all tests.
 

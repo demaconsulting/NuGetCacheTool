@@ -210,6 +210,8 @@ dotnet build --configuration Release
 dotnet test --configuration Release
 ```
 
+Self-validation is covered by the automated test suite, so no separate `--validate` run is required before PRs.
+
 All tests must pass with zero warnings.
 
 ### 2. Linting
