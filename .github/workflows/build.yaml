@@ -578,7 +578,7 @@ jobs:
         run: >
           dotnet sonarmark
           --server https://sonarcloud.io
-          --project-key demaconsulting_TemplateDotNetTool
+          --project-key demaconsulting_NuGetCacheTool
           --branch ${{ github.ref_name }}
           --token "$SONAR_TOKEN"
           --report docs/code_quality/sonar-quality.md
