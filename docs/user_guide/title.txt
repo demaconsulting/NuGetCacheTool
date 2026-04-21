@@ -2,7 +2,7 @@
 title: NuGet Cache Tool User Guide
 subtitle: A .NET NuGet Cache Management Tool
 author: DEMA Consulting
-description: A .NET NuGet Cache Management Tool
+description: User guide for the NuGet Cache Tool
 lang: en-US
 keywords:
   - NuGet Cache Tool
