@@ -11,9 +11,9 @@ sections:
           - id: NuGetCache-Context-ArgumentParsing
             title: The Context class shall parse command-line arguments for the tool.
             justification: |
-              Provides a standardized approach to command-line argument parsing and output
-              handling across all DEMA Consulting DotNet Tools. The Context factory method
-              accepts the raw args array and produces a validated, immutable context object.
+              Callers need a single, consistent mechanism to translate raw command-line
+              arguments into typed settings so that the rest of the application can act on
+              user intent without re-parsing the argument list.
             tests:
               - Context_Create_NoArguments_ReturnsDefaultContext
               - Context_Create_VersionFlag_SetsVersionTrue
@@ -67,4 +67,4 @@ sections:
               - Context_Create_UnknownArgument_ThrowsArgumentException
               - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
               - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
-              - Context_Create_InvalidPackageFormat_ThrowsArgumentException
+              - Context_Create_WithoutColonInPackage_ThrowsArgumentException

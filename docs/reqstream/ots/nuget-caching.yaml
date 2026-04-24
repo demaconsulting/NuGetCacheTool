@@ -1,0 +1,21 @@
+---
+# DemaConsulting.NuGet.Caching OTS Software Requirements
+#
+# Requirements for the DemaConsulting.NuGet.Caching runtime library functionality.
+
+sections:
+  - title: OTS Software Requirements
+    sections:
+      - title: NuGet Caching Requirements
+        requirements:
+          - id: NuGetCache-OTS-NuGetCaching
+            title: DemaConsulting.NuGet.Caching shall cache NuGet packages to the global packages folder.
+            justification: |
+              DemaConsulting.NuGet.Caching provides the core NuGet package caching logic via
+              NuGetCache.EnsureCachedAsync. The integration tests invoke the tool end-to-end
+              with real package IDs, confirming that the library correctly locates or downloads
+              packages to the global packages folder and returns a valid package path.
+            tags: [ots]
+            tests:
+              - NuGetCacheTool_CachePackage_OutputsPath
+              - NuGetCacheTool_CacheNonexistentPackage_ReturnsError

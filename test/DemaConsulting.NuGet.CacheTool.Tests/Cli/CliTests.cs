@@ -206,10 +206,68 @@ public class CliTests
     public void Cli_UnknownArgument_ThrowsArgumentException()
     {
         // Act: verify that an unknown argument throws
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--unknown-flag"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--unknown-flag"]));
 
         // Assert: the exception message mentions the unsupported argument
         Assert.Contains("Unsupported argument", exception.Message);
+    }
+
+    /// <summary>
+    ///     Test that the CLI --log flag writes output to the specified log file.
+    /// </summary>
+    [TestMethod]
+    public void Cli_LogFlag_WritesToLogFile()
+    {
+        // Arrange: create a temporary log file path
+        var logFile = Path.GetTempFileName();
+        try
+        {
+            // Act: create context with --log flag and write a message
+            using (var context = Context.Create(["--log", logFile]))
+            {
+                context.WriteLine("Log test message");
+            }
+
+            // Assert: verify the log file was written with the expected message
+            Assert.IsTrue(File.Exists(logFile));
+            var content = File.ReadAllText(logFile);
+            Assert.Contains("Log test message", content);
+        }
+        finally
+        {
+            if (File.Exists(logFile))
+            {
+                File.Delete(logFile);
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Test that the CLI --validate flag configures the context to trigger self-validation.
+    /// </summary>
+    [TestMethod]
+    public void Cli_ValidateFlag_SetsValidateOnContext()
+    {
+        // Act: create context with --validate flag
+        using var context = Context.Create(["--validate"]);
+
+        // Assert: verify validate flag is set and exit code is zero
+        Assert.IsTrue(context.Validate);
+        Assert.AreEqual(0, context.ExitCode);
+    }
+
+    /// <summary>
+    ///     Test that the CLI --results flag sets the results file path on the context.
+    /// </summary>
+    [TestMethod]
+    public void Cli_ResultsFlag_SetsResultsFileOnContext()
+    {
+        // Act: create context with --results flag
+        using var context = Context.Create(["--results", "results.trx"]);
+
+        // Assert: verify results file path is set and exit code is zero
+        Assert.AreEqual("results.trx", context.ResultsFile);
+        Assert.AreEqual(0, context.ExitCode);
     }
 
     /// <summary>
@@ -219,7 +277,7 @@ public class CliTests
     public void Cli_LogFlagWithoutValue_ThrowsArgumentException()
     {
         // Act & Assert: verify that --log without a value throws
-        Assert.Throws<ArgumentException>(() => Context.Create(["--log"]));
+        Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--log"]));
     }
 
     /// <summary>
@@ -229,6 +287,46 @@ public class CliTests
     public void Cli_ResultsFlagWithoutValue_ThrowsArgumentException()
     {
         // Act & Assert: verify that --results without a value throws
-        Assert.Throws<ArgumentException>(() => Context.Create(["--results"]));
+        Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--results"]));
+    }
+
+    /// <summary>
+    ///     Test that the CLI --log flag writes output to the log file even when --silent is active.
+    /// </summary>
+    [TestMethod]
+    public void Cli_SilentAndLog_WritesToLogFileOnly()
+    {
+        // Arrange: redirect stdout and stderr to verify they are suppressed
+        var logFile = Path.GetTempFileName();
+        var originalOut = Console.Out;
+        var originalError = Console.Error;
+        try
+        {
+            using var outWriter = new StringWriter();
+            using var errWriter = new StringWriter();
+            Console.SetOut(outWriter);
+            Console.SetError(errWriter);
+
+            // Act: create context with both --silent and --log flags and write a message
+            using (var context = Context.Create(["--silent", "--log", logFile]))
+            {
+                context.WriteLine("Silent log test message");
+            }
+
+            // Assert: verify stdout is suppressed but log file received the message
+            Assert.DoesNotContain("Silent log test message", outWriter.ToString());
+            Assert.IsTrue(File.Exists(logFile));
+            var content = File.ReadAllText(logFile);
+            Assert.Contains("Silent log test message", content);
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+            Console.SetError(originalError);
+            if (File.Exists(logFile))
+            {
+                File.Delete(logFile);
+            }
+        }
     }
 }

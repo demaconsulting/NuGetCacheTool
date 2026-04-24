@@ -54,6 +54,7 @@ public class ProgramTests
             var output = outWriter.ToString();
             Assert.DoesNotContain("Copyright", output);
             Assert.DoesNotContain("NuGet Cache Tool version", output);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(output), "Version flag should output a non-empty version string");
         }
         finally
         {
@@ -177,16 +178,6 @@ public class ProgramTests
     }
 
     /// <summary>
-    ///     Test that creating a context with an argument without a colon throws ArgumentException.
-    /// </summary>
-    [TestMethod]
-    public void Program_Run_WithInvalidPackageFormat_ThrowsArgumentException()
-    {
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() => Context.Create(["notapackage"]));
-    }
-
-    /// <summary>
     ///     Test that version property returns non-empty version string.
     /// </summary>
     [TestMethod]
@@ -207,21 +198,26 @@ public class ProgramTests
     {
         // Arrange
         var originalOut = Console.Out;
+        var originalError = Console.Error;
         try
         {
             using var outWriter = new StringWriter();
+            using var errWriter = new StringWriter();
             Console.SetOut(outWriter);
-            using var context = Context.Create(["--validate", "--silent", "--results", "output.json"]);
+            Console.SetError(errWriter);
+            using var context = Context.Create(["--validate", "--results", "output.json"]);
 
             // Act
             Program.Run(context);
 
-            // Assert - unsupported format should cause an error
+            // Assert - unsupported format should cause an error with a message
             Assert.AreEqual(1, context.ExitCode);
+            Assert.Contains("Error", errWriter.ToString());
         }
         finally
         {
             Console.SetOut(originalOut);
+            Console.SetError(originalError);
         }
     }
 }

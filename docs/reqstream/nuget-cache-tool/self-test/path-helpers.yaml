@@ -12,18 +12,26 @@ sections:
             title: The PathHelpers class shall prevent path traversal attacks when combining file paths.
             justification: |
               Accepting user-controlled path components without validation could allow
-              an attacker to read or write files outside intended directories. The
-              SafePathCombine method combines the paths first and then uses
-              Path.GetFullPath and Path.GetRelativePath to detect whether the resolved
-              combined path escapes the base directory, rejecting absolute-path overrides
-              and parent-directory traversal (e.g. "..") while correctly accepting valid
-              filenames that start with ".." (e.g. "..data").
+              an attacker to read or write files outside intended directories. The combined
+              path must reject absolute-path overrides and parent-directory traversal
+              (e.g. "..") while correctly accepting valid relative paths including filenames
+              that begin with ".." (e.g. "..data").
             tests:
               - PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly
               - PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException
               - PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException
-              - PathHelpers_SafePathCombine_AbsolutePath_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_UnixAbsolutePath_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException
               - PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly
               - PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly
               - PathHelpers_SafePathCombine_EmptyRelativePath_ReturnsBasePath
               - PathHelpers_SafePathCombine_DoubleDotPrefix_CombinesCorrectly
+
+          - id: NuGetCache-PathHelpers-NullArguments
+            title: The PathHelpers.SafePathCombine method shall reject null arguments with an ArgumentNullException.
+            justification: |
+              Defensive null checking prevents NullReferenceException propagation and provides
+              clear diagnostic messages to callers who pass uninitialized path values.
+            tests:
+              - PathHelpers_SafePathCombine_NullBase_ThrowsArgumentNullException
+              - PathHelpers_SafePathCombine_NullRelative_ThrowsArgumentNullException

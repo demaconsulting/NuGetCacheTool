@@ -50,4 +50,3 @@ attacks when user-controlled path components are combined with a trusted base pa
 ## Interactions
 
 - **Called by `Validation`**: constructs log file paths inside temporary directories
-- **Indirectly tested**: `PathHelpersTests` covers all valid and invalid input cases

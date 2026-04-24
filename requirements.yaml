@@ -19,3 +19,6 @@ includes:
   - docs/reqstream/ots/pandoc.yaml
   - docs/reqstream/ots/weasyprint.yaml
   - docs/reqstream/ots/fileassert.yaml
+  - docs/reqstream/ots/nuget-caching.yaml
+  - docs/reqstream/ots/test-results.yaml
+  - docs/reqstream/ots/sonarscanner.yaml

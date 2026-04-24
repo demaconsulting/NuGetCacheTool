@@ -30,6 +30,8 @@ words:
   - Sarif
   - sarifmark
   - sonarmark
+  - sonarqube
+  - sonarscanner
   - versionmark
   - Weasy
   - Weasyprint

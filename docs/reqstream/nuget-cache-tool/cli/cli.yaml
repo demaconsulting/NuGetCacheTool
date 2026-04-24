@@ -62,6 +62,36 @@ sections:
               - Cli_ErrorOutput_SetsNonZeroExitCode
               - Cli_ErrorOutput_WritesMessageToConsole
 
+          - id: NuGetCache-Cli-LogFlag
+            title: The CLI shall support --log flag to write output to a log file.
+            justification: |
+              Provides persistent output capture for debugging and audit trails when running
+              in automated environments where console output is unavailable after execution.
+            children:
+              - NuGetCache-Context-LogFile
+            tests:
+              - Cli_LogFlag_WritesToLogFile
+
+          - id: NuGetCache-Cli-ValidateFlag
+            title: The CLI shall support --validate flag to trigger self-validation.
+            justification: |
+              Provides a mechanism to verify the tool is functioning correctly in the
+              deployment environment without requiring external test infrastructure.
+            children:
+              - NuGetCache-Context-ArgumentParsing
+            tests:
+              - Cli_ValidateFlag_SetsValidateOnContext
+
+          - id: NuGetCache-Cli-ResultsFlag
+            title: The CLI shall support --results flag to specify a file path for writing validation results.
+            justification: |
+              Enables CI/CD systems to consume validation outcomes as standard test result
+              files, supporting requirements traceability pipelines.
+            children:
+              - NuGetCache-Context-ArgumentParsing
+            tests:
+              - Cli_ResultsFlag_SetsResultsFileOnContext
+
           - id: NuGetCache-Cli-InvalidArguments
             title: The CLI shall reject unknown or malformed command-line arguments with a descriptive error.
             justification: |
@@ -73,3 +103,15 @@ sections:
               - Cli_UnknownArgument_ThrowsArgumentException
               - Cli_LogFlagWithoutValue_ThrowsArgumentException
               - Cli_ResultsFlagWithoutValue_ThrowsArgumentException
+
+          - id: NuGetCache-Cli-SilentLogInteraction
+            title: The CLI shall write output to the log file even when --silent is active.
+            justification: |
+              When --silent suppresses console output, the log file remains the only persistent
+              record of tool execution. Preserving log file writes in silent mode ensures
+              output is always captured for audit and debugging purposes.
+            children:
+              - NuGetCache-Context-LogFile
+              - NuGetCache-Context-SilentOutput
+            tests:
+              - Cli_SilentAndLog_WritesToLogFileOnly

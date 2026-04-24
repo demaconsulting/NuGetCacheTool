@@ -33,7 +33,7 @@ public class ValidationTests
     ///     Test that Validation writes results in TRX format when --results specifies a .trx file.
     /// </summary>
     [TestMethod]
-    public void Validation_ResultsFile_WritesTrxFile()
+    public void Validation_Run_TrxResultsRequested_WritesTrxFile()
     {
         // Arrange: prepare a temporary TRX results file path
         var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".trx"));
@@ -65,7 +65,7 @@ public class ValidationTests
     ///     Test that Validation writes results in JUnit XML format when --results specifies a .xml file.
     /// </summary>
     [TestMethod]
-    public void Validation_ResultsFile_WritesJUnitFile()
+    public void Validation_Run_JUnitResultsRequested_WritesJUnitFile()
     {
         // Arrange: prepare a temporary JUnit XML results file path
         var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".xml"));
@@ -98,7 +98,7 @@ public class ValidationTests
     ///     Test that Validation reports an error for an unsupported results file extension.
     /// </summary>
     [TestMethod]
-    public void Validation_ResultsFile_RejectsUnsupportedFormat()
+    public void Validation_Run_UnsupportedResultsFormat_ReportsError()
     {
         // Arrange: create context requesting an unsupported results format
         using var context = Context.Create(["--validate", "--silent", "--results", "output.json"]);

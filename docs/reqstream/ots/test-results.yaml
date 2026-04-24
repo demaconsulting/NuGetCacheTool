@@ -1,0 +1,22 @@
+---
+# DemaConsulting.TestResults OTS Software Requirements
+#
+# Requirements for the DemaConsulting.TestResults runtime library functionality.
+
+sections:
+  - title: OTS Software Requirements
+    sections:
+      - title: TestResults Requirements
+        requirements:
+          - id: NuGetCache-OTS-TestResults
+            title: DemaConsulting.TestResults shall serialize self-validation results to TRX and JUnit XML formats.
+            justification: |
+              DemaConsulting.TestResults provides TrxSerializer and JUnitSerializer used by
+              Validation.Run to write self-validation outcomes as standard test result files.
+              The integration tests invoke the tool with --validate --results and assert that
+              well-formed TRX and JUnit XML files are produced, confirming the library is
+              functioning correctly in the deployment environment.
+            tags: [ots]
+            tests:
+              - NuGetCacheTool_ValidateWithResults_GeneratesTrxFile
+              - NuGetCacheTool_ValidateWithResults_GeneratesJUnitFile

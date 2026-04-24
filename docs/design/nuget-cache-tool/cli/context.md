@@ -54,3 +54,13 @@ sets `_hasErrors = true`, which causes `ExitCode` to return `1`.
 - **Consumed by `Program`**: `Program.Main` creates the context and passes it to `Program.Run`
 - **Consumed by `Validation`**: `Validation.Run` uses `Context` for output and results path
 - **Consumed by `PathHelpers`**: indirectly via `Validation.Run` calling `SafePathCombine`
+
+## Resource Management
+
+`Context` implements `IDisposable`. The `Dispose()` method flushes and closes the
+`StreamWriter` opened for the `--log` file (if any). Callers must use a `using`
+statement (or `using` declaration) to ensure the log file is properly closed even
+if an exception is thrown.
+
+`_logWriter` is configured with `AutoFlush = true` so that log entries are written
+to disk immediately, preventing data loss if the process terminates unexpectedly.

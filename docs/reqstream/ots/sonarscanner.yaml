@@ -1,0 +1,24 @@
+---
+# dotnet-sonarscanner OTS Software Requirements
+#
+# Requirements for the dotnet-sonarscanner static analysis tool functionality.
+
+sections:
+  - title: OTS Software Requirements
+    sections:
+      - title: SonarScanner Requirements
+        requirements:
+          - id: NuGetCache-OTS-SonarScanner
+            title: dotnet-sonarscanner shall perform static analysis and upload results to SonarCloud.
+            justification: |
+              dotnet-sonarscanner wraps the SonarScanner for .NET CLI, collecting Roslyn analyzer
+              diagnostics, test coverage, and code metrics during the CI/CD build and uploading
+              them to SonarCloud for quality-gate evaluation. dotnet-sonarscanner does not provide
+              a --validate self-test flag and its working directory (.sonarqube/) is not uploaded
+              as a build artifact. Evidence is provided indirectly: SonarMark can only retrieve a
+              quality gate result from SonarCloud if dotnet-sonarscanner successfully completed its
+              analysis and upload in the preceding build job. The SonarMark_QualityGateRetrieval
+              test therefore serves as causal evidence that dotnet-sonarscanner executed correctly.
+            tags: [ots]
+            tests:
+              - SonarMark_QualityGateRetrieval

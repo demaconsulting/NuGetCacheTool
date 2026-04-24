@@ -2,8 +2,8 @@
 
 ## Purpose
 
-`Validation` provides a self-validation test framework that executes the tool as a
-subprocess and verifies observable outputs. It confirms that all software units
+`Validation` provides a self-validation test framework that executes the tool
+in-process and verifies observable outputs. It confirms that all software units
 work correctly in the deployment environment.
 
 ## Test Structure
@@ -47,4 +47,5 @@ After all tests complete, `Validation.Run` writes the results file if
 | ---------- | ----- |
 | `Context` | Provides `ResultsFile` path and output methods |
 | `PathHelpers` | `SafePathCombine` constructs temp log file paths |
+| `Program` | Called in-process; `RunValidationTest` calls `Program.Run(testContext)` for each test |
 | `DemaConsulting.TestResults` | `TrxSerializer`, `JUnitSerializer` for result output |

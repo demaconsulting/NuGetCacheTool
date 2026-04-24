@@ -46,6 +46,25 @@ args
 - Exit codes are normally controlled via `Context.ExitCode`; `Program.Main` may return
   a non-zero exit code directly when `Context` cannot be created
 
+## Platform and Runtime Targeting
+
+The NuGet Cache Tool targets multiple platforms and .NET runtime versions to support
+the broadest possible developer and CI/CD environment coverage.
+
+| Dimension | Supported Values |
+| --------- | ---------------- |
+| Operating Systems | Windows, Linux, macOS |
+| .NET Runtimes | .NET 8, .NET 9, .NET 10 |
+
+Multi-targeting is achieved through the `TargetFrameworks` MSBuild property in the
+project file. All platform-specific behavior is delegated to the .NET SDK and the
+`DemaConsulting.NuGet.Caching` library; the tool itself contains no platform-conditional
+code.
+
+Platform and runtime compatibility is verified by the CI/CD pipeline, which executes
+the integration tests and self-validation tests on each target platform and runtime
+combination.
+
 ## Self-Validation Tests
 
 When invoked with `--validate`, the tool executes three built-in self-validation
