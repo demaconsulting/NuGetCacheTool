@@ -103,3 +103,15 @@ sections:
               - Cli_UnknownArgument_ThrowsArgumentException
               - Cli_LogFlagWithoutValue_ThrowsArgumentException
               - Cli_ResultsFlagWithoutValue_ThrowsArgumentException
+
+          - id: NuGetCache-Cli-SilentLogInteraction
+            title: The CLI shall write output to the log file even when --silent is active.
+            justification: |
+              When --silent suppresses console output, the log file remains the only persistent
+              record of tool execution. Preserving log file writes in silent mode ensures
+              output is always captured for audit and debugging purposes.
+            children:
+              - NuGetCache-Context-LogFile
+              - NuGetCache-Context-SilentOutput
+            tests:
+              - Cli_SilentAndLog_WritesToLogFileOnly

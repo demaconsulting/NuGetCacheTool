@@ -20,7 +20,7 @@
 
 using DemaConsulting.NuGet.CacheTool.Cli;
 
-namespace DemaConsulting.NuGet.CacheTool.Tests;
+namespace DemaConsulting.NuGet.CacheTool.Tests.Cli;
 
 /// <summary>
 ///     Unit tests for the Context class.
@@ -201,7 +201,7 @@ public class ContextTests
     public void Context_Create_UnknownArgument_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--unknown"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--unknown"]));
         Assert.Contains("Unsupported argument", exception.Message);
     }
 
@@ -301,6 +301,16 @@ public class ContextTests
     }
 
     /// <summary>
+    ///     Test that creating a context with a package argument that has no colon throws ArgumentException.
+    /// </summary>
+    [TestMethod]
+    public void Context_Create_WithoutColonInPackage_ThrowsArgumentException()
+    {
+        // Act & Assert
+        Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["notapackage"]));
+    }
+
+    /// <summary>
     ///     Test WriteError writes message to console when not silent.
     /// </summary>
     [TestMethod]
@@ -334,7 +344,7 @@ public class ContextTests
     public void Context_Create_LogFlag_WithoutValue_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--log"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--log"]));
         Assert.Contains("--log", exception.Message);
     }
 
@@ -345,18 +355,8 @@ public class ContextTests
     public void Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException()
     {
         // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--results"]));
+        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--results"]));
         Assert.Contains("--results", exception.Message);
-    }
-
-    /// <summary>
-    ///     Test creating a context with a package argument that is missing the colon separator throws ArgumentException.
-    /// </summary>
-    [TestMethod]
-    public void Context_Create_InvalidPackageFormat_ThrowsArgumentException()
-    {
-        // Act: verify that a package argument without a colon throws
-        Assert.Throws<ArgumentException>(() => Context.Create(["notapackage"]));
     }
 
     /// <summary>

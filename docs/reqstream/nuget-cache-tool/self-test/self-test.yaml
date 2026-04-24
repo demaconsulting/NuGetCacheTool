@@ -44,3 +44,4 @@ sections:
             tests:
               - SelfTest_SafePathCombine_AcceptsValidPaths
               - SelfTest_SafePathCombine_RejectsPathTraversal
+              - SelfTest_SafePathCombine_RejectsAbsolutePath

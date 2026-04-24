@@ -48,7 +48,7 @@ public class IntegrationTests
     ///     Test that version flag outputs version information.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_VersionFlag_OutputsVersion()
+    public void NuGetCacheTool_VersionFlag_OutputsVersion()
     {
         // Act
         var exitCode = Runner.Run(
@@ -68,7 +68,7 @@ public class IntegrationTests
     ///     Test that help flag outputs usage information.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_HelpFlag_OutputsUsageInformation()
+    public void NuGetCacheTool_HelpFlag_OutputsUsageInformation()
     {
         // Act
         var exitCode = Runner.Run(
@@ -88,7 +88,7 @@ public class IntegrationTests
     ///     Test that validate flag runs self-validation.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_ValidateFlag_RunsValidation()
+    public void NuGetCacheTool_ValidateFlag_RunsValidation()
     {
         // Act
         var exitCode = Runner.Run(
@@ -107,7 +107,7 @@ public class IntegrationTests
     ///     Test that validate with results flag generates TRX file.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_ValidateWithResults_GeneratesTrxFile()
+    public void NuGetCacheTool_ValidateWithResults_GeneratesTrxFile()
     {
         // Arrange
         var resultsFile = Path.GetTempFileName();
@@ -145,7 +145,7 @@ public class IntegrationTests
     ///     Test that validate with results flag generates JUnit XML file.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_ValidateWithResults_GeneratesJUnitFile()
+    public void NuGetCacheTool_ValidateWithResults_GeneratesJUnitFile()
     {
         // Arrange
         var resultsFile = Path.GetTempFileName();
@@ -184,26 +184,25 @@ public class IntegrationTests
     ///     Test that silent flag suppresses output.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_SilentFlag_SuppressesOutput()
+    public void NuGetCacheTool_SilentFlag_SuppressesOutput()
     {
         // Act
         var exitCode = Runner.Run(
-            out var _,
+            out var output,
             "dotnet",
             _dllPath,
             "--silent");
 
         // Assert
         Assert.AreEqual(0, exitCode);
-
-        // Output check removed since silent mode may still produce some output
+        Assert.IsTrue(string.IsNullOrWhiteSpace(output), "Silent mode should suppress console output");
     }
 
     /// <summary>
     ///     Test that log flag writes output to file.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_LogFlag_WritesOutputToFile()
+    public void NuGetCacheTool_LogFlag_WritesOutputToFile()
     {
         // Arrange
         var logFile = Path.GetTempFileName();
@@ -238,7 +237,7 @@ public class IntegrationTests
     ///     Test that unknown argument returns error.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_UnknownArgument_ReturnsError()
+    public void NuGetCacheTool_UnknownArgument_ReturnsError()
     {
         // Act
         var exitCode = Runner.Run(
@@ -256,7 +255,7 @@ public class IntegrationTests
     ///     Test that a package argument caches the package and outputs the path.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_CachePackage_OutputsPath()
+    public void NuGetCacheTool_CachePackage_OutputsPath()
     {
         // Act
         var exitCode = Runner.Run(
@@ -275,7 +274,7 @@ public class IntegrationTests
     ///     Test that attempting to cache a nonexistent package returns an error.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_CacheNonexistentPackage_ReturnsError()
+    public void NuGetCacheTool_CacheNonexistentPackage_ReturnsError()
     {
         // Act
         var exitCode = Runner.Run(
@@ -293,7 +292,7 @@ public class IntegrationTests
     ///     Test that specifying an invalid log file path returns an error.
     /// </summary>
     [TestMethod]
-    public void IntegrationTest_LogFlag_WithInvalidFilename_ReturnsError()
+    public void NuGetCacheTool_LogFlag_WithInvalidFilename_ReturnsError()
     {
         // Arrange - use a hard-coded path into a nonexistent directory to ensure failure
         const string invalidLogPath = "/nonexistent_dir_xyz_abc/invalid.log";

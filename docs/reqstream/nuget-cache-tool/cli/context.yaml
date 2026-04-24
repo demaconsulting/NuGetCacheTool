@@ -67,4 +67,4 @@ sections:
               - Context_Create_UnknownArgument_ThrowsArgumentException
               - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
               - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
-              - Context_Create_InvalidPackageFormat_ThrowsArgumentException
+              - Context_Create_WithoutColonInPackage_ThrowsArgumentException

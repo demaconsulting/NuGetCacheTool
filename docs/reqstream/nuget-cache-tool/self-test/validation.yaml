@@ -27,6 +27,6 @@ sections:
               The --results flag specifies the output file; .trx produces TRX format, .xml produces
               JUnit XML. An unsupported extension results in an error.
             tests:
-              - Validation_ResultsFile_WritesTrxFile
-              - Validation_ResultsFile_WritesJUnitFile
-              - Validation_ResultsFile_RejectsUnsupportedFormat
+              - Validation_Run_TrxResultsRequested_WritesTrxFile
+              - Validation_Run_JUnitResultsRequested_WritesJUnitFile
+              - Validation_Run_UnsupportedResultsFormat_ReportsError

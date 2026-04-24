@@ -110,8 +110,8 @@ internal static class Validation
             ["--version"],
             logContent =>
             {
-                // Verify version string is in log (version contains dots like 0.0.0)
-                if (!string.IsNullOrWhiteSpace(logContent) && logContent.Split('.').Length >= 3)
+                // Verify version string is in log (version matches semantic version pattern)
+                if (System.Text.RegularExpressions.Regex.IsMatch(logContent.Trim(), @"\d+\.\d+\.\d+"))
                 {
                     return null;
                 }

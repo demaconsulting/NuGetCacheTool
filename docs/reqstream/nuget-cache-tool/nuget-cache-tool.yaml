@@ -20,11 +20,22 @@ sections:
               - NuGetCache-Program-VersionDisplay
               - NuGetCache-Program-HelpDisplay
               - NuGetCache-Program-CachePackages
+              - NuGetCache-Cli-SilentFlag
+              - NuGetCache-Cli-LogFlag
+              - NuGetCache-Cli-ValidateFlag
+              - NuGetCache-Cli-ResultsFlag
+              - NuGetCache-Cli-InvalidArguments
+              - NuGetCache-Program-Banner
+              - NuGetCache-Program-ErrorOutput
             tests:
-              - IntegrationTest_VersionFlag_OutputsVersion
-              - IntegrationTest_HelpFlag_OutputsUsageInformation
-              - IntegrationTest_CachePackage_OutputsPath
-              - IntegrationTest_ValidateFlag_RunsValidation
+              - NuGetCacheTool_VersionFlag_OutputsVersion
+              - NuGetCacheTool_HelpFlag_OutputsUsageInformation
+              - NuGetCacheTool_CachePackage_OutputsPath
+              - NuGetCacheTool_ValidateFlag_RunsValidation
+              - NuGetCacheTool_SilentFlag_SuppressesOutput
+              - NuGetCacheTool_LogFlag_WritesOutputToFile
+              - NuGetCacheTool_UnknownArgument_ReturnsError
+              - NuGetCacheTool_CacheNonexistentPackage_ReturnsError
 
           - id: NuGetCache-Sys-ValidateResults
             title: The NuGet Cache Tool shall write self-validation results in TRX or JUnit XML format.
@@ -35,5 +46,58 @@ sections:
             children:
               - NuGetCache-SelfTest-ResultsFile
             tests:
-              - IntegrationTest_ValidateWithResults_GeneratesTrxFile
-              - IntegrationTest_ValidateWithResults_GeneratesJUnitFile
+              - NuGetCacheTool_ValidateWithResults_GeneratesTrxFile
+              - NuGetCacheTool_ValidateWithResults_GeneratesJUnitFile
+
+          - id: NuGetCache-Sys-SilentMode
+            title: The NuGet Cache Tool shall support a silent mode that suppresses all console output.
+            justification: |
+              Enables integration into automated pipelines where console output would interfere
+              with other output processing. Silent mode is verified end-to-end at the system level.
+            children:
+              - NuGetCache-Cli-SilentFlag
+            tests:
+              - NuGetCacheTool_SilentFlag_SuppressesOutput
+
+          - id: NuGetCache-Sys-LogFile
+            title: The NuGet Cache Tool shall support writing all output to a log file via --log.
+            justification: |
+              Provides a persistent capture of tool output for debugging and audit purposes
+              in automated environments where transient console output is insufficient.
+            children:
+              - NuGetCache-Cli-LogFlag
+            tests:
+              - NuGetCacheTool_LogFlag_WritesOutputToFile
+              - NuGetCacheTool_LogFlag_WithInvalidFilename_ReturnsError
+
+          - id: NuGetCache-Sys-Banner
+            title: The NuGet Cache Tool shall display a version banner when performing non-trivial operations.
+            justification: |
+              Identifies the tool and its version in output logs, aiding in reproducibility
+              and troubleshooting of CI/CD pipeline executions.
+            children:
+              - NuGetCache-Program-Banner
+            tests:
+              - NuGetCacheTool_ValidateFlag_RunsValidation
+
+          - id: NuGetCache-Sys-InvalidArguments
+            title: The NuGet Cache Tool shall reject unknown or malformed arguments with a descriptive error and non-zero
+              exit code.
+            justification: |
+              Prevents silent misconfiguration by providing clear diagnostics when the tool is
+              invoked incorrectly, enabling users to identify and correct usage errors quickly.
+            children:
+              - NuGetCache-Cli-InvalidArguments
+            tests:
+              - NuGetCacheTool_UnknownArgument_ReturnsError
+
+          - id: NuGetCache-Sys-ErrorOutput
+            title: The NuGet Cache Tool shall write error messages to stderr and return a non-zero exit code on failure.
+            justification: |
+              Ensures that callers and CI/CD pipelines can detect failure conditions both
+              programmatically (via exit code) and diagnostically (via stderr).
+            children:
+              - NuGetCache-Cli-ErrorOutput
+              - NuGetCache-Program-ErrorOutput
+            tests:
+              - NuGetCacheTool_CacheNonexistentPackage_ReturnsError

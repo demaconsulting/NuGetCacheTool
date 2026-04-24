@@ -31,6 +31,11 @@ regardless of other flags.
 message directly to `Console.Error` and returns an exit code of 1; `context` is
 not available in this scope, so `context.WriteError` is not used.
 
+A third handler catches any other `Exception`. It writes `"Unexpected error: {message}"` to
+`Console.Error` and re-throws the exception. Re-throwing allows the runtime and operating system
+to record the unhandled exception in event logs and generate a crash dump, providing diagnostics
+for unexpected failures without suppressing the error.
+
 ## RunToolLogic
 
 `RunToolLogic(Context)` iterates `context.Packages` and calls

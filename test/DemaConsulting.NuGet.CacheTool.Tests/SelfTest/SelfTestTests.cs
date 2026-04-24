@@ -175,7 +175,20 @@ public class SelfTestTests
         var basePath = Path.GetTempPath();
 
         // Act: verify that path traversal is rejected with an exception
-        Assert.Throws<ArgumentException>(() =>
+        Assert.ThrowsExactly<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, "../traversal/attempt"));
+    }
+    /// <summary>
+    ///     Test that SafePathCombine rejects an absolute path as the relative argument.
+    /// </summary>
+    [TestMethod]
+    public void SelfTest_SafePathCombine_RejectsAbsolutePath()
+    {
+        // Arrange
+        const string basePath = "/tmp/base";
+
+        // Act & Assert: Unix absolute path
+        Assert.ThrowsExactly<ArgumentException>(() =>
+            PathHelpers.SafePathCombine(basePath, "/etc/passwd"));
     }
 }
