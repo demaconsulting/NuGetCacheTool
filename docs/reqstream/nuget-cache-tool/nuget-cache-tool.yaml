@@ -93,10 +93,13 @@ sections:
               - NuGetCacheTool_UnknownArgument_ReturnsError
 
           - id: NuGetCache-Sys-ErrorOutput
-            title: The NuGet Cache Tool shall write error messages to stderr and return a non-zero exit code on failure.
+            title: >-
+              The NuGet Cache Tool shall write error messages to stderr and return a non-zero exit code on failure,
+              unless silent mode is active.
             justification: |
               Ensures that callers and CI/CD pipelines can detect failure conditions both
-              programmatically (via exit code) and diagnostically (via stderr).
+              programmatically (via exit code) and diagnostically (via stderr). Silent mode
+              suppresses all output including error messages.
             children:
               - NuGetCache-Cli-ErrorOutput
               - NuGetCache-Program-ErrorOutput

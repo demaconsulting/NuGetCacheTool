@@ -31,7 +31,8 @@ and provides path safety guarantees used during validation test execution.
 
 | Scenario | Behavior |
 | -------- | -------- |
-| `relative` argument is null or empty | `SafePathCombine` throws `ArgumentException` |
+| `relative` argument is null | `SafePathCombine` throws `ArgumentNullException` |
+| `relative` argument is empty | `SafePathCombine` returns the base path |
 | `relative` argument is an absolute path | `SafePathCombine` throws `ArgumentException` |
 | `relative` argument contains `..` path traversal | `SafePathCombine` throws `ArgumentException` |
 | A self-validation test fails | `Validation.Run` records the failure via `context.WriteError` |
