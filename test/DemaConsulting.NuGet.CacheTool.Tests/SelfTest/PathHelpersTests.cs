@@ -97,6 +97,12 @@ public class PathHelpersTests
     [TestMethod]
     public void PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException()
     {
+        // This test only applies on Windows where drive-letter paths are rooted
+        if (!OperatingSystem.IsWindows())
+        {
+            return;
+        }
+
         // Arrange
         const string basePath = "/tmp/base";
 

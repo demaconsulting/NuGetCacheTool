@@ -32,8 +32,6 @@ sections:
             justification: |
               Defensive null checking prevents NullReferenceException propagation and provides
               clear diagnostic messages to callers who pass uninitialized path values.
-            children:
-              - NuGetCache-Context-ArgumentParsing
             tests:
               - PathHelpers_SafePathCombine_NullBase_ThrowsArgumentNullException
               - PathHelpers_SafePathCombine_NullRelative_ThrowsArgumentNullException
