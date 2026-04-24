@@ -47,5 +47,5 @@ After all tests complete, `Validation.Run` writes the results file if
 | ---------- | ----- |
 | `Context` | Provides `ResultsFile` path and output methods |
 | `PathHelpers` | `SafePathCombine` constructs temp log file paths |
-| `Program` | Called in-process | `RunValidationTest` calls `Program.Run(testContext)` for each self-validation test |
+| `Program` | Called in-process; `RunValidationTest` calls `Program.Run(testContext)` for each test |
 | `DemaConsulting.TestResults` | `TrxSerializer`, `JUnitSerializer` for result output |

@@ -51,7 +51,8 @@ The `Context` unit exposes the following public API:
 
 | Scenario | Behavior |
 | -------- | -------- |
-| Unknown or malformed argument | `Create()` throws `ArgumentException` with a message identifying the unsupported argument |
+| Unknown or malformed argument | `Create()` throws `ArgumentException` with a message |
+| | identifying the unsupported argument |
 | `--log` flag without a value | `Create()` throws `ArgumentException` |
 | `--results` flag without a value | `Create()` throws `ArgumentException` |
 | Log file cannot be opened | `Create()` throws `ArgumentException` with the underlying I/O error message |

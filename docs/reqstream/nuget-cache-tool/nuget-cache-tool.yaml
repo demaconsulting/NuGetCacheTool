@@ -81,8 +81,9 @@ sections:
               - NuGetCacheTool_ValidateFlag_RunsValidation
 
           - id: NuGetCache-Sys-InvalidArguments
-            title: The NuGet Cache Tool shall reject unknown or malformed arguments with a descriptive error and non-zero
-              exit code.
+            title: >-
+              The NuGet Cache Tool shall reject unknown or malformed arguments
+              with a descriptive error and non-zero exit code.
             justification: |
               Prevents silent misconfiguration by providing clear diagnostics when the tool is
               invoked incorrectly, enabling users to identify and correct usage errors quickly.

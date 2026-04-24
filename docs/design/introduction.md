@@ -44,6 +44,8 @@ src/DemaConsulting.NuGet.CacheTool/
 | Platform requirements | `docs/reqstream/nuget-cache-tool/platform-requirements.yaml` |
 | CLI subsystem requirements | `docs/reqstream/nuget-cache-tool/cli/cli.yaml` |
 | SelfTest subsystem requirements | `docs/reqstream/nuget-cache-tool/self-test/self-test.yaml` |
-| Unit-level requirements | `docs/reqstream/nuget-cache-tool/cli/context.yaml`, `docs/reqstream/nuget-cache-tool/self-test/validation.yaml`, `docs/reqstream/nuget-cache-tool/self-test/path-helpers.yaml` |
+| Unit-level requirements | `docs/reqstream/nuget-cache-tool/cli/context.yaml` |
+| | `docs/reqstream/nuget-cache-tool/self-test/validation.yaml` |
+| | `docs/reqstream/nuget-cache-tool/self-test/path-helpers.yaml` |
 | Subsystem design documents | `docs/design/nuget-cache-tool/cli/`, `docs/design/nuget-cache-tool/self-test/` |
 | Unit design documents | `docs/design/nuget-cache-tool/program.md` |
