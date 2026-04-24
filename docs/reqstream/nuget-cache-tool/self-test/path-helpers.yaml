@@ -12,12 +12,10 @@ sections:
             title: The PathHelpers class shall prevent path traversal attacks when combining file paths.
             justification: |
               Accepting user-controlled path components without validation could allow
-              an attacker to read or write files outside intended directories. The
-              SafePathCombine method combines the paths first and then uses
-              Path.GetFullPath and Path.GetRelativePath to detect whether the resolved
-              combined path escapes the base directory, rejecting absolute-path overrides
-              and parent-directory traversal (e.g. "..") while correctly accepting valid
-              filenames that start with ".." (e.g. "..data").
+              an attacker to read or write files outside intended directories. The combined
+              path must reject absolute-path overrides and parent-directory traversal
+              (e.g. "..") while correctly accepting valid relative paths including filenames
+              that begin with ".." (e.g. "..data").
             tests:
               - PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly
               - PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException

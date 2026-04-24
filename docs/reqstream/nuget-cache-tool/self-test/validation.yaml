@@ -14,10 +14,6 @@ sections:
               Provides a built-in mechanism to verify the tool is functioning correctly
               in the deployment environment. Self-validation runs the core operations
               end-to-end and reports pass/fail results.
-              The NuGetCache_* tests are defined within Validation.cs and are produced by
-              the Validation class itself when run. They constitute the dedicated test suite
-              for the Validation unit, exercising version display, help display, and package
-              caching through the tool's own execution path.
             tests:
               - NuGetCache_VersionDisplay
               - NuGetCache_HelpDisplay

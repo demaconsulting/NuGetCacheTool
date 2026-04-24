@@ -27,7 +27,7 @@ evidence-source:
 reviews:
   # Purpose Review (only one per repository)
   - id: Purpose
-    title: Review of user-facing capabilities and system promises
+    title: Review that Advertised Features Match System Design
     paths:
       - "README.md"
       - "docs/user_guide/**/*.md"
@@ -35,9 +35,9 @@ reviews:
       - "docs/design/introduction.md"
       - "docs/design/nuget-cache-tool/nuget-cache-tool.md"
 
-  # TemplateTool-Architecture Review (one per system)
+  # NuGetCacheTool-Architecture Review (one per system)
   - id: NuGetCacheTool-Architecture
-    title: Review of NuGet Cache Tool system architecture and operational validation
+    title: Review that NuGet Cache Tool Architecture Satisfies Requirements
     paths:
       - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
       - "docs/design/introduction.md"

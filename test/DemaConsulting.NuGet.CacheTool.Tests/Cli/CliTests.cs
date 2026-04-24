@@ -213,6 +213,64 @@ public class CliTests
     }
 
     /// <summary>
+    ///     Test that the CLI --log flag writes output to the specified log file.
+    /// </summary>
+    [TestMethod]
+    public void Cli_LogFlag_WritesToLogFile()
+    {
+        // Arrange
+        var logFile = Path.GetTempFileName();
+        try
+        {
+            // Act: create context with --log flag and write a message
+            using (var context = Context.Create(["--log", logFile]))
+            {
+                context.WriteLine("Log test message");
+            }
+
+            // Assert: verify the log file was written with the expected message
+            Assert.IsTrue(File.Exists(logFile));
+            var content = File.ReadAllText(logFile);
+            Assert.Contains("Log test message", content);
+        }
+        finally
+        {
+            if (File.Exists(logFile))
+            {
+                File.Delete(logFile);
+            }
+        }
+    }
+
+    /// <summary>
+    ///     Test that the CLI --validate flag configures the context to trigger self-validation.
+    /// </summary>
+    [TestMethod]
+    public void Cli_ValidateFlag_SetsValidateOnContext()
+    {
+        // Act: create context with --validate flag
+        using var context = Context.Create(["--validate"]);
+
+        // Assert: verify validate flag is set and exit code is zero
+        Assert.IsTrue(context.Validate);
+        Assert.AreEqual(0, context.ExitCode);
+    }
+
+    /// <summary>
+    ///     Test that the CLI --results flag sets the results file path on the context.
+    /// </summary>
+    [TestMethod]
+    public void Cli_ResultsFlag_SetsResultsFileOnContext()
+    {
+        // Act: create context with --results flag
+        using var context = Context.Create(["--results", "results.trx"]);
+
+        // Assert: verify results file path is set and exit code is zero
+        Assert.AreEqual("results.trx", context.ResultsFile);
+        Assert.AreEqual(0, context.ExitCode);
+    }
+
+    /// <summary>
     ///     Test that the CLI rejects --log without a following value.
     /// </summary>
     [TestMethod]
