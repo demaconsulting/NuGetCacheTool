@@ -188,7 +188,7 @@ public class SelfTestTests
         // Arrange: prepare a base path
         const string basePath = "/tmp/base";
 
-        // Act: verify that an absolute relative path throws an exception
+        // Act: call SafePathCombine with an absolute path as the relative argument
         Assert.ThrowsExactly<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, "/etc/passwd"));
     }

@@ -35,6 +35,5 @@ and provides path safety guarantees used during validation test execution.
 | `relative` argument is empty | `SafePathCombine` returns the base path |
 | `relative` argument is an absolute path | `SafePathCombine` throws `ArgumentException` |
 | `relative` argument contains `..` path traversal | `SafePathCombine` throws `ArgumentException` |
-| A self-validation test fails | `Validation.Run` records the failure via `context.WriteError` |
-| | and continues running remaining tests |
+| A self-validation test fails | `Validation.Run` records the failure and continues with remaining tests |
 | `--results` file extension is not `.trx` or `.xml` | `Validation.Run` records an error via `context.WriteError` |
