@@ -9,7 +9,8 @@
 │   ├── design/
 │   ├── requirements_doc/
 │   ├── requirements_report/
-│   └── reqstream/
+│   ├── reqstream/
+│   └── user_guide/
 ├── src/
 │   └── DemaConsulting.NuGet.CacheTool/
 └── test/
@@ -36,7 +37,6 @@ before searching the filesystem.
 - **`package.json`** - Node.js dependencies for formatting tools
 - **`requirements.yaml`** - Root requirements file with includes
 - **`pip-requirements.txt`** - Python dependencies for yamllint and yamlfix
-- **`lint.ps1`** - Lint and merge-gate script used by CI.
 - **`fix.ps1`** - Applies all auto-fixers silently (dotnet format, markdown, YAML). Always exits 0.
 - **`build.ps1`** - Builds the solution and runs all tests.
 
@@ -51,7 +51,7 @@ from `.github/standards/`. Use this matrix to determine which to load:
 | C# code              | `coding-principles.md`, `csharp-language.md`                                 |
 | Any tests            | `testing-principles.md`                                                      |
 | C# tests             | `testing-principles.md`, `csharp-testing.md`                                 |
-| Requirements         | `software-items.md`, `reqstream-usage.md`                                    |
+| Requirements         | `requirements-principles.md`, `software-items.md`, `reqstream-usage.md`      |
 | Design docs          | `software-items.md`, `design-documentation.md`, `technical-documentation.md` |
 | Review configuration | `software-items.md`, `reviewmark-usage.md`                                   |
 | Any documentation    | `technical-documentation.md`                                                 |
