@@ -218,7 +218,7 @@ public class CliTests
     [TestMethod]
     public void Cli_LogFlag_WritesToLogFile()
     {
-        // Arrange
+        // Arrange: create a temporary log file path
         var logFile = Path.GetTempFileName();
         try
         {

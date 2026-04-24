@@ -178,16 +178,17 @@ public class SelfTestTests
         Assert.ThrowsExactly<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, "../traversal/attempt"));
     }
+
     /// <summary>
     ///     Test that SafePathCombine rejects an absolute path as the relative argument.
     /// </summary>
     [TestMethod]
     public void SelfTest_SafePathCombine_RejectsAbsolutePath()
     {
-        // Arrange
+        // Arrange: prepare a base path
         const string basePath = "/tmp/base";
 
-        // Act & Assert: Unix absolute path
+        // Act: verify that an absolute relative path throws an exception
         Assert.ThrowsExactly<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, "/etc/passwd"));
     }

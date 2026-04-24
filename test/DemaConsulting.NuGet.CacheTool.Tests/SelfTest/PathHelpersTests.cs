@@ -185,7 +185,7 @@ public class PathHelpersTests
     [TestMethod]
     public void PathHelpers_SafePathCombine_NullBase_ThrowsArgumentNullException()
     {
-        // Act & Assert
+        // Act: verify that a null base path throws ArgumentNullException
         Assert.ThrowsExactly<ArgumentNullException>(() =>
             PathHelpers.SafePathCombine(null!, "relative/path"));
     }
@@ -196,7 +196,7 @@ public class PathHelpersTests
     [TestMethod]
     public void PathHelpers_SafePathCombine_NullRelative_ThrowsArgumentNullException()
     {
-        // Act & Assert
+        // Act: verify that a null relative path throws ArgumentNullException
         Assert.ThrowsExactly<ArgumentNullException>(() =>
             PathHelpers.SafePathCombine("/base/path", null!));
     }
