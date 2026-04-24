@@ -94,8 +94,8 @@ sections:
 
           - id: NuGetCache-Sys-ErrorOutput
             title: >-
-              The NuGet Cache Tool shall write error messages to stderr and return a non-zero exit code on failure,
-              unless silent mode is active.
+              The NuGet Cache Tool shall return a non-zero exit code on failure and, when silent mode is not active,
+              write error messages to stderr.
             justification: |
               Ensures that callers and CI/CD pipelines can detect failure conditions both
               programmatically (via exit code) and diagnostically (via stderr). Silent mode
