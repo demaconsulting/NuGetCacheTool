@@ -25,86 +25,86 @@ namespace DemaConsulting.NuGet.CacheTool.Tests.Cli;
 /// <summary>
 ///     Subsystem integration tests for the CLI subsystem (argument parsing and output management).
 /// </summary>
-[TestClass]
+[Collection("Sequential")]
 public class CliTests
 {
     /// <summary>
     ///     Test that the CLI accepts the --version flag and configures the context for version display.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_VersionFlag_SetsVersionOnContext()
     {
         // Act: create context with --version flag
         using var context = Context.Create(["--version"]);
 
         // Assert: verify version flag is set and other flags are unset
-        Assert.IsTrue(context.Version);
-        Assert.IsFalse(context.Help);
-        Assert.IsFalse(context.Silent);
-        Assert.AreEqual(0, context.ExitCode);
+        Assert.True(context.Version);
+        Assert.False(context.Help);
+        Assert.False(context.Silent);
+        Assert.Equal(0, context.ExitCode);
     }
 
     /// <summary>
     ///     Test that the CLI accepts the short -v flag and configures the context for version display.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_ShortVersionFlag_SetsVersionOnContext()
     {
         // Act: create context with -v flag
         using var context = Context.Create(["-v"]);
 
         // Assert: verify version flag is set on context
-        Assert.IsTrue(context.Version);
-        Assert.AreEqual(0, context.ExitCode);
+        Assert.True(context.Version);
+        Assert.Equal(0, context.ExitCode);
     }
 
     /// <summary>
     ///     Test that the CLI accepts the --help flag and configures the context for help display.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_HelpFlag_SetsHelpOnContext()
     {
         // Act: create context with --help flag
         using var context = Context.Create(["--help"]);
 
         // Assert: verify help flag is set and other flags are unset
-        Assert.IsTrue(context.Help);
-        Assert.IsFalse(context.Version);
-        Assert.AreEqual(0, context.ExitCode);
+        Assert.True(context.Help);
+        Assert.False(context.Version);
+        Assert.Equal(0, context.ExitCode);
     }
 
     /// <summary>
     ///     Test that the CLI accepts the short -h flag and configures the context for help display.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_ShortHelpFlagH_SetsHelpOnContext()
     {
         // Act: create context with -h flag
         using var context = Context.Create(["-h"]);
 
         // Assert: verify help flag is set on context
-        Assert.IsTrue(context.Help);
-        Assert.AreEqual(0, context.ExitCode);
+        Assert.True(context.Help);
+        Assert.Equal(0, context.ExitCode);
     }
 
     /// <summary>
     ///     Test that the CLI accepts the short -? flag and configures the context for help display.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_ShortHelpFlagQuestionMark_SetsHelpOnContext()
     {
         // Act: create context with -? flag
         using var context = Context.Create(["-?"]);
 
         // Assert: verify help flag is set on context
-        Assert.IsTrue(context.Help);
-        Assert.AreEqual(0, context.ExitCode);
+        Assert.True(context.Help);
+        Assert.Equal(0, context.ExitCode);
     }
 
     /// <summary>
     ///     Test that the CLI --silent flag suppresses both stdout and stderr output channels.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_SilentFlag_SuppressesAllOutput()
     {
         // Arrange: redirect stdout and stderr to capture output
@@ -136,22 +136,22 @@ public class CliTests
     /// <summary>
     ///     Test that the CLI accepts [package-name]:[version] arguments and adds them to the packages list.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_PackageArgument_AddedToPackagesList()
     {
         // Act: create context with two package arguments
         using var context = Context.Create(["Package.One:1.0.0", "Package.Two:2.3.4"]);
 
         // Assert: verify both packages are added to the packages list
-        Assert.HasCount(2, context.Packages);
-        Assert.AreEqual("Package.One:1.0.0", context.Packages[0]);
-        Assert.AreEqual("Package.Two:2.3.4", context.Packages[1]);
+        Assert.Equal(2, context.Packages.Count);
+        Assert.Equal("Package.One:1.0.0", context.Packages[0]);
+        Assert.Equal("Package.Two:2.3.4", context.Packages[1]);
     }
 
     /// <summary>
     ///     Test that the CLI WriteError sets a non-zero exit code on failure.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_ErrorOutput_SetsNonZeroExitCode()
     {
         // Arrange: redirect stderr to suppress output during test
@@ -165,7 +165,7 @@ public class CliTests
             context.WriteError("Something went wrong");
 
             // Assert: verify exit code is non-zero
-            Assert.AreNotEqual(0, context.ExitCode);
+            Assert.NotEqual(0, context.ExitCode);
         }
         finally
         {
@@ -176,7 +176,7 @@ public class CliTests
     /// <summary>
     ///     Test that the CLI WriteError writes the error message to the console when not in silent mode.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_ErrorOutput_WritesMessageToConsole()
     {
         // Arrange: redirect stderr to capture error output
@@ -202,11 +202,11 @@ public class CliTests
     /// <summary>
     ///     Test that the CLI rejects an unknown argument with a descriptive ArgumentException.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_UnknownArgument_ThrowsArgumentException()
     {
         // Act: verify that an unknown argument throws
-        var exception = Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--unknown-flag"]));
+        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--unknown-flag"]));
 
         // Assert: the exception message mentions the unsupported argument
         Assert.Contains("Unsupported argument", exception.Message);
@@ -215,7 +215,7 @@ public class CliTests
     /// <summary>
     ///     Test that the CLI --log flag writes output to the specified log file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_LogFlag_WritesToLogFile()
     {
         // Arrange: create a temporary log file path
@@ -229,7 +229,7 @@ public class CliTests
             }
 
             // Assert: verify the log file was written with the expected message
-            Assert.IsTrue(File.Exists(logFile));
+            Assert.True(File.Exists(logFile));
             var content = File.ReadAllText(logFile);
             Assert.Contains("Log test message", content);
         }
@@ -245,55 +245,55 @@ public class CliTests
     /// <summary>
     ///     Test that the CLI --validate flag configures the context to trigger self-validation.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_ValidateFlag_SetsValidateOnContext()
     {
         // Act: create context with --validate flag
         using var context = Context.Create(["--validate"]);
 
         // Assert: verify validate flag is set and exit code is zero
-        Assert.IsTrue(context.Validate);
-        Assert.AreEqual(0, context.ExitCode);
+        Assert.True(context.Validate);
+        Assert.Equal(0, context.ExitCode);
     }
 
     /// <summary>
     ///     Test that the CLI --results flag sets the results file path on the context.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_ResultsFlag_SetsResultsFileOnContext()
     {
         // Act: create context with --results flag
         using var context = Context.Create(["--results", "results.trx"]);
 
         // Assert: verify results file path is set and exit code is zero
-        Assert.AreEqual("results.trx", context.ResultsFile);
-        Assert.AreEqual(0, context.ExitCode);
+        Assert.Equal("results.trx", context.ResultsFile);
+        Assert.Equal(0, context.ExitCode);
     }
 
     /// <summary>
     ///     Test that the CLI rejects --log without a following value.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_LogFlagWithoutValue_ThrowsArgumentException()
     {
         // Act & Assert: verify that --log without a value throws
-        Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--log"]));
+        Assert.Throws<ArgumentException>(() => Context.Create(["--log"]));
     }
 
     /// <summary>
     ///     Test that the CLI rejects --results without a following value.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_ResultsFlagWithoutValue_ThrowsArgumentException()
     {
         // Act & Assert: verify that --results without a value throws
-        Assert.ThrowsExactly<ArgumentException>(() => Context.Create(["--results"]));
+        Assert.Throws<ArgumentException>(() => Context.Create(["--results"]));
     }
 
     /// <summary>
     ///     Test that the CLI --log flag writes output to the log file even when --silent is active.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Cli_SilentAndLog_WritesToLogFileOnly()
     {
         // Arrange: redirect stdout and stderr to verify they are suppressed
@@ -315,7 +315,7 @@ public class CliTests
 
             // Assert: verify stdout is suppressed but log file received the message
             Assert.DoesNotContain("Silent log test message", outWriter.ToString());
-            Assert.IsTrue(File.Exists(logFile));
+            Assert.True(File.Exists(logFile));
             var content = File.ReadAllText(logFile);
             Assert.Contains("Silent log test message", content);
         }

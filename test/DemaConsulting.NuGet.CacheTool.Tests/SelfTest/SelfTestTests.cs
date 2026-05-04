@@ -26,13 +26,13 @@ namespace DemaConsulting.NuGet.CacheTool.Tests.SelfTest;
 /// <summary>
 ///     Subsystem integration tests for the SelfTest subsystem (self-validation and path utilities).
 /// </summary>
-[TestClass]
+[Collection("Sequential")]
 public class SelfTestTests
 {
     /// <summary>
     ///     Test that the SelfTest subsystem executes self-validation tests and reports a summary.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTest_Validation_ExecutesSelfValidationTests()
     {
         // Arrange: redirect stdout to capture validation output
@@ -60,7 +60,7 @@ public class SelfTestTests
     /// <summary>
     ///     Test that the SelfTest subsystem reports a zero exit code when all validation tests pass.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTest_Validation_ReportsPassFail()
     {
         // Arrange: redirect stdout to suppress validation output
@@ -75,7 +75,7 @@ public class SelfTestTests
             Validation.Run(context);
 
             // Assert: all self-validation tests must pass with zero exit code
-            Assert.AreEqual(0, context.ExitCode);
+            Assert.Equal(0, context.ExitCode);
         }
         finally
         {
@@ -86,7 +86,7 @@ public class SelfTestTests
     /// <summary>
     ///     Test that the SelfTest subsystem writes validation results in TRX format when --results .trx is specified.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTest_ResultsFile_GeneratesTrxFile()
     {
         // Arrange: prepare a temporary TRX results file path
@@ -99,8 +99,8 @@ public class SelfTestTests
             Validation.Run(context);
 
             // Assert: verify TRX results file is created with expected content
-            Assert.AreEqual(0, context.ExitCode);
-            Assert.IsTrue(File.Exists(resultsFile), "TRX results file was not created");
+            Assert.Equal(0, context.ExitCode);
+            Assert.True(File.Exists(resultsFile), "TRX results file was not created");
 
             var trxContent = File.ReadAllText(resultsFile);
             Assert.Contains("<TestRun", trxContent);
@@ -118,7 +118,7 @@ public class SelfTestTests
     /// <summary>
     ///     Test that the SelfTest subsystem writes validation results in JUnit XML format when --results .xml is specified.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTest_ResultsFile_GeneratesJUnitFile()
     {
         // Arrange: prepare a temporary JUnit XML results file path
@@ -131,8 +131,8 @@ public class SelfTestTests
             Validation.Run(context);
 
             // Assert: verify JUnit results file is created with expected content
-            Assert.AreEqual(0, context.ExitCode);
-            Assert.IsTrue(File.Exists(resultsFile), "JUnit results file was not created");
+            Assert.Equal(0, context.ExitCode);
+            Assert.True(File.Exists(resultsFile), "JUnit results file was not created");
 
             var content = File.ReadAllText(resultsFile);
             Assert.Contains("<testsuites", content);
@@ -151,7 +151,7 @@ public class SelfTestTests
     /// <summary>
     ///     Test that the SelfTest subsystem correctly combines valid file paths.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTest_SafePathCombine_AcceptsValidPaths()
     {
         // Arrange: prepare a base path and a valid relative path
@@ -162,34 +162,34 @@ public class SelfTestTests
         var result = PathHelpers.SafePathCombine(basePath, relativePath);
 
         // Assert: verify the combined path matches the expected result
-        Assert.AreEqual(Path.Combine(basePath, relativePath), result);
+        Assert.Equal(Path.Combine(basePath, relativePath), result);
     }
 
     /// <summary>
     ///     Test that the SelfTest subsystem rejects path traversal attempts.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTest_SafePathCombine_RejectsPathTraversal()
     {
         // Arrange: prepare a base path and a traversal attempt
         var basePath = Path.GetTempPath();
 
         // Act: verify that path traversal is rejected with an exception
-        Assert.ThrowsExactly<ArgumentException>(() =>
+        Assert.Throws<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, "../traversal/attempt"));
     }
 
     /// <summary>
     ///     Test that SafePathCombine rejects an absolute path as the relative argument.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void SelfTest_SafePathCombine_RejectsAbsolutePath()
     {
         // Arrange: prepare a base path
         const string basePath = "/tmp/base";
 
         // Act: call SafePathCombine with an absolute path as the relative argument
-        Assert.ThrowsExactly<ArgumentException>(() =>
+        Assert.Throws<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, "/etc/passwd"));
     }
 }

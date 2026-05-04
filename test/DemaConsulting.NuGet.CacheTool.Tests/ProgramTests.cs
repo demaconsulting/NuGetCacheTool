@@ -25,7 +25,7 @@ namespace DemaConsulting.NuGet.CacheTool.Tests;
 /// <summary>
 ///     Unit tests for the Program class.
 /// </summary>
-[TestClass]
+[Collection("Sequential")]
 public class ProgramTests
 {
     /// <summary>
@@ -36,7 +36,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with version flag displays version only.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithVersionFlag_DisplaysVersionOnly()
     {
         // Arrange
@@ -54,7 +54,7 @@ public class ProgramTests
             var output = outWriter.ToString();
             Assert.DoesNotContain("Copyright", output);
             Assert.DoesNotContain("NuGet Cache Tool version", output);
-            Assert.IsFalse(string.IsNullOrWhiteSpace(output), "Version flag should output a non-empty version string");
+            Assert.False(string.IsNullOrWhiteSpace(output), "Version flag should output a non-empty version string");
         }
         finally
         {
@@ -65,7 +65,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with help flag displays usage information.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithHelpFlag_DisplaysUsageInformation()
     {
         // Arrange
@@ -95,7 +95,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with validate flag runs validation.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithValidateFlag_RunsValidation()
     {
         // Arrange
@@ -122,7 +122,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with no arguments displays the banner but does nothing else.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_NoArguments_DisplaysDefaultBehavior()
     {
         // Arrange
@@ -150,7 +150,7 @@ public class ProgramTests
     /// <summary>
     ///     Test that Run with a valid package argument caches the package and outputs its path.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithPackageArgument_CachesPackage()
     {
         // Arrange: redirect stdout to capture program output
@@ -165,7 +165,7 @@ public class ProgramTests
             Program.Run(context);
 
             // Assert: verify output contains the cached package ID and version
-            Assert.AreEqual(0, context.ExitCode);
+            Assert.Equal(0, context.ExitCode);
             var output = outWriter.ToString();
             var normalizedOutput = output.ToLowerInvariant();
             Assert.Contains("demaconsulting.nuget.caching", normalizedOutput);
@@ -180,20 +180,20 @@ public class ProgramTests
     /// <summary>
     ///     Test that version property returns non-empty version string.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Version_ReturnsNonEmptyString()
     {
         // Act
         var version = Program.Version;
 
         // Assert
-        Assert.IsFalse(string.IsNullOrWhiteSpace(version));
+        Assert.False(string.IsNullOrWhiteSpace(version));
     }
 
     /// <summary>
     ///     Test that Run with validate flag and unsupported results format sets error exit code.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Program_Run_WithValidateAndUnsupportedResultsFormat_SetsErrorExitCode()
     {
         // Arrange
@@ -211,7 +211,7 @@ public class ProgramTests
             Program.Run(context);
 
             // Assert - unsupported format should cause an error with a message
-            Assert.AreEqual(1, context.ExitCode);
+            Assert.Equal(1, context.ExitCode);
             Assert.Contains("Error", errWriter.ToString());
         }
         finally

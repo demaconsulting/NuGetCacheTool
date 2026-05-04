@@ -25,29 +25,28 @@ namespace DemaConsulting.NuGet.CacheTool.Tests;
 /// <summary>
 ///     Integration tests that run the NuGet Cache Tool application through dotnet.
 /// </summary>
-[TestClass]
+[Collection("Sequential")]
 public class IntegrationTests
 {
-    private string _dllPath = string.Empty;
+    private readonly string _dllPath;
 
     /// <summary>
     ///     Initialize test by locating the NuGet Cache Tool DLL.
     /// </summary>
-    [TestInitialize]
-    public void TestInitialize()
+    public IntegrationTests()
     {
         // The DLL should be in the same directory as the test assembly
         // because the test project references the main project
         var baseDir = AppContext.BaseDirectory;
         _dllPath = PathHelpers.SafePathCombine(baseDir, "DemaConsulting.NuGet.CacheTool.dll");
 
-        Assert.IsTrue(File.Exists(_dllPath), $"Could not find NuGet Cache Tool DLL at {_dllPath}");
+        Assert.True(File.Exists(_dllPath), $"Could not find NuGet Cache Tool DLL at {_dllPath}");
     }
 
     /// <summary>
     ///     Test that version flag outputs version information.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_VersionFlag_OutputsVersion()
     {
         // Act
@@ -58,8 +57,8 @@ public class IntegrationTests
             "--version");
 
         // Assert
-        Assert.AreEqual(0, exitCode);
-        Assert.IsFalse(string.IsNullOrWhiteSpace(output));
+        Assert.Equal(0, exitCode);
+        Assert.False(string.IsNullOrWhiteSpace(output));
         Assert.DoesNotContain("Error", output);
         Assert.DoesNotContain("Copyright", output);
     }
@@ -67,7 +66,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that help flag outputs usage information.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_HelpFlag_OutputsUsageInformation()
     {
         // Act
@@ -78,7 +77,7 @@ public class IntegrationTests
             "--help");
 
         // Assert
-        Assert.AreEqual(0, exitCode);
+        Assert.Equal(0, exitCode);
         Assert.Contains("Usage:", output);
         Assert.Contains("Options:", output);
         Assert.Contains("--version", output);
@@ -87,7 +86,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that validate flag runs self-validation.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_ValidateFlag_RunsValidation()
     {
         // Act
@@ -98,7 +97,7 @@ public class IntegrationTests
             "--validate");
 
         // Assert
-        Assert.AreEqual(0, exitCode);
+        Assert.Equal(0, exitCode);
         Assert.Contains("Total Tests:", output);
         Assert.Contains("Passed:", output);
     }
@@ -106,7 +105,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that validate with results flag generates TRX file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_ValidateWithResults_GeneratesTrxFile()
     {
         // Arrange
@@ -125,8 +124,8 @@ public class IntegrationTests
                 resultsFile);
 
             // Assert
-            Assert.AreEqual(0, exitCode);
-            Assert.IsTrue(File.Exists(resultsFile), "Results file was not created");
+            Assert.Equal(0, exitCode);
+            Assert.True(File.Exists(resultsFile), "Results file was not created");
 
             var trxContent = File.ReadAllText(resultsFile);
             Assert.Contains("<TestRun", trxContent);
@@ -144,7 +143,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that validate with results flag generates JUnit XML file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_ValidateWithResults_GeneratesJUnitFile()
     {
         // Arrange
@@ -163,8 +162,8 @@ public class IntegrationTests
                 resultsFile);
 
             // Assert
-            Assert.AreEqual(0, exitCode);
-            Assert.IsTrue(File.Exists(resultsFile), "JUnit results file was not created");
+            Assert.Equal(0, exitCode);
+            Assert.True(File.Exists(resultsFile), "JUnit results file was not created");
 
             var content = File.ReadAllText(resultsFile);
             Assert.Contains("<testsuites", content);
@@ -183,7 +182,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that silent flag suppresses output.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_SilentFlag_SuppressesOutput()
     {
         // Act
@@ -194,14 +193,14 @@ public class IntegrationTests
             "--silent");
 
         // Assert
-        Assert.AreEqual(0, exitCode);
-        Assert.IsTrue(string.IsNullOrWhiteSpace(output), "Silent mode should suppress console output");
+        Assert.Equal(0, exitCode);
+        Assert.True(string.IsNullOrWhiteSpace(output), "Silent mode should suppress console output");
     }
 
     /// <summary>
     ///     Test that log flag writes output to file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_LogFlag_WritesOutputToFile()
     {
         // Arrange
@@ -218,8 +217,8 @@ public class IntegrationTests
                 logFile);
 
             // Assert
-            Assert.AreEqual(0, exitCode);
-            Assert.IsTrue(File.Exists(logFile), "Log file was not created");
+            Assert.Equal(0, exitCode);
+            Assert.True(File.Exists(logFile), "Log file was not created");
 
             var logContent = File.ReadAllText(logFile);
             Assert.Contains("NuGet Cache Tool version", logContent);
@@ -236,7 +235,7 @@ public class IntegrationTests
     /// <summary>
     ///     Test that unknown argument returns error.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_UnknownArgument_ReturnsError()
     {
         // Act
@@ -247,14 +246,14 @@ public class IntegrationTests
             "--unknown");
 
         // Assert
-        Assert.AreNotEqual(0, exitCode);
+        Assert.NotEqual(0, exitCode);
         Assert.Contains("Error", output);
     }
 
     /// <summary>
     ///     Test that a package argument caches the package and outputs the path.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_CachePackage_OutputsPath()
     {
         // Act
@@ -265,15 +264,15 @@ public class IntegrationTests
             "DemaConsulting.NuGet.Caching:0.1.0");
 
         // Assert
-        Assert.AreEqual(0, exitCode);
-        Assert.IsFalse(string.IsNullOrWhiteSpace(output));
+        Assert.Equal(0, exitCode);
+        Assert.False(string.IsNullOrWhiteSpace(output));
         Assert.DoesNotContain("Error", output);
     }
 
     /// <summary>
     ///     Test that attempting to cache a nonexistent package returns an error.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_CacheNonexistentPackage_ReturnsError()
     {
         // Act
@@ -284,14 +283,14 @@ public class IntegrationTests
             "DemaConsulting.NonExistent.Package.XYZ:99.99.99");
 
         // Assert
-        Assert.AreNotEqual(0, exitCode);
+        Assert.NotEqual(0, exitCode);
         Assert.Contains("Error", output);
     }
 
     /// <summary>
     ///     Test that specifying an invalid log file path returns an error.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void NuGetCacheTool_LogFlag_WithInvalidFilename_ReturnsError()
     {
         // Arrange - use a hard-coded path into a nonexistent directory to ensure failure
@@ -306,7 +305,7 @@ public class IntegrationTests
             invalidLogPath);
 
         // Assert
-        Assert.AreNotEqual(0, exitCode);
+        Assert.NotEqual(0, exitCode);
         Assert.Contains("Error", output);
     }
 }
