@@ -15,7 +15,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 | Dependency | Usage in Tests                                              |
 |------------|-------------------------------------------------------------|
-| `Context`  | Exercised directly through the `Context.Create` factory.   |
+| `Context`  | Exercised directly through the `Context.Create` factory.    |
 
 ## Test Scenarios
 

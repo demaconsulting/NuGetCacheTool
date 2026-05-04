@@ -21,6 +21,7 @@ words:
   - fileassert
   - mstest
   - Newtonsoft
+  - xunit
   - notapackage
   - nugetcache
   - Pandoc
