@@ -6,14 +6,17 @@
 # Patterns identifying all files that require review.
 # Processed in order; prefix a pattern with '!' to exclude.
 needs-review:
-  - "README.md"                  # Project readme
-  - "**/*.cs"                    # All C# source and test files
-  - "requirements.yaml"          # Root requirements file
-  - "docs/reqstream/**/*.yaml"   # Requirements files
-  - "docs/user_guide/**/*.md"    # User guide documents
-  - "docs/design/**/*.md"        # Design documents
-  - "!**/obj/**"                 # Exclude build output
-  - "!**/bin/**"                 # Exclude build output
+  - "README.md"                    # Project readme
+  - "requirements.yaml"            # Root requirements file
+  - "**/*.cs"                      # All C# source and test files
+  - "docs/reqstream/**/*.yaml"     # Requirements files
+  - "docs/design/**/*.md"          # Design documents
+  - "docs/verification/**/*.md"    # Verification documents
+  - "docs/user_guide/**/*.md"      # User guide documents
+  - "!**/obj/**"                   # Exclude build output
+  - "!**/bin/**"                   # Exclude build output
+  - "!node_modules/**"             # Exclude npm dependencies
+  - "!**/.venv/**"                 # Exclude Python virtual environment
 
 # Evidence source: review data and index.json are located in the 'reviews' branch
 # of this repository, accessed through the GitHub public HTTPS raw content access.
@@ -23,11 +26,12 @@ evidence-source:
   type: url
   location: https://raw.githubusercontent.com/demaconsulting/NuGetCacheTool/reviews/index.json
 
-# Review sets following standardized patterns for hierarchical compliance coverage
+# Review sets following hierarchical scope principles.
+# Each review-set focuses on a single compliance question with manageable file counts.
 reviews:
-  # Purpose Review (only one per repository)
+  # Purpose
   - id: Purpose
-    title: Review that Advertised Features Match System Design
+    title: Review of user-facing capabilities and system promises
     paths:
       - "README.md"
       - "docs/user_guide/**/*.md"
@@ -35,88 +39,146 @@ reviews:
       - "docs/design/introduction.md"
       - "docs/design/nuget-cache-tool/nuget-cache-tool.md"
 
-  # NuGetCacheTool-Architecture Review (one per system)
+  # NuGetCacheTool - Specials
   - id: NuGetCacheTool-Architecture
-    title: Review that NuGet Cache Tool Architecture Satisfies Requirements
+    title: Review of NuGet Cache Tool system architecture and operational validation
     paths:
       - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
       - "docs/design/introduction.md"
       - "docs/design/nuget-cache-tool/nuget-cache-tool.md"
+      - "docs/verification/nuget-cache-tool/nuget-cache-tool.md"
       - "test/**/AssemblyInfo.cs"
       - "test/**/Runner.cs"
       - "test/**/IntegrationTests.cs"
 
-  # System design review: proves the system design is consistent and complete
   - id: NuGetCacheTool-Design
-    title: Review that NuGet Cache Tool Design is Consistent and Complete
+    title: Review of NuGet Cache Tool architectural and design consistency
     paths:
       - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
       - "docs/reqstream/nuget-cache-tool/platform-requirements.yaml"
       - "docs/design/introduction.md"
       - "docs/design/nuget-cache-tool/**/*.md"
+      - "docs/verification/introduction.md"
 
-  # All requirements review: proves requirements are consistent and complete
   - id: NuGetCacheTool-AllRequirements
-    title: Review that All NuGet Cache Tool Requirements are Complete
+    title: Review of NuGet Cache Tool requirements quality and traceability
     paths:
       - "requirements.yaml"
       - "docs/reqstream/nuget-cache-tool/**/*.yaml"
-      - "docs/reqstream/ots/**/*.yaml"
+      - "docs/reqstream/ots/*.yaml"
 
-  # CLI subsystem review: proves the CLI subsystem satisfies its requirements
-  - id: NuGetCacheTool-Cli
-    title: Review that NuGet Cache Tool CLI Satisfies Subsystem Requirements
-    paths:
-      - "docs/reqstream/nuget-cache-tool/cli/cli.yaml"
-      - "docs/design/nuget-cache-tool/cli/cli.md"
-      - "test/**/Cli/CliTests.cs"
-
-  # Context unit review: proves the Context unit is correctly implemented
-  - id: NuGetCacheTool-Cli-Context
-    title: Review that NuGet Cache Tool CLI Context Implementation is Correct
-    paths:
-      - "docs/reqstream/nuget-cache-tool/cli/context.yaml"
-      - "docs/design/nuget-cache-tool/cli/context.md"
-      - "src/**/Cli/Context.cs"
-      - "test/**/Cli/ContextTests.cs"
-
-  # SelfTest subsystem review: proves the SelfTest subsystem satisfies its requirements
-  - id: NuGetCacheTool-SelfTest
-    title: Review that NuGet Cache Tool SelfTest Satisfies Subsystem Requirements
-    paths:
-      - "docs/reqstream/nuget-cache-tool/self-test/self-test.yaml"
-      - "docs/design/nuget-cache-tool/self-test/self-test.md"
-      - "test/**/SelfTest/SelfTestTests.cs"
-
-  # Validation unit review: proves the Validation unit is correctly implemented
-  - id: NuGetCacheTool-SelfTest-Validation
-    title: Review that NuGet Cache Tool SelfTest Validation Implementation is Correct
-    paths:
-      - "docs/reqstream/nuget-cache-tool/self-test/validation.yaml"
-      - "docs/design/nuget-cache-tool/self-test/validation.md"
-      - "src/**/SelfTest/Validation.cs"
-      - "test/**/SelfTest/ValidationTests.cs"
-
-  # PathHelpers unit review: proves the PathHelpers unit is correctly implemented
-  - id: NuGetCacheTool-SelfTest-PathHelpers
-    title: Review that NuGet Cache Tool SelfTest PathHelpers Implementation is Correct
-    paths:
-      - "docs/reqstream/nuget-cache-tool/self-test/path-helpers.yaml"
-      - "docs/design/nuget-cache-tool/self-test/path-helpers.md"
-      - "src/**/SelfTest/PathHelpers.cs"
-      - "test/**/SelfTest/PathHelpersTests.cs"
-
-  # Program unit review: proves the Program unit is correctly implemented
+  # NuGetCacheTool - Program
   - id: NuGetCacheTool-Program
-    title: Review that NuGet Cache Tool Program Implementation is Correct
+    title: Review of NuGet Cache Tool Program unit implementation
     paths:
       - "docs/reqstream/nuget-cache-tool/program.yaml"
       - "docs/design/nuget-cache-tool/program.md"
+      - "docs/verification/nuget-cache-tool/program.md"
       - "src/**/Program.cs"
       - "test/**/ProgramTests.cs"
 
-  # OTS dependency review
-  - id: NuGetCacheTool-OTS
-    title: Review of Off-The-Shelf Software Dependencies
+  # NuGetCacheTool - Cli
+  - id: NuGetCacheTool-Cli
+    title: Review of NuGet Cache Tool Cli subsystem architecture and interfaces
     paths:
-      - "docs/reqstream/ots/*.yaml"
+      - "docs/reqstream/nuget-cache-tool/cli/cli.yaml"
+      - "docs/design/nuget-cache-tool/cli/cli.md"
+      - "docs/verification/nuget-cache-tool/cli/cli.md"
+      - "test/**/Cli/CliTests.cs"
+
+  - id: NuGetCacheTool-Cli-Context
+    title: Review of NuGet Cache Tool Context unit implementation
+    paths:
+      - "docs/reqstream/nuget-cache-tool/cli/context.yaml"
+      - "docs/design/nuget-cache-tool/cli/context.md"
+      - "docs/verification/nuget-cache-tool/cli/context.md"
+      - "src/**/Cli/Context.cs"
+      - "test/**/Cli/ContextTests.cs"
+
+  # NuGetCacheTool - SelfTest
+  - id: NuGetCacheTool-SelfTest
+    title: Review of NuGet Cache Tool SelfTest subsystem architecture and interfaces
+    paths:
+      - "docs/reqstream/nuget-cache-tool/self-test/self-test.yaml"
+      - "docs/design/nuget-cache-tool/self-test/self-test.md"
+      - "docs/verification/nuget-cache-tool/self-test/self-test.md"
+      - "test/**/SelfTest/SelfTestTests.cs"
+
+  - id: NuGetCacheTool-SelfTest-Validation
+    title: Review of NuGet Cache Tool Validation unit implementation
+    paths:
+      - "docs/reqstream/nuget-cache-tool/self-test/validation.yaml"
+      - "docs/design/nuget-cache-tool/self-test/validation.md"
+      - "docs/verification/nuget-cache-tool/self-test/validation.md"
+      - "src/**/SelfTest/Validation.cs"
+      - "test/**/SelfTest/ValidationTests.cs"
+
+  - id: NuGetCacheTool-SelfTest-PathHelpers
+    title: Review of NuGet Cache Tool PathHelpers unit implementation
+    paths:
+      - "docs/reqstream/nuget-cache-tool/self-test/path-helpers.yaml"
+      - "docs/design/nuget-cache-tool/self-test/path-helpers.md"
+      - "docs/verification/nuget-cache-tool/self-test/path-helpers.md"
+      - "src/**/SelfTest/PathHelpers.cs"
+      - "test/**/SelfTest/PathHelpersTests.cs"
+
+  # OTS Items
+  - id: OTS-BuildMark
+    title: Review of BuildMark OTS verification evidence
+    paths:
+      - "docs/reqstream/ots/buildmark.yaml"
+      - "docs/verification/ots/buildmark.md"
+
+  - id: OTS-FileAssert
+    title: Review of FileAssert OTS verification evidence
+    paths:
+      - "docs/reqstream/ots/fileassert.yaml"
+      - "docs/verification/ots/fileassert.md"
+
+  - id: OTS-Pandoc
+    title: Review of Pandoc OTS verification evidence
+    paths:
+      - "docs/reqstream/ots/pandoc.yaml"
+      - "docs/verification/ots/pandoc.md"
+
+  - id: OTS-ReqStream
+    title: Review of ReqStream OTS verification evidence
+    paths:
+      - "docs/reqstream/ots/reqstream.yaml"
+      - "docs/verification/ots/reqstream.md"
+
+  - id: OTS-ReviewMark
+    title: Review of ReviewMark OTS verification evidence
+    paths:
+      - "docs/reqstream/ots/reviewmark.yaml"
+      - "docs/verification/ots/reviewmark.md"
+
+  - id: OTS-SarifMark
+    title: Review of SarifMark OTS verification evidence
+    paths:
+      - "docs/reqstream/ots/sarifmark.yaml"
+      - "docs/verification/ots/sarifmark.md"
+
+  - id: OTS-SonarMark
+    title: Review of SonarMark OTS verification evidence
+    paths:
+      - "docs/reqstream/ots/sonarmark.yaml"
+      - "docs/verification/ots/sonarmark.md"
+
+  - id: OTS-VersionMark
+    title: Review of VersionMark OTS verification evidence
+    paths:
+      - "docs/reqstream/ots/versionmark.yaml"
+      - "docs/verification/ots/versionmark.md"
+
+  - id: OTS-WeasyPrint
+    title: Review of WeasyPrint OTS verification evidence
+    paths:
+      - "docs/reqstream/ots/weasyprint.yaml"
+      - "docs/verification/ots/weasyprint.md"
+
+  - id: OTS-xUnit
+    title: Review of xUnit OTS verification evidence
+    paths:
+      - "docs/reqstream/ots/xunit.yaml"
+      - "docs/verification/ots/xunit.md"

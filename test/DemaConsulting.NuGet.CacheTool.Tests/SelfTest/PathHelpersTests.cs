@@ -25,13 +25,13 @@ namespace DemaConsulting.NuGet.CacheTool.Tests.SelfTest;
 /// <summary>
 ///     Tests for the PathHelpers class.
 /// </summary>
-[TestClass]
+[Collection("Sequential")]
 public class PathHelpersTests
 {
     /// <summary>
     ///     Test that SafePathCombine correctly combines valid paths.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly()
     {
         // Arrange
@@ -42,13 +42,13 @@ public class PathHelpersTests
         var result = PathHelpers.SafePathCombine(basePath, relativePath);
 
         // Assert
-        Assert.AreEqual(Path.Combine(basePath, relativePath), result);
+        Assert.Equal(Path.Combine(basePath, relativePath), result);
     }
 
     /// <summary>
     ///     Test that SafePathCombine throws ArgumentException for path traversal with double dots.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException()
     {
         // Arrange
@@ -56,7 +56,7 @@ public class PathHelpersTests
         var relativePath = "../etc/passwd";
 
         // Act & Assert
-        var exception = Assert.ThrowsExactly<ArgumentException>(() =>
+        var exception = Assert.Throws<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, relativePath));
         Assert.Contains("Invalid path component", exception.Message);
     }
@@ -64,7 +64,7 @@ public class PathHelpersTests
     /// <summary>
     ///     Test that SafePathCombine throws ArgumentException for path with double dots in middle.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException()
     {
         // Arrange
@@ -72,7 +72,7 @@ public class PathHelpersTests
         var relativePath = "subfolder/../../../etc/passwd";
 
         // Act & Assert
-        var exception = Assert.ThrowsExactly<ArgumentException>(() =>
+        var exception = Assert.Throws<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, relativePath));
         Assert.Contains("Invalid path component", exception.Message);
     }
@@ -80,21 +80,21 @@ public class PathHelpersTests
     /// <summary>
     ///     Test that SafePathCombine throws ArgumentException for a Unix absolute path.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_UnixAbsolutePath_ThrowsArgumentException()
     {
         // Arrange
         const string basePath = "/tmp/base";
 
         // Act & Assert
-        Assert.ThrowsExactly<ArgumentException>(() =>
+        Assert.Throws<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, "/etc/passwd"));
     }
 
     /// <summary>
     ///     Test that SafePathCombine throws ArgumentException for a Windows absolute path.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException()
     {
         // This test only applies on Windows where drive-letter paths are rooted
@@ -107,14 +107,14 @@ public class PathHelpersTests
         const string basePath = "/tmp/base";
 
         // Act & Assert
-        Assert.ThrowsExactly<ArgumentException>(() =>
+        Assert.Throws<ArgumentException>(() =>
             PathHelpers.SafePathCombine(basePath, @"C:\Windows\System32"));
     }
 
     /// <summary>
     ///     Test that SafePathCombine correctly handles current directory reference.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly()
     {
         // Arrange
@@ -125,13 +125,13 @@ public class PathHelpersTests
         var result = PathHelpers.SafePathCombine(basePath, relativePath);
 
         // Assert
-        Assert.AreEqual(Path.Combine(basePath, relativePath), result);
+        Assert.Equal(Path.Combine(basePath, relativePath), result);
     }
 
     /// <summary>
     ///     Test that SafePathCombine correctly handles nested paths.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly()
     {
         // Arrange
@@ -142,13 +142,13 @@ public class PathHelpersTests
         var result = PathHelpers.SafePathCombine(basePath, relativePath);
 
         // Assert
-        Assert.AreEqual(Path.Combine(basePath, relativePath), result);
+        Assert.Equal(Path.Combine(basePath, relativePath), result);
     }
 
     /// <summary>
     ///     Test that SafePathCombine correctly handles empty relative path.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_EmptyRelativePath_ReturnsBasePath()
     {
         // Arrange
@@ -159,13 +159,13 @@ public class PathHelpersTests
         var result = PathHelpers.SafePathCombine(basePath, relativePath);
 
         // Assert
-        Assert.AreEqual(Path.Combine(basePath, relativePath), result);
+        Assert.Equal(Path.Combine(basePath, relativePath), result);
     }
 
     /// <summary>
     ///     Test that SafePathCombine correctly handles filenames that start with double dots but stay within the base directory.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_DoubleDotPrefix_CombinesCorrectly()
     {
         // Arrange
@@ -176,28 +176,28 @@ public class PathHelpersTests
         var result = PathHelpers.SafePathCombine(basePath, relativePath);
 
         // Assert
-        Assert.AreEqual(Path.Combine(basePath, relativePath), result);
+        Assert.Equal(Path.Combine(basePath, relativePath), result);
     }
 
     /// <summary>
     ///     Test that SafePathCombine throws ArgumentNullException when base path is null.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_NullBase_ThrowsArgumentNullException()
     {
         // Act: verify that a null base path throws ArgumentNullException
-        Assert.ThrowsExactly<ArgumentNullException>(() =>
+        Assert.Throws<ArgumentNullException>(() =>
             PathHelpers.SafePathCombine(null!, "relative/path"));
     }
 
     /// <summary>
     ///     Test that SafePathCombine throws ArgumentNullException when relative path is null.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void PathHelpers_SafePathCombine_NullRelative_ThrowsArgumentNullException()
     {
         // Act: verify that a null relative path throws ArgumentNullException
-        Assert.ThrowsExactly<ArgumentNullException>(() =>
+        Assert.Throws<ArgumentNullException>(() =>
             PathHelpers.SafePathCombine("/base/path", null!));
     }
 }

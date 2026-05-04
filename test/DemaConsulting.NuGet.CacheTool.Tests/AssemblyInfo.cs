@@ -18,4 +18,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-[assembly: DoNotParallelize]
+namespace DemaConsulting.NuGet.CacheTool.Tests;
+
+// Tests share Console state, so they must not run in parallel.
+/// <summary>
+/// Defines the Sequential test collection.
+/// Tests in this collection are disabled from running in parallel to
+/// prevent conflicts when sharing Console state.
+/// </summary>
+[CollectionDefinition("Sequential", DisableParallelization = true)]
+public sealed class SequentialCollection { }

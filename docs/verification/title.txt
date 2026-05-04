@@ -1,0 +1,13 @@
+---
+title: NuGet Cache Tool Verification Design Document
+subtitle: A .NET Command-Line Tool for NuGet Package Caching
+author: DEMA Consulting
+description: Verification design document for the NuGet Cache Tool
+lang: en-US
+keywords:
+  - NuGet Cache Tool
+  - .NET
+  - Command-Line Tool
+  - Verification
+  - Verification Design Document
+---

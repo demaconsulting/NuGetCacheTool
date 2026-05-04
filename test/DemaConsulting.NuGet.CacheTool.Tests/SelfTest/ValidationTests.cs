@@ -26,13 +26,13 @@ namespace DemaConsulting.NuGet.CacheTool.Tests.SelfTest;
 /// <summary>
 ///     Unit tests for the Validation class: results-file writing behavior.
 /// </summary>
-[TestClass]
+[Collection("Sequential")]
 public class ValidationTests
 {
     /// <summary>
     ///     Test that Validation writes results in TRX format when --results specifies a .trx file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Validation_Run_TrxResultsRequested_WritesTrxFile()
     {
         // Arrange: prepare a temporary TRX results file path
@@ -45,8 +45,8 @@ public class ValidationTests
             Validation.Run(context);
 
             // Assert: verify TRX results file is created with expected XML structure
-            Assert.AreEqual(0, context.ExitCode);
-            Assert.IsTrue(File.Exists(resultsFile), "TRX results file was not created");
+            Assert.Equal(0, context.ExitCode);
+            Assert.True(File.Exists(resultsFile), "TRX results file was not created");
 
             var content = File.ReadAllText(resultsFile);
             Assert.Contains("<TestRun", content);
@@ -64,7 +64,7 @@ public class ValidationTests
     /// <summary>
     ///     Test that Validation writes results in JUnit XML format when --results specifies a .xml file.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Validation_Run_JUnitResultsRequested_WritesJUnitFile()
     {
         // Arrange: prepare a temporary JUnit XML results file path
@@ -77,8 +77,8 @@ public class ValidationTests
             Validation.Run(context);
 
             // Assert: verify JUnit results file is created with expected XML structure
-            Assert.AreEqual(0, context.ExitCode);
-            Assert.IsTrue(File.Exists(resultsFile), "JUnit results file was not created");
+            Assert.Equal(0, context.ExitCode);
+            Assert.True(File.Exists(resultsFile), "JUnit results file was not created");
 
             var content = File.ReadAllText(resultsFile);
             Assert.Contains("<testsuites", content);
@@ -97,7 +97,7 @@ public class ValidationTests
     /// <summary>
     ///     Test that Validation reports an error for an unsupported results file extension.
     /// </summary>
-    [TestMethod]
+    [Fact]
     public void Validation_Run_UnsupportedResultsFormat_ReportsError()
     {
         // Arrange: create context requesting an unsupported results format
@@ -107,6 +107,37 @@ public class ValidationTests
         Validation.Run(context);
 
         // Assert: verify unsupported format causes a non-zero exit code
-        Assert.AreNotEqual(0, context.ExitCode);
+        Assert.NotEqual(0, context.ExitCode);
+    }
+
+    /// <summary>
+    ///     Test that Run prints a summary containing total, passed, and failed counts.
+    /// </summary>
+    [Fact]
+    public void Validation_Run_WithSilentContext_PrintsSummary()
+    {
+        // Arrange: setup unique log file path to capture silent context output
+        var logFile = Path.Combine(Path.GetTempPath(), $"validation_test_{Guid.NewGuid()}.log");
+        try
+        {
+            using (var context = Context.Create(["--silent", "--log", logFile]))
+            {
+                // Act: run validation with silent context and log file
+                Validation.Run(context);
+            }
+
+            // Assert: verify summary lines are written to log file
+            var logContent = File.ReadAllText(logFile);
+            Assert.Contains("Total Tests:", logContent);
+            Assert.Contains("Passed:", logContent);
+            Assert.Contains("Failed:", logContent);
+        }
+        finally
+        {
+            if (File.Exists(logFile))
+            {
+                File.Delete(logFile);
+            }
+        }
     }
 }
