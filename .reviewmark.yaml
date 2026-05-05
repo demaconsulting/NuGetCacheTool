@@ -57,6 +57,7 @@ reviews:
       - "docs/reqstream/nuget-cache-tool.yaml"
       - "docs/reqstream/nuget-cache-tool/platform-requirements.yaml"
       - "docs/design/introduction.md"
+      - "docs/design/nuget-cache-tool.md"
       - "docs/design/nuget-cache-tool/**/*.md"
       - "docs/verification/introduction.md"
 
@@ -64,6 +65,7 @@ reviews:
     title: Review of NuGet Cache Tool requirements quality and traceability
     paths:
       - "requirements.yaml"
+      - "docs/reqstream/nuget-cache-tool.yaml"
       - "docs/reqstream/nuget-cache-tool/**/*.yaml"
       - "docs/reqstream/ots/*.yaml"
 
