@@ -1,12 +1,12 @@
-# CLI Subsystem Design
+## CLI Subsystem Design
 
-## Purpose
+### Purpose
 
 The CLI subsystem provides command-line interface functionality for the NuGet Cache Tool.
 It handles argument parsing and output management, translating raw command-line arguments
 into structured options and commands that are executed by the top-level `Program` unit.
 
-## Responsibilities
+### Responsibilities
 
 - Parse and validate all command-line arguments
 - Manage output channels (console, log file, silent mode)
@@ -15,13 +15,13 @@ into structured options and commands that are executed by the top-level `Program
   display, help display, package caching, and self-validation
 - Write output to a log file when --log is specified, even in silent mode
 
-## Units
+### Units
 
 | Unit | Class | Description |
 | ---- | ----- | ----------- |
 | Context | `Context.cs` | Command-line argument parsing and output management |
 
-## Context API
+### Context API
 
 The `Context` unit exposes the following public API:
 
@@ -40,14 +40,14 @@ The `Context` unit exposes the following public API:
 | `WriteError(string)` | method | Writes a line to stderr (and log file); sets `ExitCode` to 1 |
 | `Dispose()` | method | Flushes and closes the log file writer if open |
 
-## Interactions
+### Interactions
 
 | Dependency | Direction | Description |
 | ---------- | --------- | ----------- |
 | `Program` | Top-level unit (entry point) | Creates `Context` and dispatches to CLI subsystem |
 | `SelfTest` subsystem | Downstream | CLI passes `Context` to `Validation.Run` |
 
-## Error Handling
+### Error Handling
 
 | Scenario | Behavior |
 | -------- | -------- |

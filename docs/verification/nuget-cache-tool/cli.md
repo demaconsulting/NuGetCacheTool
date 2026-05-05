@@ -1,9 +1,9 @@
-# CLI Subsystem Verification
+## CLI Subsystem Verification
 
 This document describes the subsystem-level verification design for the `Cli` subsystem. It
 defines the overall verification strategy and requirement coverage for the CLI subsystem.
 
-## Verification Approach
+### Verification Approach
 
 The CLI subsystem is verified with subsystem integration tests defined in `CliTests.cs`. These
 tests exercise the public API of the `Context` class directly, simulating all supported
@@ -11,15 +11,15 @@ command-line argument combinations and verifying the resulting context state and
 
 No mocking is required; the tests exercise the full CLI parsing and output management logic.
 
-## Dependencies
+### Dependencies
 
 | Dependency | Usage in Tests                                              |
 |------------|-------------------------------------------------------------|
 | `Context`  | Exercised directly through the `Context.Create` factory.    |
 
-## Test Scenarios
+### Test Scenarios
 
-### Cli_VersionFlag_SetsVersionOnContext
+#### Cli_VersionFlag_SetsVersionOnContext
 
 **Scenario**: Context is created from `["--version"]`.
 
@@ -27,7 +27,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-VersionFlag`.
 
-### Cli_ShortVersionFlag_SetsVersionOnContext
+#### Cli_ShortVersionFlag_SetsVersionOnContext
 
 **Scenario**: Context is created from `["-v"]`.
 
@@ -35,7 +35,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-VersionFlag`.
 
-### Cli_HelpFlag_SetsHelpOnContext
+#### Cli_HelpFlag_SetsHelpOnContext
 
 **Scenario**: Context is created from `["--help"]`.
 
@@ -43,7 +43,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-HelpFlag`.
 
-### Cli_ShortHelpFlagH_SetsHelpOnContext
+#### Cli_ShortHelpFlagH_SetsHelpOnContext
 
 **Scenario**: Context is created from `["-h"]`.
 
@@ -51,7 +51,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-HelpFlag`.
 
-### Cli_ShortHelpFlagQuestionMark_SetsHelpOnContext
+#### Cli_ShortHelpFlagQuestionMark_SetsHelpOnContext
 
 **Scenario**: Context is created from `["-?"]`.
 
@@ -59,7 +59,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-HelpFlag`.
 
-### Cli_SilentFlag_SuppressesAllOutput
+#### Cli_SilentFlag_SuppressesAllOutput
 
 **Scenario**: Context is created from `["--silent"]`; `context.WriteLine` and
 `context.WriteError` are called.
@@ -68,7 +68,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-SilentFlag`.
 
-### Cli_PackageArgument_AddedToPackagesList
+#### Cli_PackageArgument_AddedToPackagesList
 
 **Scenario**: Context is created from `["Package.One:1.0.0", "Package.Two:2.3.4"]`.
 
@@ -76,7 +76,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-CachePackages`.
 
-### Cli_ErrorOutput_SetsNonZeroExitCode
+#### Cli_ErrorOutput_SetsNonZeroExitCode
 
 **Scenario**: Context is created from `[]`; `context.WriteError` is called.
 
@@ -84,7 +84,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-ErrorOutput`.
 
-### Cli_ErrorOutput_WritesMessageToConsole
+#### Cli_ErrorOutput_WritesMessageToConsole
 
 **Scenario**: Context is created from `[]`; `context.WriteError` is called with a message.
 
@@ -92,7 +92,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-ErrorOutput`.
 
-### Cli_UnknownArgument_ThrowsArgumentException
+#### Cli_UnknownArgument_ThrowsArgumentException
 
 **Scenario**: Context is created from `["--unknown-flag"]`.
 
@@ -100,7 +100,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-InvalidArguments`.
 
-### Cli_LogFlag_WritesToLogFile
+#### Cli_LogFlag_WritesToLogFile
 
 **Scenario**: Context is created from `["--log", logFile]`; `context.WriteLine` is called.
 
@@ -108,7 +108,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-LogFlag`.
 
-### Cli_ValidateFlag_SetsValidateOnContext
+#### Cli_ValidateFlag_SetsValidateOnContext
 
 **Scenario**: Context is created from `["--validate"]`.
 
@@ -116,7 +116,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-ValidateFlag`.
 
-### Cli_ResultsFlag_SetsResultsFileOnContext
+#### Cli_ResultsFlag_SetsResultsFileOnContext
 
 **Scenario**: Context is created from `["--results", "results.trx"]`.
 
@@ -124,7 +124,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-ResultsFlag`.
 
-### Cli_LogFlagWithoutValue_ThrowsArgumentException
+#### Cli_LogFlagWithoutValue_ThrowsArgumentException
 
 **Scenario**: Context is created from `["--log"]` (missing value).
 
@@ -132,7 +132,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-InvalidArguments`.
 
-### Cli_ResultsFlagWithoutValue_ThrowsArgumentException
+#### Cli_ResultsFlagWithoutValue_ThrowsArgumentException
 
 **Scenario**: Context is created from `["--results"]` (missing value).
 
@@ -140,7 +140,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 
 **Requirement coverage**: `NuGetCache-Cli-InvalidArguments`.
 
-### Cli_SilentAndLog_WritesToLogFileOnly
+#### Cli_SilentAndLog_WritesToLogFileOnly
 
 **Scenario**: Context is created from `["--silent", "--log", logFile]`; `context.WriteLine` is
 called.
@@ -149,7 +149,7 @@ called.
 
 **Requirement coverage**: `NuGetCache-Cli-SilentLogInteraction`.
 
-## Requirements Coverage
+### Requirements Coverage
 
 - **`NuGetCache-Cli-VersionFlag`**: Cli_VersionFlag_SetsVersionOnContext,
   Cli_ShortVersionFlag_SetsVersionOnContext

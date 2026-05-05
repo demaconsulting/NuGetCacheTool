@@ -1,8 +1,8 @@
-# ReqStream Verification
+## ReqStream Verification
 
 This document provides the verification evidence for the `ReqStream` OTS software item.
 
-## Required Functionality
+### Required Functionality
 
 DemaConsulting.ReqStream processes requirements.yaml and the TRX test-result files to produce a
 requirements report, justifications document, and traceability matrix. When run with `--enforce`, it
@@ -10,7 +10,7 @@ exits with a non-zero code if any requirement lacks test evidence, making unprov
 build-breaking condition. A successful pipeline run with `--enforce` proves all requirements are
 covered and that ReqStream is functioning.
 
-## Verification Approach
+### Verification Approach
 
 ReqStream is verified by two complementary layers of evidence. First, the CI pipeline runs
 `reqstream --validate --results artifacts/reqstream-self-validation.trx`, which exercises
@@ -25,9 +25,9 @@ non-zero if any requirement lacks test evidence, which would also fail the build
 CI build proves ReqStream correctly processed the project's real requirements and found
 complete test coverage.
 
-## Test Scenarios
+### Test Scenarios
 
-### ReqStream_EnforcementMode
+#### ReqStream_EnforcementMode
 
 **Scenario**: ReqStream self-validation exercises enforcement mode where all requirements have test
 coverage.
@@ -36,6 +36,6 @@ coverage.
 
 **Requirement coverage**: `NuGetCache-OTS-ReqStream`.
 
-## Requirements Coverage
+### Requirements Coverage
 
 - **`NuGetCache-OTS-ReqStream`**: ReqStream_EnforcementMode

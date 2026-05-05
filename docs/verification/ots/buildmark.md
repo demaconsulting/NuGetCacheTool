@@ -1,15 +1,15 @@
-# BuildMark Verification
+## BuildMark Verification
 
 This document provides the verification evidence for the `BuildMark` OTS software item.
 
-## Required Functionality
+### Required Functionality
 
 DemaConsulting.BuildMark queries the GitHub API to capture workflow run details and renders them as
 a markdown build-notes document included in the release artifacts. It runs as part of the same CI
 pipeline that produces the TRX test results, so a successful pipeline run is evidence that BuildMark
 executed without error.
 
-## Verification Approach
+### Verification Approach
 
 BuildMark is verified by two complementary layers of evidence. First, the CI pipeline runs
 `buildmark --validate --results artifacts/buildmark-self-validation.trx`, which exercises
@@ -22,9 +22,9 @@ artifact, and FileAssert asserts the PDF exists, has content, and contains expec
 (`WeasyPrint_BuildNotesPdf`). A CI build failure at any step in this chain is evidence that
 BuildMark did not produce the required output.
 
-## Test Scenarios
+### Test Scenarios
 
-### BuildMark_MarkdownReportGeneration
+#### BuildMark_MarkdownReportGeneration
 
 **Scenario**: A CI pipeline run triggers BuildMark with live GitHub Actions metadata.
 
@@ -33,6 +33,6 @@ in the release artifacts.
 
 **Requirement coverage**: `NuGetCache-OTS-BuildMark`.
 
-## Requirements Coverage
+### Requirements Coverage
 
 - **`NuGetCache-OTS-BuildMark`**: BuildMark_MarkdownReportGeneration

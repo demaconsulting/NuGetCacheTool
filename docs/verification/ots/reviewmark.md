@@ -1,16 +1,16 @@
-# ReviewMark Verification
+## ReviewMark Verification
 
 This document provides the verification evidence for the ReviewMark OTS software item. Requirements
 for this OTS item are defined in the ReviewMark OTS Software Requirements document.
 
-## Required Functionality
+### Required Functionality
 
 DemaConsulting.ReviewMark reads the `.reviewmark.yaml` configuration and the review evidence store
 to produce a review plan and review report documenting file review coverage and currency. It runs in
 the same CI pipeline that produces the TRX test results, so a successful pipeline run is evidence
 that ReviewMark executed without error.
 
-## Verification Approach
+### Verification Approach
 
 ReviewMark is verified by two complementary layers of evidence. First, the CI pipeline runs
 `reviewmark --validate --results artifacts/reviewmark-self-validation.trx`, which exercises
@@ -24,9 +24,9 @@ WeasyPrint renders both to PDF and FileAssert asserts their content
 (`WeasyPrint_ReviewPlanPdf`, `WeasyPrint_ReviewReportPdf`). A CI build failure at any step is
 evidence that ReviewMark did not produce the required review documents.
 
-## Test Scenarios
+### Test Scenarios
 
-### ReviewMark_ReviewPlanGeneration
+#### ReviewMark_ReviewPlanGeneration
 
 **Scenario**: ReviewMark self-validation uses `--definition` and `--plan` to generate a review plan
 from a test configuration.
@@ -35,7 +35,7 @@ from a test configuration.
 
 **Requirement coverage**: `NuGetCache-OTS-ReviewMark`.
 
-### ReviewMark_ReviewReportGeneration
+#### ReviewMark_ReviewReportGeneration
 
 **Scenario**: ReviewMark self-validation uses `--definition` and `--report` to generate a review
 report from a test configuration and evidence store.
@@ -44,6 +44,6 @@ report from a test configuration and evidence store.
 
 **Requirement coverage**: `NuGetCache-OTS-ReviewMark`.
 
-## Requirements Coverage
+### Requirements Coverage
 
 - **`NuGetCache-OTS-ReviewMark`**: ReviewMark_ReviewPlanGeneration, ReviewMark_ReviewReportGeneration

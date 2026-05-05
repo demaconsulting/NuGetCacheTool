@@ -1,22 +1,22 @@
-# PathHelpers Verification
+### PathHelpers Verification
 
 This document describes the unit-level verification design for the `PathHelpers` unit. It defines
 the test scenarios, dependency usage, and requirement coverage for `PathHelpers.cs`.
 
-## Verification Approach
+#### Verification Approach
 
 `PathHelpers` is verified with unit tests defined in `PathHelpersTests.cs`. The tests exercise
 all supported path combinations, boundary conditions, and error paths. No external dependencies
 are involved; the tests call `PathHelpers.SafePathCombine` directly.
 
-## Dependencies
+#### Dependencies
 
 No dependencies. `PathHelpers.SafePathCombine` is a pure static method with no external
 collaborators.
 
-## Test Scenarios
+#### Test Scenarios
 
-### PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly
+##### PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly
 
 **Scenario**: `SafePathCombine` is called with a valid base and relative path.
 
@@ -24,7 +24,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
 
-### PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException
+##### PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException
 
 **Scenario**: `SafePathCombine` is called with `"../etc/passwd"` as the relative path.
 
@@ -32,7 +32,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
 
-### PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException
+##### PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException
 
 **Scenario**: `SafePathCombine` is called with `"subfolder/../../../etc/passwd"`.
 
@@ -40,7 +40,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
 
-### PathHelpers_SafePathCombine_UnixAbsolutePath_ThrowsArgumentException
+##### PathHelpers_SafePathCombine_UnixAbsolutePath_ThrowsArgumentException
 
 **Scenario**: `SafePathCombine` is called with `"/etc/passwd"` as the relative path.
 
@@ -48,7 +48,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
 
-### PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException
+##### PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException
 
 **Scenario**: `SafePathCombine` is called with `@"C:\Windows\System32"` as the relative path
 (Windows only; test skips on non-Windows).
@@ -57,7 +57,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
 
-### PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly
+##### PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly
 
 **Scenario**: `SafePathCombine` is called with `"./subfolder/file.txt"`.
 
@@ -65,7 +65,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
 
-### PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly
+##### PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly
 
 **Scenario**: `SafePathCombine` is called with a deeply nested relative path.
 
@@ -73,7 +73,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
 
-### PathHelpers_SafePathCombine_EmptyRelativePath_ReturnsBasePath
+##### PathHelpers_SafePathCombine_EmptyRelativePath_ReturnsBasePath
 
 **Scenario**: `SafePathCombine` is called with an empty string as the relative path.
 
@@ -81,7 +81,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
 
-### PathHelpers_SafePathCombine_DoubleDotPrefix_CombinesCorrectly
+##### PathHelpers_SafePathCombine_DoubleDotPrefix_CombinesCorrectly
 
 **Scenario**: `SafePathCombine` is called with `"..data/file.txt"` (a filename starting with
 `..` but not a traversal component).
@@ -90,7 +90,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
 
-### PathHelpers_SafePathCombine_NullBase_ThrowsArgumentNullException
+##### PathHelpers_SafePathCombine_NullBase_ThrowsArgumentNullException
 
 **Scenario**: `SafePathCombine` is called with `null` as the base path.
 
@@ -98,7 +98,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-NullArguments`.
 
-### PathHelpers_SafePathCombine_NullRelative_ThrowsArgumentNullException
+##### PathHelpers_SafePathCombine_NullRelative_ThrowsArgumentNullException
 
 **Scenario**: `SafePathCombine` is called with `null` as the relative path.
 
@@ -106,7 +106,7 @@ collaborators.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-NullArguments`.
 
-## Requirements Coverage
+#### Requirements Coverage
 
 - **`NuGetCache-PathHelpers-SafePathCombine`**: PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly,
   PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException,

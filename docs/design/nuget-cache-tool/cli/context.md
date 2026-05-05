@@ -1,12 +1,12 @@
-# Context Unit Design
+### Context Unit Design
 
-## Purpose
+#### Purpose
 
 The `Context` class provides command-line argument parsing and centralized output
 management for the NuGet Cache Tool. It acts as the primary data carrier between
 the entry point and all operational units.
 
-## Data Model
+#### Data Model
 
 | Member | Type | Description |
 | ------ | ---- | ----------- |
@@ -20,7 +20,7 @@ the entry point and all operational units.
 | `_logWriter` | `StreamWriter?` | Log file writer; null if `--log` not specified |
 | `_hasErrors` | `bool` | Internal flag set by `WriteError`; drives `ExitCode` |
 
-## ArgumentParser Inner Class
+#### ArgumentParser Inner Class
 
 `ArgumentParser` is a private inner class that implements the argument parsing
 state machine. It processes `string[] args` sequentially, recognizing flags and
@@ -35,27 +35,27 @@ package arguments:
 - `[package]:[version]` → appends to `Packages` list
 - Any other argument → throws `ArgumentException`
 
-## Key Algorithms
+#### Key Algorithms
 
-### Argument Parsing
+##### Argument Parsing
 
 Arguments are consumed left-to-right. Multi-token arguments (`--log`, `--results`)
 consume the following token as their value, throwing `ArgumentException` if no
 value follows.
 
-### Output Management
+##### Output Management
 
 `WriteLine(string)` writes to the console (unless silent) and to the log file if open.
 `WriteError(string)` writes to stderr (unless silent), writes to the log file, and
 sets `_hasErrors = true`, which causes `ExitCode` to return `1`.
 
-## Interactions
+#### Interactions
 
 - **Consumed by `Program`**: `Program.Main` creates the context and passes it to `Program.Run`
 - **Consumed by `Validation`**: `Validation.Run` uses `Context` for output and results path
 - **Consumed by `PathHelpers`**: indirectly via `Validation.Run` calling `SafePathCombine`
 
-## Resource Management
+#### Resource Management
 
 `Context` implements `IDisposable`. The `Dispose()` method flushes and closes the
 `StreamWriter` opened for the `--log` file (if any). Callers must use a `using`

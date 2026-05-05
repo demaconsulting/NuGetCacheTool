@@ -1,22 +1,22 @@
-# Context Verification
+### Context Verification
 
 This document describes the unit-level verification design for the `Context` unit. It defines the
 test scenarios, dependency usage, and requirement coverage for `Context.cs`.
 
-## Verification Approach
+#### Verification Approach
 
 `Context` is verified with unit tests defined in `ContextTests.cs`. The tests exercise all
 supported command-line flags, output methods, and error conditions. Console streams are redirected
 within each test to capture output and verify behavior independently of global state.
 
-## Dependencies
+#### Dependencies
 
 No external dependencies are mocked. `Context` is tested by direct instantiation via
 `Context.Create`.
 
-## Test Scenarios
+#### Test Scenarios
 
-### Context_Create_NoArguments_ReturnsDefaultContext
+##### Context_Create_NoArguments_ReturnsDefaultContext
 
 **Scenario**: `Context.Create` is called with an empty argument array.
 
@@ -24,7 +24,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`.
 
-### Context_Create_VersionFlag_SetsVersionTrue
+##### Context_Create_VersionFlag_SetsVersionTrue
 
 **Scenario**: `Context.Create` is called with `["--version"]`.
 
@@ -32,7 +32,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`.
 
-### Context_Create_ShortVersionFlag_SetsVersionTrue
+##### Context_Create_ShortVersionFlag_SetsVersionTrue
 
 **Scenario**: `Context.Create` is called with `["-v"]`.
 
@@ -40,7 +40,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`.
 
-### Context_Create_HelpFlag_SetsHelpTrue
+##### Context_Create_HelpFlag_SetsHelpTrue
 
 **Scenario**: `Context.Create` is called with `["--help"]`.
 
@@ -48,7 +48,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`.
 
-### Context_Create_ShortHelpFlag_H_SetsHelpTrue
+##### Context_Create_ShortHelpFlag_H_SetsHelpTrue
 
 **Scenario**: `Context.Create` is called with `["-h"]`.
 
@@ -56,7 +56,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`.
 
-### Context_Create_ShortHelpFlag_Question_SetsHelpTrue
+##### Context_Create_ShortHelpFlag_Question_SetsHelpTrue
 
 **Scenario**: `Context.Create` is called with `["-?"]`.
 
@@ -64,7 +64,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`.
 
-### Context_Create_SilentFlag_SetsSilentTrue
+##### Context_Create_SilentFlag_SetsSilentTrue
 
 **Scenario**: `Context.Create` is called with `["--silent"]`.
 
@@ -72,7 +72,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`, `NuGetCache-Context-SilentOutput`.
 
-### Context_Create_ValidateFlag_SetsValidateTrue
+##### Context_Create_ValidateFlag_SetsValidateTrue
 
 **Scenario**: `Context.Create` is called with `["--validate"]`.
 
@@ -80,7 +80,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`.
 
-### Context_Create_ResultsFlag_SetsResultsFile
+##### Context_Create_ResultsFlag_SetsResultsFile
 
 **Scenario**: `Context.Create` is called with `["--results", "test.trx"]`.
 
@@ -88,7 +88,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`.
 
-### Context_Create_LogFlag_OpensLogFile
+##### Context_Create_LogFlag_OpensLogFile
 
 **Scenario**: `Context.Create` is called with `["--log", logFile]`; a message is written.
 
@@ -96,7 +96,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`, `NuGetCache-Context-LogFile`.
 
-### Context_Create_PackageArgument_AddsToPackagesList
+##### Context_Create_PackageArgument_AddsToPackagesList
 
 **Scenario**: `Context.Create` is called with `["DemaConsulting.NuGet.Caching:0.1.0"]`.
 
@@ -104,7 +104,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ArgumentParsing`.
 
-### Context_WriteLine_NotSilent_WritesToConsole
+##### Context_WriteLine_NotSilent_WritesToConsole
 
 **Scenario**: `context.WriteLine` is called on a non-silent context.
 
@@ -112,7 +112,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-SilentOutput`.
 
-### Context_WriteLine_Silent_DoesNotWriteToConsole
+##### Context_WriteLine_Silent_DoesNotWriteToConsole
 
 **Scenario**: `context.WriteLine` is called on a silent context.
 
@@ -120,7 +120,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-SilentOutput`.
 
-### Context_WriteError_SetsErrorExitCode
+##### Context_WriteError_SetsErrorExitCode
 
 **Scenario**: `context.WriteError` is called on a context with `ExitCode` 0.
 
@@ -128,7 +128,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ErrorTracking`.
 
-### Context_WriteError_NotSilent_WritesToConsole
+##### Context_WriteError_NotSilent_WritesToConsole
 
 **Scenario**: `context.WriteError` is called on a non-silent context.
 
@@ -136,7 +136,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-ErrorTracking`.
 
-### Context_WriteError_WritesToLogFile
+##### Context_WriteError_WritesToLogFile
 
 **Scenario**: `context.WriteError` is called on a silent context with a log file.
 
@@ -144,7 +144,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-LogFile`.
 
-### Context_Create_UnknownArgument_ThrowsArgumentException
+##### Context_Create_UnknownArgument_ThrowsArgumentException
 
 **Scenario**: `Context.Create` is called with `["--unknown"]`.
 
@@ -152,7 +152,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-InvalidArguments`.
 
-### Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
+##### Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
 
 **Scenario**: `Context.Create` is called with `["--log"]` (no value following).
 
@@ -160,7 +160,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-InvalidArguments`.
 
-### Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
+##### Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
 
 **Scenario**: `Context.Create` is called with `["--results"]` (no value following).
 
@@ -168,7 +168,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-InvalidArguments`.
 
-### Context_Create_WithoutColonInPackage_ThrowsArgumentException
+##### Context_Create_WithoutColonInPackage_ThrowsArgumentException
 
 **Scenario**: `Context.Create` is called with `["notapackage"]` (no colon separator).
 
@@ -176,7 +176,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-InvalidArguments`.
 
-### Context_WriteError_Silent_DoesNotWriteToConsole
+##### Context_WriteError_Silent_DoesNotWriteToConsole
 
 **Scenario**: `context.WriteError` is called on a silent context.
 
@@ -184,7 +184,7 @@ No external dependencies are mocked. `Context` is tested by direct instantiation
 
 **Requirement coverage**: `NuGetCache-Context-SilentOutput`.
 
-## Requirements Coverage
+#### Requirements Coverage
 
 - **`NuGetCache-Context-ArgumentParsing`**: Context_Create_NoArguments_ReturnsDefaultContext,
   Context_Create_VersionFlag_SetsVersionTrue, Context_Create_ShortVersionFlag_SetsVersionTrue,

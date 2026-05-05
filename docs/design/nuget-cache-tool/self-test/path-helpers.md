@@ -1,11 +1,11 @@
-# PathHelpers Unit Design
+### PathHelpers Unit Design
 
-## Purpose
+#### Purpose
 
 `PathHelpers` provides safe path combination utilities that prevent path traversal
 attacks when user-controlled path components are combined with a trusted base path.
 
-## SafePathCombine Algorithm
+#### SafePathCombine Algorithm
 
 `SafePathCombine(basePath, relativePath)` applies the following steps:
 
@@ -21,7 +21,7 @@ attacks when user-controlled path components are combined with a trusted base pa
    or `Path.AltDirectorySeparatorChar`, or is itself rooted (absolute), which would
    indicate the combined path escapes the base directory
 
-## Security Properties
+#### Security Properties
 
 | Property | Guarantee |
 | -------- | --------- |
@@ -30,7 +30,7 @@ attacks when user-controlled path components are combined with a trusted base pa
 | Canonicalization check | `GetFullPath` normalizes paths; `GetRelativePath` checks `..`, `..`+sep, or rooted |
 | Valid names with `..` prefix | Names like `..data` stay within the base and are correctly accepted |
 
-## Design Decisions
+#### Design Decisions
 
 - **`Path.GetRelativePath` for containment check**: Using `GetRelativePath` to verify
   containment handles root paths (e.g. `/`, `C:\`), platform case-sensitivity, and
@@ -47,6 +47,6 @@ attacks when user-controlled path components are combined with a trusted base pa
 - **No logging or error accumulation**: `SafePathCombine` is a pure utility method that throws
   on invalid input; it does not interact with the `Context` or any output mechanism.
 
-## Interactions
+#### Interactions
 
 - **Called by `Validation`**: constructs log file paths inside temporary directories
