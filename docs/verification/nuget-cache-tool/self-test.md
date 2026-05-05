@@ -1,15 +1,15 @@
-# SelfTest Subsystem Verification
+## SelfTest Subsystem Verification
 
 This document describes the subsystem-level verification design for the `SelfTest` subsystem. It
 defines the overall verification strategy and requirement coverage for the SelfTest subsystem.
 
-## Verification Approach
+### Verification Approach
 
 The SelfTest subsystem is verified with subsystem integration tests defined in `SelfTestTests.cs`.
 These tests exercise the public API of `Validation` and `PathHelpers` directly, verifying
 self-validation execution, results file generation, and path combination safety.
 
-## Dependencies
+### Dependencies
 
 | Dependency     | Usage in Tests                                            |
 |----------------|-----------------------------------------------------------|
@@ -17,9 +17,9 @@ self-validation execution, results file generation, and path combination safety.
 | `PathHelpers`  | Exercised directly; validates path combination safety.    |
 | `Context`      | Created from controlled argument arrays for each test.    |
 
-## Test Scenarios
+### Test Scenarios
 
-### SelfTest_Validation_ExecutesSelfValidationTests
+#### SelfTest_Validation_ExecutesSelfValidationTests
 
 **Scenario**: `Validation.Run` is called with `["--validate"]` context; stdout is captured.
 
@@ -27,7 +27,7 @@ self-validation execution, results file generation, and path combination safety.
 
 **Requirement coverage**: `NuGetCache-SelfTest-Validation`.
 
-### SelfTest_Validation_ReportsPassFail
+#### SelfTest_Validation_ReportsPassFail
 
 **Scenario**: `Validation.Run` is called with `["--validate"]` context.
 
@@ -35,7 +35,7 @@ self-validation execution, results file generation, and path combination safety.
 
 **Requirement coverage**: `NuGetCache-SelfTest-Validation`.
 
-### SelfTest_ResultsFile_GeneratesTrxFile
+#### SelfTest_ResultsFile_GeneratesTrxFile
 
 **Scenario**: `Validation.Run` is called with `["--validate", "--silent", "--results", trxFile]`.
 
@@ -43,7 +43,7 @@ self-validation execution, results file generation, and path combination safety.
 
 **Requirement coverage**: `NuGetCache-SelfTest-ResultsFile`.
 
-### SelfTest_ResultsFile_GeneratesJUnitFile
+#### SelfTest_ResultsFile_GeneratesJUnitFile
 
 **Scenario**: `Validation.Run` is called with `["--validate", "--silent", "--results", xmlFile]`.
 
@@ -52,7 +52,7 @@ self-validation execution, results file generation, and path combination safety.
 
 **Requirement coverage**: `NuGetCache-SelfTest-ResultsFile`.
 
-### SelfTest_SafePathCombine_AcceptsValidPaths
+#### SelfTest_SafePathCombine_AcceptsValidPaths
 
 **Scenario**: `PathHelpers.SafePathCombine` is called with a valid base and relative path.
 
@@ -60,7 +60,7 @@ self-validation execution, results file generation, and path combination safety.
 
 **Requirement coverage**: `NuGetCache-SelfTest-SafePathCombine`.
 
-### SelfTest_SafePathCombine_RejectsPathTraversal
+#### SelfTest_SafePathCombine_RejectsPathTraversal
 
 **Scenario**: `PathHelpers.SafePathCombine` is called with a traversal attempt `"../traversal"`.
 
@@ -68,7 +68,7 @@ self-validation execution, results file generation, and path combination safety.
 
 **Requirement coverage**: `NuGetCache-SelfTest-SafePathCombine`.
 
-### SelfTest_SafePathCombine_RejectsAbsolutePath
+#### SelfTest_SafePathCombine_RejectsAbsolutePath
 
 **Scenario**: `PathHelpers.SafePathCombine` is called with an absolute path as the relative argument.
 
@@ -76,7 +76,7 @@ self-validation execution, results file generation, and path combination safety.
 
 **Requirement coverage**: `NuGetCache-SelfTest-SafePathCombine`.
 
-## Requirements Coverage
+### Requirements Coverage
 
 - **`NuGetCache-SelfTest-Validation`**: SelfTest_Validation_ExecutesSelfValidationTests,
   SelfTest_Validation_ReportsPassFail

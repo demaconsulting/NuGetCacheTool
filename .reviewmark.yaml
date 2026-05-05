@@ -35,18 +35,18 @@ reviews:
     paths:
       - "README.md"
       - "docs/user_guide/**/*.md"
-      - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
+      - "docs/reqstream/nuget-cache-tool.yaml"
       - "docs/design/introduction.md"
-      - "docs/design/nuget-cache-tool/nuget-cache-tool.md"
+      - "docs/design/nuget-cache-tool.md"
 
   # NuGetCacheTool - Specials
   - id: NuGetCacheTool-Architecture
     title: Review of NuGet Cache Tool system architecture and operational validation
     paths:
-      - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
+      - "docs/reqstream/nuget-cache-tool.yaml"
       - "docs/design/introduction.md"
-      - "docs/design/nuget-cache-tool/nuget-cache-tool.md"
-      - "docs/verification/nuget-cache-tool/nuget-cache-tool.md"
+      - "docs/design/nuget-cache-tool.md"
+      - "docs/verification/nuget-cache-tool.md"
       - "test/**/AssemblyInfo.cs"
       - "test/**/Runner.cs"
       - "test/**/IntegrationTests.cs"
@@ -54,9 +54,10 @@ reviews:
   - id: NuGetCacheTool-Design
     title: Review of NuGet Cache Tool architectural and design consistency
     paths:
-      - "docs/reqstream/nuget-cache-tool/nuget-cache-tool.yaml"
+      - "docs/reqstream/nuget-cache-tool.yaml"
       - "docs/reqstream/nuget-cache-tool/platform-requirements.yaml"
       - "docs/design/introduction.md"
+      - "docs/design/nuget-cache-tool.md"
       - "docs/design/nuget-cache-tool/**/*.md"
       - "docs/verification/introduction.md"
 
@@ -64,6 +65,7 @@ reviews:
     title: Review of NuGet Cache Tool requirements quality and traceability
     paths:
       - "requirements.yaml"
+      - "docs/reqstream/nuget-cache-tool.yaml"
       - "docs/reqstream/nuget-cache-tool/**/*.yaml"
       - "docs/reqstream/ots/*.yaml"
 
@@ -81,9 +83,9 @@ reviews:
   - id: NuGetCacheTool-Cli
     title: Review of NuGet Cache Tool Cli subsystem architecture and interfaces
     paths:
-      - "docs/reqstream/nuget-cache-tool/cli/cli.yaml"
-      - "docs/design/nuget-cache-tool/cli/cli.md"
-      - "docs/verification/nuget-cache-tool/cli/cli.md"
+      - "docs/reqstream/nuget-cache-tool/cli.yaml"
+      - "docs/design/nuget-cache-tool/cli.md"
+      - "docs/verification/nuget-cache-tool/cli.md"
       - "test/**/Cli/CliTests.cs"
 
   - id: NuGetCacheTool-Cli-Context
@@ -99,9 +101,9 @@ reviews:
   - id: NuGetCacheTool-SelfTest
     title: Review of NuGet Cache Tool SelfTest subsystem architecture and interfaces
     paths:
-      - "docs/reqstream/nuget-cache-tool/self-test/self-test.yaml"
-      - "docs/design/nuget-cache-tool/self-test/self-test.md"
-      - "docs/verification/nuget-cache-tool/self-test/self-test.md"
+      - "docs/reqstream/nuget-cache-tool/self-test.yaml"
+      - "docs/design/nuget-cache-tool/self-test.md"
+      - "docs/verification/nuget-cache-tool/self-test.md"
       - "test/**/SelfTest/SelfTestTests.cs"
 
   - id: NuGetCacheTool-SelfTest-Validation

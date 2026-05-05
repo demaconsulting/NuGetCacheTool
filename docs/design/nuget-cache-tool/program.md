@@ -1,18 +1,18 @@
-# Program Unit Design
+## Program Unit Design
 
-## Purpose
+### Purpose
 
 `Program` is the main entry point and orchestration unit. It creates the `Context`,
 dispatches execution to the appropriate handler, and returns the exit code to the
 operating system.
 
-## Version Property
+### Version Property
 
 `Program.Version` reads the `AssemblyInformationalVersionAttribute` from the executing
 assembly. This value is set at build time by the CI/CD pipeline and reflects the
 semantic version of the tool.
 
-## Control Flow in Run()
+### Control Flow in Run()
 
 `Program.Run(Context)` applies a strict priority ordering:
 
@@ -24,7 +24,7 @@ semantic version of the tool.
 This ordering ensures that `--version` and `--help` always produce clean output
 regardless of other flags.
 
-## Exception Handling Strategy
+### Exception Handling Strategy
 
 `Program.Main` wraps `Program.Run` in a try/catch for `ArgumentException` and
 `InvalidOperationException`. In these catch blocks, `Main` writes the exception
@@ -36,13 +36,13 @@ A third handler catches any other `Exception`. It writes `"Unexpected error: {me
 to record the unhandled exception in event logs and generate a crash dump, providing diagnostics
 for unexpected failures without suppressing the error.
 
-## RunToolLogic
+### RunToolLogic
 
 `RunToolLogic(Context)` iterates `context.Packages` and calls
 `NuGetCache.EnsureCachedAsync(packageId, version)` for each entry. The result
 (cached package path) is written via `context.WriteLine`.
 
-## Interactions
+### Interactions
 
 | Dependency | Usage |
 | ---------- | ----- |

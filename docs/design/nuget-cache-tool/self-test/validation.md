@@ -1,12 +1,12 @@
-# Validation Unit Design
+### Validation Unit Design
 
-## Purpose
+#### Purpose
 
 `Validation` provides a self-validation test framework that executes the tool
 in-process and verifies observable outputs. It confirms that all software units
 work correctly in the deployment environment.
 
-## Test Structure
+#### Test Structure
 
 Three tests are executed unconditionally:
 
@@ -16,7 +16,7 @@ Three tests are executed unconditionally:
 | `RunHelpTest` | `--help` flag outputs usage information |
 | `RunCachePackageTest` | Caching a known package produces a valid path |
 
-## RunValidationTest Pattern
+#### RunValidationTest Pattern
 
 `RunValidationTest` is the common test runner used by all three tests. It:
 
@@ -26,13 +26,13 @@ Three tests are executed unconditionally:
 4. Calls the caller-supplied `validator` delegate to check output
 5. Records pass/fail in the shared `testResults` list
 
-## TemporaryDirectory Inner Class
+#### TemporaryDirectory Inner Class
 
 `TemporaryDirectory` is a disposable inner class that creates a uniquely named
 temporary directory and deletes it (with all contents) on disposal. It ensures
 test isolation and clean-up even when tests fail.
 
-## Results File Writing
+#### Results File Writing
 
 After all tests complete, `Validation.Run` writes the results file if
 `context.ResultsFile` is non-null:
@@ -41,7 +41,7 @@ After all tests complete, `Validation.Run` writes the results file if
 - `.xml` extension → serialized using `JUnitSerializer`
 - any other extension → treated as an error (unsupported results file extension)
 
-## Interactions
+#### Interactions
 
 | Dependency | Usage |
 | ---------- | ----- |

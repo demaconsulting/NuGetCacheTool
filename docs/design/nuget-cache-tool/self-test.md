@@ -1,25 +1,25 @@
-# SelfTest Subsystem Design
+## SelfTest Subsystem Design
 
-## Purpose
+### Purpose
 
 The SelfTest subsystem provides self-validation and safe file-system utilities for the
 NuGet Cache Tool. It verifies that the tool operates correctly in the deployment environment
 and provides path safety guarantees used during validation test execution.
 
-## Responsibilities
+### Responsibilities
 
 - Execute self-validation tests that invoke the tool in-process and observe its outputs
 - Report validation results in TRX or JUnit format for CI/CD integration
 - Provide safe path combination utilities that prevent path traversal attacks
 
-## Units
+### Units
 
 | Unit | Class | Description |
 | ---- | ----- | ----------- |
 | Validation | `Validation.cs` | Self-validation test execution and results reporting |
 | PathHelpers | `PathHelpers.cs` | Safe path combination utilities (prevents path traversal) |
 
-## Interactions
+### Interactions
 
 | Dependency | Direction | Description |
 | ---------- | --------- | ----------- |
@@ -27,7 +27,7 @@ and provides path safety guarantees used during validation test execution.
 | `DemaConsulting.TestResults` (OTS) | Downstream | `TrxSerializer`, `JUnitSerializer` for result output |
 | `PathHelpers` | Internal | `Validation` uses `SafePathCombine` to construct log file paths |
 
-## Error Handling
+### Error Handling
 
 | Scenario | Behavior |
 | -------- | -------- |

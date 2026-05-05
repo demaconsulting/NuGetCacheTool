@@ -9,11 +9,11 @@ resource-path:
 input-files:
   - docs/design/title.txt
   - docs/design/introduction.md
-  - docs/design/nuget-cache-tool/nuget-cache-tool.md
+  - docs/design/nuget-cache-tool.md
   - docs/design/nuget-cache-tool/program.md
-  - docs/design/nuget-cache-tool/cli/cli.md
+  - docs/design/nuget-cache-tool/cli.md
   - docs/design/nuget-cache-tool/cli/context.md
-  - docs/design/nuget-cache-tool/self-test/self-test.md
+  - docs/design/nuget-cache-tool/self-test.md
   - docs/design/nuget-cache-tool/self-test/validation.md
   - docs/design/nuget-cache-tool/self-test/path-helpers.md
 template: template.html
