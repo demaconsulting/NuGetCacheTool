@@ -33,6 +33,14 @@ internal static class Program
     /// <summary>
     ///     Gets the application version string.
     /// </summary>
+    /// <returns>
+    ///     A non-null, non-empty version string reflecting the semantic version of the tool.
+    /// </returns>
+    /// <remarks>
+    ///     The fallback chain is: <c>AssemblyInformationalVersionAttribute</c> (set at build time
+    ///     by the CI/CD pipeline) → <c>AssemblyVersion</c> → <c>"0.0.0"</c> if neither attribute
+    ///     is available. In normal builds the informational version is always populated.
+    /// </remarks>
     public static string Version
     {
         get
@@ -89,6 +97,12 @@ internal static class Program
     ///     Runs the program logic based on the provided context.
     /// </summary>
     /// <param name="context">The context containing command line arguments and program state.</param>
+    /// <remarks>
+    ///     Applies a four-level priority ordering: version → banner+help → banner+validate → banner+tool.
+    ///     This ensures that <c>--version</c> produces clean output without a banner, and
+    ///     <c>--help</c> produces banner and usage without executing tool logic, regardless of
+    ///     any other flags that may be present.
+    /// </remarks>
     public static void Run(Context context)
     {
         // Priority 1: Version query
@@ -158,7 +172,7 @@ internal static class Program
         foreach (var package in context.Packages)
         {
             // Split the package argument into package ID and version
-            // The parser guarantees colonIndex > 0 and colonIndex < package.Length - 1
+            // Defensively validate format in case the Context invariant is ever violated.
             var colonIndex = package.IndexOf(':');
             if (colonIndex <= 0 || colonIndex >= package.Length - 1)
             {

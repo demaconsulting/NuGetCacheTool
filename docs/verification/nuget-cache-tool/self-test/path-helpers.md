@@ -14,6 +14,22 @@ are involved; the tests call `PathHelpers.SafePathCombine` directly.
 No dependencies. `PathHelpers.SafePathCombine` is a pure static method with no external
 collaborators.
 
+#### Test Environment
+
+PathHelpers unit tests run under the standard xUnit v3 test runner within the
+`DemaConsulting.NuGet.CacheTool.Tests` project. `PathHelpers.SafePathCombine` is a pure static
+method with no I/O or external dependencies, so no special environment setup is required.
+
+#### Acceptance Criteria
+
+The PathHelpers unit test suite passes when all of the following conditions are met:
+
+- All test scenarios defined in `PathHelpersTests.cs` pass.
+- All boundary and error-path scenarios produce the expected exception type with the expected
+  message content.
+- Every PathHelpers unit requirement listed in the Requirements Coverage section is covered by
+  at least one passing scenario.
+
 #### Test Scenarios
 
 ##### PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly

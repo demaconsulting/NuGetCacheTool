@@ -17,5 +17,5 @@ sections:
               packages to the global packages folder and returns a valid package path.
             tags: [ots]
             tests:
-              - NuGetCacheTool_CachePackage_OutputsPath
-              - NuGetCacheTool_CacheNonexistentPackage_ReturnsError
+              - NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath
+              - NuGetCacheTool_PackageCaching_NonexistentPackageProvided_ReturnsError

@@ -6,6 +6,35 @@
 in-process and verifies observable outputs. It confirms that all software units
 work correctly in the deployment environment.
 
+#### Data Model
+
+`Validation` accumulates results in a list during execution:
+
+| Member | Type | Description |
+| ------ | ---- | ----------- |
+| `testResults` (local) | `List<TestResult>` | Accumulated pass/fail records for each test, populated by `RunValidationTest` |
+
+`Validation` itself is a static class with no persistent instance state; the
+`testResults` list is scoped to a single `Run` invocation.
+
+#### Key Methods
+
+##### Run(Context context)
+
+Executes all self-validation tests and optionally writes results to the file specified by `context.ResultsFile`.
+
+- **Preconditions**: `context` is a valid, non-disposed `Context`
+- **Postconditions**: all three tests executed; pass/fail summary written via `context.WriteLine`; results file written if `context.ResultsFile` is non-null and has a supported extension
+- **Algorithm**: (1) create `testResults` list; (2) call `RunVersionTest`, `RunHelpTest`, `RunCachePackageTest` unconditionally; (3) write summary; (4) if `ResultsFile` is non-null, write TRX (`.trx`) or JUnit XML (`.xml`) via the appropriate serializer; unsupported extensions call `context.WriteError`
+
+##### RunValidationTest(string testName, string[] args, Action\<string\> validator)
+
+Common runner for all three self-validation tests.
+
+- **Preconditions**: `testName` is non-null; `args` is a valid argument array; `validator` is non-null
+- **Postconditions**: a `TestResult` (pass or fail) is appended to the shared `testResults` list
+- **Algorithm**: (1) create a `TemporaryDirectory` for isolation; (2) construct log file path using `PathHelpers.SafePathCombine`; (3) call `Program.Run` in-process with `--silent --log` and `args`; (4) invoke `validator` with captured log content; (5) record pass or fail
+
 #### Test Structure
 
 Three tests are executed unconditionally:
@@ -49,3 +78,15 @@ After all tests complete, `Validation.Run` writes the results file if
 | `PathHelpers` | `SafePathCombine` constructs temp log file paths |
 | `Program` | Called in-process; `RunValidationTest` calls `Program.Run(testContext)` for each test |
 | `DemaConsulting.TestResults` | `TrxSerializer`, `JUnitSerializer` for result output |
+
+#### Error Handling
+
+| Scenario | Behavior |
+| -------- | -------- |
+| A self-validation test assertion fails | `RunValidationTest` records a failed `TestResult` and continues with remaining tests |
+| `Program.Run` throws an unhandled exception | `RunValidationTest` catches the exception, records a failed `TestResult`, and continues |
+| `context.ResultsFile` extension is not `.trx` or `.xml` | `Run` calls `context.WriteError` with an unsupported-extension message; no file is written |
+| `context.ResultsFile` is null | Results file writing is skipped entirely |
+
+Test failures are always accumulated rather than propagated; the overall exit code
+reflects the aggregate pass/fail outcome via `context.WriteError`.

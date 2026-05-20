@@ -45,9 +45,39 @@ sections:
               - Program_Run_NoArguments_DisplaysDefaultBehavior
 
           - id: NuGetCache-Program-ErrorOutput
-            title: The Program shall report errors and return a non-zero exit code on failure.
+            title: The Program shall write error messages to output when an error occurs.
+            justification: |
+              Users and automated callers must receive a descriptive error message so they
+              can diagnose the failure condition without inspecting internal state.
+            tests:
+              - Program_Run_WithValidateAndUnsupportedResultsFormat_SetsErrorExitCode
+
+          - id: NuGetCache-Program-ErrorExitCode
+            title: The Program shall return a non-zero exit code when an error occurs.
             justification: |
               Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
               programmatically via the process exit code.
             tests:
               - Program_Run_WithValidateAndUnsupportedResultsFormat_SetsErrorExitCode
+
+          - id: NuGetCache-Program-InvalidPackageFormat
+            title: The Program shall report an error when a package argument does not conform to the [package-name]:[version]
+              format.
+            justification: |
+              Users may accidentally supply a package argument without the required colon
+              separator. A clear error message for each malformed argument allows users to
+              correct their input without inspecting source code or documentation.
+              Validation is performed by Context.Create before packages reach RunToolLogic,
+              with a defensive check inside RunToolLogic for belt-and-suspenders safety.
+            children:
+              - NuGetCache-Context-InvalidArguments
+            tests:
+              - Context_Create_WithoutColonInPackage_ThrowsArgumentException
+
+          - id: NuGetCache-Program-SelfValidation
+            title: The Program unit shall invoke the self-validation suite when the --validate flag is provided.
+            justification: |
+              Provides an on-demand health check without requiring a separate test runner,
+              confirming that all software units work correctly in the deployment environment.
+            tests:
+              - Program_Run_WithValidateFlag_RunsValidation

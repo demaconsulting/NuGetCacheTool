@@ -1,12 +1,12 @@
 ## CLI Subsystem Design
 
-### Purpose
+### Overview
 
 The CLI subsystem provides command-line interface functionality for the NuGet Cache Tool.
 It handles argument parsing and output management, translating raw command-line arguments
 into structured options and commands that are executed by the top-level `Program` unit.
 
-### Responsibilities
+**Responsibilities**:
 
 - Parse and validate all command-line arguments
 - Manage output channels (console, log file, silent mode)
@@ -15,13 +15,13 @@ into structured options and commands that are executed by the top-level `Program
   display, help display, package caching, and self-validation
 - Write output to a log file when --log is specified, even in silent mode
 
-### Units
+**Units**:
 
 | Unit | Class | Description |
 | ---- | ----- | ----------- |
 | Context | `Context.cs` | Command-line argument parsing and output management |
 
-### Context API
+### Interfaces
 
 The `Context` unit exposes the following public API:
 
@@ -36,18 +36,20 @@ The `Context` unit exposes the following public API:
 | `LogFile` | `string?` property | Path to log file supplied with `--log`, or null |
 | `ResultsFile` | `string?` property | Path to results file supplied with `--results`, or null |
 | `ExitCode` | `int` property | Current exit code; 0 = success, 1 = failure |
-| `WriteLine(string)` | method | Writes a line to stdout (and log file); suppressed in silent mode |
-| `WriteError(string)` | method | Writes a line to stderr (and log file); sets `ExitCode` to 1 |
+| `WriteLine(string)` | method | Writes a line to stdout (and log file if open); suppressed in silent mode |
+| `WriteError(string)` | method | Writes a line to stderr (suppressed in silent mode), and to the log file (always); sets ExitCode to 1 |
 | `Dispose()` | method | Flushes and closes the log file writer if open |
 
-### Interactions
+### Design
+
+#### Interactions
 
 | Dependency | Direction | Description |
 | ---------- | --------- | ----------- |
 | `Program` | Top-level unit (entry point) | Creates `Context` and dispatches to CLI subsystem |
 | `SelfTest` subsystem | Downstream | CLI passes `Context` to `Validation.Run` |
 
-### Error Handling
+#### Error Handling
 
 | Scenario | Behavior |
 | -------- | -------- |

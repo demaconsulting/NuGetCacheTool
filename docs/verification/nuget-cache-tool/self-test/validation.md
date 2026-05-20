@@ -17,6 +17,23 @@ generation and error handling for unsupported formats.
 
 No mocking is required; all collaborators execute real logic.
 
+#### Test Environment
+
+Validation unit tests run under the standard xUnit v3 test runner within the
+`DemaConsulting.NuGet.CacheTool.Tests` project. Tests that generate results files create
+temporary files and clean them up on completion. No external services or network connectivity
+are required.
+
+#### Acceptance Criteria
+
+The Validation unit test suite passes when all of the following conditions are met:
+
+- All test scenarios defined in `ValidationTests.cs` pass.
+- Results files are created at the expected path with syntactically valid TRX or JUnit XML
+  content.
+- Every Validation unit requirement listed in the Requirements Coverage section is covered by
+  at least one passing scenario.
+
 #### Test Scenarios
 
 ##### Validation_Run_TrxResultsRequested_WritesTrxFile

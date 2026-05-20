@@ -41,6 +41,7 @@ sections:
               references (e.g. "..") in the relative component.
             children:
               - NuGetCache-PathHelpers-SafePathCombine
+              - NuGetCache-PathHelpers-NullArguments
             tests:
               - SelfTest_SafePathCombine_AcceptsValidPaths
               - SelfTest_SafePathCombine_RejectsPathTraversal

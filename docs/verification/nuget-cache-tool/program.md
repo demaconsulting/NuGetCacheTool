@@ -19,6 +19,22 @@ codes.
 
 No test doubles are introduced at the `Program` level; all collaborators execute their real logic.
 
+### Test Environment
+
+Program unit tests run under the standard xUnit v3 test runner within the
+`DemaConsulting.NuGet.CacheTool.Tests` project. Tests capture console output by redirecting
+standard streams within each test method. Tests that require NuGet package caching use the real
+NuGet client against a live feed; network connectivity is required for those scenarios.
+
+### Acceptance Criteria
+
+The Program unit test suite passes when all of the following conditions are met:
+
+- All test scenarios defined in `ProgramTests.cs` pass.
+- Console output assertions match the expected content for every invocation pattern.
+- Every Program unit requirement listed in the Requirements Coverage section is covered by at
+  least one passing scenario.
+
 ### Test Scenarios
 
 #### Program_Run_WithVersionFlag_DisplaysVersionOnly
@@ -45,7 +61,7 @@ is 0.
 
 **Expected**: Standard output contains "Total Tests:"; exit code is 0.
 
-**Requirement coverage**: `NuGetCache-Program-ErrorOutput`.
+**Requirement coverage**: `NuGetCache-Program-SelfValidation`.
 
 #### Program_Run_NoArguments_DisplaysDefaultBehavior
 
@@ -89,3 +105,4 @@ is 0.
 - **`NuGetCache-Program-CachePackages`**: Program_Run_WithPackageArgument_CachesPackage
 - **`NuGetCache-Program-Banner`**: Program_Run_NoArguments_DisplaysDefaultBehavior
 - **`NuGetCache-Program-ErrorOutput`**: Program_Run_WithValidateAndUnsupportedResultsFormat_SetsErrorExitCode
+- **`NuGetCache-Program-SelfValidation`**: Program_Run_WithValidateFlag_RunsValidation

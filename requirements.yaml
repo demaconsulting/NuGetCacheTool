@@ -1,6 +1,7 @@
 ---
 # Root requirements file - includes all subsystem, platform, and OTS requirements
 includes:
+  - docs/reqstream/nuget-cache-tool.yaml
   - docs/reqstream/nuget-cache-tool/cli.yaml
   - docs/reqstream/nuget-cache-tool/cli/context.yaml
   - docs/reqstream/nuget-cache-tool/self-test.yaml
@@ -8,7 +9,6 @@ includes:
   - docs/reqstream/nuget-cache-tool/self-test/path-helpers.yaml
   - docs/reqstream/nuget-cache-tool/program.yaml
   - docs/reqstream/nuget-cache-tool/platform-requirements.yaml
-  - docs/reqstream/nuget-cache-tool.yaml
   - docs/reqstream/ots/xunit.yaml
   - docs/reqstream/ots/reqstream.yaml
   - docs/reqstream/ots/buildmark.yaml

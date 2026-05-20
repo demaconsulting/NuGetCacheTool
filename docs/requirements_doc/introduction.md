@@ -4,21 +4,12 @@ This document contains the requirements for the NuGet Cache Tool project.
 
 ## Purpose
 
-NuGet Cache Tool is a NuGet cache management tool for DEMA Consulting
-.NET developers. It provides a standardized approach to command-line argument parsing,
-self-validation, and comprehensive documentation generation.
+To provide a complete, traceable record of all requirements for NuGet Cache Tool,
+including functional requirements at the system, subsystem, and unit levels.
 
 ## Scope
 
-This requirements document covers:
-
-- Command-line interface and options
-- Self-validation framework
-- Test result output formats
-- Logging capabilities
-- Multi-platform support
-- Documentation generation
-- CI/CD integration
+This document covers all requirements defined in `docs/reqstream/` for NuGet Cache Tool.
 
 ## Audience
 
@@ -28,3 +19,7 @@ This document is intended for:
 - Quality assurance teams validating requirements
 - Project stakeholders reviewing project scope
 - Users understanding the tool's capabilities
+
+## References
+
+N/A

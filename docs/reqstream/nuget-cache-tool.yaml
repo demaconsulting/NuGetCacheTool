@@ -8,34 +8,78 @@ sections:
           - id: NuGetCache-Sys-Integration
             title: The NuGet Cache Tool shall execute all core operations end-to-end as a deployable dotnet tool.
             justification: |
-              System integration validation confirms that all software units (Context, Program,
-              Validation, PathHelpers) work together correctly in the target deployment environment.
-              Integration tests launch the full application via dotnet and verify observable outputs.
+              System integration validation confirms that all subsystems and units work together
+              correctly in the target deployment environment. Integration tests launch the full
+              application via dotnet and verify observable outputs at the system boundary.
+              Individual operations are specified in the child requirements.
             children:
-              - NuGetCache-Cli-VersionFlag
-              - NuGetCache-Cli-HelpFlag
-              - NuGetCache-Cli-CachePackages
-              - NuGetCache-Cli-ErrorOutput
-              - NuGetCache-SelfTest-Validation
-              - NuGetCache-Program-VersionDisplay
-              - NuGetCache-Program-HelpDisplay
-              - NuGetCache-Program-CachePackages
-              - NuGetCache-Cli-SilentFlag
-              - NuGetCache-Cli-LogFlag
-              - NuGetCache-Cli-ValidateFlag
-              - NuGetCache-Cli-ResultsFlag
-              - NuGetCache-Cli-InvalidArguments
-              - NuGetCache-Program-Banner
-              - NuGetCache-Program-ErrorOutput
+              - NuGetCache-Sys-CachePackage
+              - NuGetCache-Sys-PackagePathOutput
+              - NuGetCache-Sys-ValidateResults
+              - NuGetCache-Sys-SilentMode
+              - NuGetCache-Sys-LogFile
+              - NuGetCache-Sys-Banner
+              - NuGetCache-Sys-InvalidArguments
+              - NuGetCache-Sys-ExitCode
+              - NuGetCache-Sys-StderrOutput
+              - NuGetCache-Sys-SilentLogInteraction
+              - NuGetCache-Sys-PathSafety
+              - NuGetCache-Sys-AlreadyCached
             tests:
-              - NuGetCacheTool_VersionFlag_OutputsVersion
-              - NuGetCacheTool_HelpFlag_OutputsUsageInformation
-              - NuGetCacheTool_CachePackage_OutputsPath
-              - NuGetCacheTool_ValidateFlag_RunsValidation
-              - NuGetCacheTool_SilentFlag_SuppressesOutput
-              - NuGetCacheTool_LogFlag_WritesOutputToFile
-              - NuGetCacheTool_UnknownArgument_ReturnsError
-              - NuGetCacheTool_CacheNonexistentPackage_ReturnsError
+              - NuGetCacheTool_VersionDisplay_VersionFlagProvided_OutputsVersion
+              - NuGetCacheTool_HelpDisplay_HelpFlagProvided_OutputsUsageInformation
+              - NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath
+              - NuGetCacheTool_SelfValidation_ValidateFlagProvided_RunsValidation
+              - NuGetCacheTool_SilentMode_SilentFlagProvided_SuppressesOutput
+              - NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile
+              - NuGetCacheTool_ErrorHandling_UnknownArgumentProvided_ReturnsError
+              - NuGetCacheTool_PackageCaching_NonexistentPackageProvided_ReturnsError
+
+          - id: NuGetCache-Sys-CachePackage
+            title: The NuGet Cache Tool shall cache each specified NuGet package to the global NuGet packages folder.
+            justification: |
+              The core purpose of the tool is to ensure NuGet packages are available in the
+              global packages folder before build steps that depend on them. Each package
+              supplied as a [package-name]:[version] argument must be cached on demand.
+            children:
+              - NuGetCache-Program-CachePackages
+              - NuGetCache-Cli-CachePackages
+            tests:
+              - NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath
+
+          - id: NuGetCache-Sys-PackagePathOutput
+            title: The NuGet Cache Tool shall write the path of each successfully cached package to stdout, one path per line.
+            justification: |
+              Callers and downstream build steps must be able to locate each cached package
+              after the tool runs. Writing the resolved cache path to stdout on a separate
+              line allows callers to capture and process the paths via standard shell
+              redirection and command substitution.
+            children:
+              - NuGetCache-Program-CachePackages
+            tests:
+              - NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath
+
+          - id: NuGetCache-Sys-PlatformSupport
+            title: The NuGet Cache Tool shall build and run on Windows, Linux, and macOS with .NET 8, .NET 9, and .NET 10.
+            justification: |
+              Supporting multiple operating systems and .NET runtimes ensures the tool is
+              usable across the broadest range of developer workstations and CI/CD
+              environments. Multi-platform and multi-runtime compatibility is a fundamental
+              deployment requirement.
+            children:
+              - NuGetCache-PLT-Windows
+              - NuGetCache-PLT-Linux
+              - NuGetCache-PLT-MacOS
+              - NuGetCache-PLT-Net8
+              - NuGetCache-PLT-Net9
+              - NuGetCache-PLT-Net10
+            tests:
+              - "windows@NuGetCache_VersionDisplay"
+              - "ubuntu@NuGetCache_VersionDisplay"
+              - "macos@NuGetCache_VersionDisplay"
+              - "dotnet8.x@NuGetCache_VersionDisplay"
+              - "dotnet9.x@NuGetCache_VersionDisplay"
+              - "dotnet10.x@NuGetCache_VersionDisplay"
 
           - id: NuGetCache-Sys-ValidateResults
             title: The NuGet Cache Tool shall write self-validation results in TRX or JUnit XML format.
@@ -46,8 +90,8 @@ sections:
             children:
               - NuGetCache-SelfTest-ResultsFile
             tests:
-              - NuGetCacheTool_ValidateWithResults_GeneratesTrxFile
-              - NuGetCacheTool_ValidateWithResults_GeneratesJUnitFile
+              - NuGetCacheTool_ResultsFile_ValidateWithTrxExtension_GeneratesTrxFile
+              - NuGetCacheTool_ResultsFile_ValidateWithXmlExtension_GeneratesJUnitFile
 
           - id: NuGetCache-Sys-SilentMode
             title: The NuGet Cache Tool shall support a silent mode that suppresses all console output.
@@ -57,7 +101,7 @@ sections:
             children:
               - NuGetCache-Cli-SilentFlag
             tests:
-              - NuGetCacheTool_SilentFlag_SuppressesOutput
+              - NuGetCacheTool_SilentMode_SilentFlagProvided_SuppressesOutput
 
           - id: NuGetCache-Sys-LogFile
             title: The NuGet Cache Tool shall support writing all output to a log file via --log.
@@ -67,18 +111,20 @@ sections:
             children:
               - NuGetCache-Cli-LogFlag
             tests:
-              - NuGetCacheTool_LogFlag_WritesOutputToFile
-              - NuGetCacheTool_LogFlag_WithInvalidFilename_ReturnsError
+              - NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile
+              - NuGetCacheTool_LogFile_InvalidFilenameProvided_ReturnsError
 
           - id: NuGetCache-Sys-Banner
-            title: The NuGet Cache Tool shall display a version banner when performing non-trivial operations.
+            title: >-
+              The NuGet Cache Tool shall display a version banner when not invoked with the --version flag.
             justification: |
               Identifies the tool and its version in output logs, aiding in reproducibility
               and troubleshooting of CI/CD pipeline executions.
             children:
               - NuGetCache-Program-Banner
             tests:
-              - NuGetCacheTool_ValidateFlag_RunsValidation
+              - NuGetCacheTool_SelfValidation_ValidateFlagProvided_RunsValidation
+              - NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile
 
           - id: NuGetCache-Sys-InvalidArguments
             title: >-
@@ -90,18 +136,69 @@ sections:
             children:
               - NuGetCache-Cli-InvalidArguments
             tests:
-              - NuGetCacheTool_UnknownArgument_ReturnsError
+              - NuGetCacheTool_ErrorHandling_UnknownArgumentProvided_ReturnsError
 
-          - id: NuGetCache-Sys-ErrorOutput
+          - id: NuGetCache-Sys-ExitCode
             title: >-
-              The NuGet Cache Tool shall return a non-zero exit code on failure and, when silent mode is not active,
-              write error messages to stderr.
+              The NuGet Cache Tool shall return a non-zero exit code when an error occurs.
             justification: |
-              Ensures that callers and CI/CD pipelines can detect failure conditions both
-              programmatically (via exit code) and diagnostically (via stderr). Silent mode
-              suppresses all output including error messages.
+              Ensures that callers and CI/CD pipelines can detect failure conditions
+              programmatically via the process exit code.
             children:
               - NuGetCache-Cli-ErrorOutput
               - NuGetCache-Program-ErrorOutput
             tests:
-              - NuGetCacheTool_CacheNonexistentPackage_ReturnsError
+              - NuGetCacheTool_PackageCaching_NonexistentPackageProvided_ReturnsError
+              - NuGetCacheTool_ErrorHandling_UnknownArgumentProvided_ReturnsError
+
+          - id: NuGetCache-Sys-StderrOutput
+            title: >-
+              The NuGet Cache Tool shall write error messages to stderr when not in silent mode.
+            justification: |
+              Ensures that callers and CI/CD pipelines can diagnose failure conditions via
+              stderr output. Silent mode suppresses all console output including error messages.
+            children:
+              - NuGetCache-Cli-ErrorOutput
+              - NuGetCache-Program-ErrorOutput
+            tests:
+              - NuGetCacheTool_PackageCaching_NonexistentPackageProvided_ReturnsError
+              - NuGetCacheTool_ErrorHandling_UnknownArgumentProvided_ReturnsError
+
+          - id: NuGetCache-Sys-SilentLogInteraction
+            title: >-
+              The NuGet Cache Tool shall continue writing to the log file when --silent suppresses console output.
+            justification: |
+              When --silent is active, the log file remains the only persistent record of tool
+              execution. Preserving log file writes in silent mode ensures output is always
+              captured for audit and debugging purposes.
+            children:
+              - NuGetCache-Cli-SilentLogInteraction
+            tests:
+              - NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile
+
+          - id: NuGetCache-Sys-PathSafety
+            title: >-
+              The NuGet Cache Tool shall prevent path-traversal attacks when combining user-supplied
+              path components with trusted base paths.
+            justification: |
+              Accepting user-controlled path components without validation could allow an attacker
+              to read or write files outside intended directories. The observable behavior is that
+              absolute paths and parent-directory references are rejected with an error.
+            children:
+              - NuGetCache-SelfTest-SafePathCombine
+            tests:
+              - PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException
+              - PathHelpers_SafePathCombine_UnixAbsolutePath_ThrowsArgumentException
+
+          - id: NuGetCache-Sys-AlreadyCached
+            title: The NuGet Cache Tool shall succeed without error when a specified package is already present in the global
+              NuGet packages folder.
+            justification: |
+              Idempotent operation is essential for CI/CD pipelines where the same command
+              may be re-run. The tool must not treat an already-cached package as an error,
+              allowing pipelines to be safely retried or re-executed without manual cleanup.
+            children:
+              - NuGetCache-Program-CachePackages
+            tests:
+              - NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath

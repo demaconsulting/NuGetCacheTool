@@ -52,7 +52,17 @@ sections:
               - Cli_PackageArgument_AddedToPackagesList
 
           - id: NuGetCache-Cli-ErrorOutput
-            title: The CLI shall report errors and return a non-zero exit code on failure.
+            title: The CLI shall write error messages to the output stream when an error occurs.
+            justification: |
+              Users and automated callers must receive a descriptive error message so they
+              can diagnose the failure condition without inspecting internal state.
+            children:
+              - NuGetCache-Context-ErrorTracking
+            tests:
+              - Cli_ErrorOutput_WritesMessageToConsole
+
+          - id: NuGetCache-Cli-ErrorExitCode
+            title: The CLI shall return a non-zero exit code when an error occurs.
             justification: |
               Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
               programmatically via the process exit code.
@@ -60,7 +70,6 @@ sections:
               - NuGetCache-Context-ErrorTracking
             tests:
               - Cli_ErrorOutput_SetsNonZeroExitCode
-              - Cli_ErrorOutput_WritesMessageToConsole
 
           - id: NuGetCache-Cli-LogFlag
             title: The CLI shall support --log flag to write output to a log file.

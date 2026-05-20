@@ -17,6 +17,22 @@ self-validation execution, results file generation, and path combination safety.
 | `PathHelpers`  | Exercised directly; validates path combination safety.    |
 | `Context`      | Created from controlled argument arrays for each test.    |
 
+### Test Environment
+
+SelfTest subsystem tests run under the standard xUnit v3 test runner within the
+`DemaConsulting.NuGet.CacheTool.Tests` project. Tests that generate results files create temporary
+files during execution and clean them up on completion. No external services or network
+connectivity are required.
+
+### Acceptance Criteria
+
+The SelfTest subsystem test suite passes when all of the following conditions are met:
+
+- All test scenarios defined in `SelfTestTests.cs` pass.
+- Results files generated during testing are created at the expected path with valid content.
+- Every SelfTest subsystem requirement listed in the Requirements Coverage section is covered by
+  at least one passing scenario.
+
 ### Test Scenarios
 
 #### SelfTest_Validation_ExecutesSelfValidationTests

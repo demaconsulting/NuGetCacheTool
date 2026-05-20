@@ -14,6 +14,22 @@ within each test to capture output and verify behavior independently of global s
 No external dependencies are mocked. `Context` is tested by direct instantiation via
 `Context.Create`.
 
+#### Test Environment
+
+Context unit tests run under the standard xUnit v3 test runner within the
+`DemaConsulting.NuGet.CacheTool.Tests` project. Console streams are redirected within each test
+to capture output. Tests that open log files create temporary files and clean them up on
+completion. No external services are required.
+
+#### Acceptance Criteria
+
+The Context unit test suite passes when all of the following conditions are met:
+
+- All test scenarios defined in `ContextTests.cs` pass.
+- Console and log-file output assertions match expected values for every flag combination.
+- Every Context unit requirement listed in the Requirements Coverage section is covered by at
+  least one passing scenario.
+
 #### Test Scenarios
 
 ##### Context_Create_NoArguments_ReturnsDefaultContext

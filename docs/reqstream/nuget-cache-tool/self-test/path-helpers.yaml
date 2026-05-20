@@ -28,7 +28,8 @@ sections:
               - PathHelpers_SafePathCombine_DoubleDotPrefix_CombinesCorrectly
 
           - id: NuGetCache-PathHelpers-NullArguments
-            title: The PathHelpers.SafePathCombine method shall reject null arguments with an ArgumentNullException.
+            title: >-
+              The path combination function shall report an error when a null base path or null relative path is provided.
             justification: |
               Defensive null checking prevents NullReferenceException propagation and provides
               clear diagnostic messages to callers who pass uninitialized path values.

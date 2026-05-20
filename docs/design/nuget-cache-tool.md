@@ -20,8 +20,33 @@ top-level unit, all residing in a single assembly.
 
 | Interface | Description |
 | --------- | ----------- |
-| `NuGetCache.EnsureCachedAsync(packageId, version)` | Caches a NuGet package in the global packages folder |
-| `DemaConsulting.TestResults` | Provides `TrxSerializer` and `JUnitSerializer` for writing test results |
+| CLI entry point (`nuget-cache [options] [package:version ...]`) | Main command-line invocation pattern accepted by the tool |
+| stdout | Package paths are written one per line on success; banner and help text on non-version invocations |
+| stderr (`Error: {message}`) | Error messages are written to stderr when an error occurs and silent mode is not active |
+| Exit code | 0 = success; non-zero = failure |
+
+## Dependencies
+
+- **DemaConsulting.NuGet.Caching**: provides the `NuGetCache.EnsureCachedAsync` API used to
+  cache packages in the global NuGet packages folder — see
+  *DemaConsulting.NuGet.Caching Integration Design*
+- **DemaConsulting.TestResults**: provides `TrxSerializer` and `JUnitSerializer` used by the
+  SelfTest subsystem to emit validation results in TRX and JUnit XML formats — see
+  *DemaConsulting.TestResults Integration Design*
+
+## Risk Control Measures
+
+The NuGet Cache Tool has one security-relevant requirement: `NuGetCache-Sys-PathSafety`
+requires that user-supplied path components are validated before being combined with trusted
+base paths to prevent path-traversal attacks (e.g., `../../etc/passwd`).
+
+This risk is mitigated by the `PathHelpers.SafePathCombine` utility in the SelfTest subsystem,
+which rejects absolute paths and path components containing `..` traversal sequences. All
+callers that combine user-supplied relative paths with trusted base paths must use
+`SafePathCombine` rather than `Path.Combine` directly.
+
+No patient-safety or functional-safety requirements apply. No software item segregation
+is required beyond the security constraint described above.
 
 ## Data Flow
 
@@ -37,14 +62,30 @@ args
 
 ## Design Constraints
 
+### Platform Constraints
+
+- The tool targets .NET 8, .NET 9, and .NET 10 on Windows, Linux, and macOS (see
+  [Platform and Runtime Targeting](#platform-and-runtime-targeting) below)
+- All platform-specific behavior is delegated to the .NET SDK and the
+  `DemaConsulting.NuGet.Caching` library; the tool itself contains no platform-conditional code
+
+### Structural Constraints
+
 - Two subsystems: `CLI` (argument parsing and output) and `SelfTest` (self-validation)
 - `Program` is the top-level unit (entry point and orchestration), not in a subsystem
-- Single assembly, with subsystem namespaces: `DemaConsulting.NuGet.CacheTool.Cli` and `DemaConsulting.NuGet.CacheTool.SelfTest`
+- Single assembly, with subsystem namespaces: `DemaConsulting.NuGet.CacheTool.Cli` and
+  `DemaConsulting.NuGet.CacheTool.SelfTest`
 - Console output is normally managed through `Context.WriteLine` and `Context.WriteError`;
   `Program.Main` may write directly to `Console.Error` if `Context` creation fails or
   has not yet completed
 - Exit codes are normally controlled via `Context.ExitCode`; `Program.Main` may return
   a non-zero exit code directly when `Context` cannot be created
+
+### Security Constraints
+
+- All code paths that combine user-supplied path components with trusted base paths MUST
+  use `PathHelpers.SafePathCombine` rather than `Path.Combine` directly, to prevent
+  path-traversal attacks (see `NuGetCache-Sys-PathSafety` and Risk Control Measures)
 
 ## Platform and Runtime Targeting
 

@@ -17,6 +17,22 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 |------------|-------------------------------------------------------------|
 | `Context`  | Exercised directly through the `Context.Create` factory.    |
 
+### Test Environment
+
+CLI subsystem tests run under the standard xUnit v3 test runner within the
+`DemaConsulting.NuGet.CacheTool.Tests` project. No additional configuration, external services,
+or environment variables are required. Console streams are redirected within each test to capture
+output and verify behavior independently of global state.
+
+### Acceptance Criteria
+
+The CLI subsystem test suite passes when all of the following conditions are met:
+
+- All test scenarios defined in `CliTests.cs` pass.
+- No scenario produces an unexpected context state, exit code, or console output.
+- Every CLI subsystem requirement listed in the Requirements Coverage section is covered by at
+  least one passing scenario.
+
 ### Test Scenarios
 
 #### Cli_VersionFlag_SetsVersionOnContext
