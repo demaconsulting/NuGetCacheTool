@@ -1,7 +1,7 @@
 ---
 # NuGet Cache Tool SelfTest Subsystem Requirements
 #
-# Requirements for the SelfTest subsystem: self-validation and safe path utilities.
+# Requirements for the SelfTest subsystem: self-validation functionality.
 
 sections:
   - title: NuGet Cache Tool Requirements
@@ -31,18 +31,3 @@ sections:
             tests:
               - SelfTest_ResultsFile_GeneratesTrxFile
               - SelfTest_ResultsFile_GeneratesJUnitFile
-
-          - id: NuGetCache-SelfTest-SafePathCombine
-            title: The SelfTest subsystem shall prevent path traversal attacks when combining file paths.
-            justification: |
-              Accepting user-controlled path components without validation could allow
-              an attacker to read or write files outside intended directories. The
-              SafePathCombine method must reject absolute paths and parent-directory
-              references (e.g. "..") in the relative component.
-            children:
-              - NuGetCache-PathHelpers-SafePathCombine
-              - NuGetCache-PathHelpers-NullArguments
-            tests:
-              - SelfTest_SafePathCombine_AcceptsValidPaths
-              - SelfTest_SafePathCombine_RejectsPathTraversal
-              - SelfTest_SafePathCombine_RejectsAbsolutePath

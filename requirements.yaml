@@ -6,7 +6,9 @@ includes:
   - docs/reqstream/nuget-cache-tool/cli/context.yaml
   - docs/reqstream/nuget-cache-tool/self-test.yaml
   - docs/reqstream/nuget-cache-tool/self-test/validation.yaml
-  - docs/reqstream/nuget-cache-tool/self-test/path-helpers.yaml
+  - docs/reqstream/nuget-cache-tool/utilities.yaml
+  - docs/reqstream/nuget-cache-tool/utilities/path-helpers.yaml
+  - docs/reqstream/nuget-cache-tool/utilities/temporary-directory.yaml
   - docs/reqstream/nuget-cache-tool/program.yaml
   - docs/reqstream/nuget-cache-tool/platform-requirements.yaml
   - docs/reqstream/ots/xunit.yaml

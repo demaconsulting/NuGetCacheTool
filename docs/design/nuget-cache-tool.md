@@ -11,8 +11,10 @@ top-level unit, all residing in a single assembly.
 | ---------------- | -------------- |
 | **CLI** (subsystem) | Argument parsing and output management |
 | └─ Context | Command-line argument parsing and output management |
-| **SelfTest** (subsystem) | Self-validation test execution and utilities |
+| **SelfTest** (subsystem) | Self-validation test execution |
 | └─ Validation | Self-validation test execution |
+| **Utilities** (subsystem) | Shared utilities: temporary directory and path safety |
+| └─ TemporaryDirectory | Disposable temporary directory for self-test and test use |
 | └─ PathHelpers | Safe path combination utilities |
 | **Program** (top-level unit) | Main entry point and application orchestration |
 
@@ -40,7 +42,7 @@ The NuGet Cache Tool has one security-relevant requirement: `NuGetCache-Sys-Path
 requires that user-supplied path components are validated before being combined with trusted
 base paths to prevent path-traversal attacks (e.g., `../../etc/passwd`).
 
-This risk is mitigated by the `PathHelpers.SafePathCombine` utility in the SelfTest subsystem,
+This risk is mitigated by the `PathHelpers.SafePathCombine` utility in the Utilities subsystem,
 which rejects absolute paths and path components containing `..` traversal sequences. All
 callers that combine user-supplied relative paths with trusted base paths must use
 `SafePathCombine` rather than `Path.Combine` directly.
@@ -71,10 +73,11 @@ args
 
 ### Structural Constraints
 
-- Two subsystems: `CLI` (argument parsing and output) and `SelfTest` (self-validation)
+- Three subsystems: `CLI` (argument parsing and output), `SelfTest` (self-validation), and
+  `Utilities` (shared helpers)
 - `Program` is the top-level unit (entry point and orchestration), not in a subsystem
-- Single assembly, with subsystem namespaces: `DemaConsulting.NuGet.CacheTool.Cli` and
-  `DemaConsulting.NuGet.CacheTool.SelfTest`
+- Single assembly, with subsystem namespaces: `DemaConsulting.NuGet.CacheTool.Cli`,
+  `DemaConsulting.NuGet.CacheTool.SelfTest`, and `DemaConsulting.NuGet.CacheTool.Utilities`
 - Console output is normally managed through `Context.WriteLine` and `Context.WriteError`;
   `Program.Main` may write directly to `Console.Error` if `Context` creation fails or
   has not yet completed

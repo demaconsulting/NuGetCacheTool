@@ -64,7 +64,9 @@ Combines `basePath` and `relativePath`, rejecting any result that escapes the ba
 
 #### Interactions
 
-- **Called by `Validation`**: constructs log file paths inside temporary directories
+- **Called by `TemporaryDirectory`**: enforces the directory boundary in `GetFilePath`
+- **Called by `Validation`** (SelfTest subsystem): constructs log file paths inside temporary
+  directories via `TemporaryDirectory.GetFilePath`
 
 #### Error Handling
 

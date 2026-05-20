@@ -61,8 +61,7 @@ implementations:
 - **NuGet package cache** — Real NuGet packages are downloaded and cached during tests that
   exercise the cache command.
 - **Path construction** — The `IntegrationTests` constructor uses `PathHelpers.SafePathCombine`
-  to locate the tool DLL at a path derived from `AppContext.BaseDirectory`. This ensures that
-  the DLL path is constructed safely and cannot escape the expected test output directory.
+  (Utilities subsystem) to locate the tool DLL at a path derived from `AppContext.BaseDirectory`.
 
 ## Integration Test Scenarios
 
@@ -145,7 +144,7 @@ passed.
 ## Requirements Coverage
 
 **Note on `NuGetCache-Sys-PathSafety`**: This security requirement is verified at unit level
-(see `docs/verification/nuget-cache-tool/self-test/path-helpers.md`). At the system level,
+(see `docs/verification/nuget-cache-tool/utilities/path-helpers.md`). At the system level,
 `NuGetCacheTool_LogFile_InvalidFilenameProvided_ReturnsError` exercises error handling for
 invalid paths, but dedicated path-traversal prevention is verified in the PathHelpers unit tests.
 
@@ -177,7 +176,7 @@ verify it.
 - **`NuGetCache-Sys-SilentLogInteraction`**: NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile
 
 - **`NuGetCache-Sys-PathSafety`**: Verified at unit level in
-  `docs/verification/nuget-cache-tool/self-test/path-helpers.md`.
+  `docs/verification/nuget-cache-tool/utilities/path-helpers.md`.
   The `PathHelpers.SafePathCombine` unit tests (PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException,
   PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException,
   PathHelpers_SafePathCombine_UnixAbsolutePath_ThrowsArgumentException) directly exercise

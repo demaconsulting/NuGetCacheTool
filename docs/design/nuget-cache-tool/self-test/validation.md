@@ -33,7 +33,9 @@ Common runner for all three self-validation tests.
 
 - **Preconditions**: `testName` is non-null; `args` is a valid argument array; `validator` is non-null
 - **Postconditions**: a `TestResult` (pass or fail) is appended to the shared `testResults` list
-- **Algorithm**: (1) create a `TemporaryDirectory` for isolation; (2) construct log file path using `PathHelpers.SafePathCombine`; (3) call `Program.Run` in-process with `--silent --log` and `args`; (4) invoke `validator` with captured log content; (5) record pass or fail
+- **Algorithm**: (1) create a `TemporaryDirectory` for isolation; (2) obtain log file path via
+  `tempDir.GetFilePath`; (3) call `Program.Run` in-process with `--silent --log` and `args`;
+  (4) invoke `validator` with captured log content; (5) record pass or fail
 
 #### Test Structure
 
@@ -50,16 +52,10 @@ Three tests are executed unconditionally:
 `RunValidationTest` is the common test runner used by all three tests. It:
 
 1. Creates a `TemporaryDirectory` for isolated file output
-2. Constructs a log file path using `PathHelpers.SafePathCombine`
+2. Obtains a log file path via `tempDir.GetFilePath`
 3. Launches the tool with additional arguments and captures the log
 4. Calls the caller-supplied `validator` delegate to check output
 5. Records pass/fail in the shared `testResults` list
-
-#### TemporaryDirectory Inner Class
-
-`TemporaryDirectory` is a disposable inner class that creates a uniquely named
-temporary directory and deletes it (with all contents) on disposal. It ensures
-test isolation and clean-up even when tests fail.
 
 #### Results File Writing
 
@@ -75,7 +71,8 @@ After all tests complete, `Validation.Run` writes the results file if
 | Dependency | Usage |
 | ---------- | ----- |
 | `Context` | Provides `ResultsFile` path and output methods |
-| `PathHelpers` | `SafePathCombine` constructs temp log file paths |
+| `PathHelpers` (Utilities subsystem) | `SafePathCombine` constructs temp log file paths via `TemporaryDirectory.GetFilePath` |
+| `TemporaryDirectory` | Used by `RunValidationTest` to create and manage isolated temporary directories for each test scenario |
 | `Program` | Called in-process; `RunValidationTest` calls `Program.Run(testContext)` for each test |
 | `DemaConsulting.TestResults` | `TrxSerializer`, `JUnitSerializer` for result output |
 

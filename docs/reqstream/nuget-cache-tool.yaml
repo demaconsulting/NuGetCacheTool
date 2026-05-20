@@ -25,6 +25,7 @@ sections:
               - NuGetCache-Sys-SilentLogInteraction
               - NuGetCache-Sys-PathSafety
               - NuGetCache-Sys-AlreadyCached
+              - NuGetCache-Utilities-TempDirectory
             tests:
               - NuGetCacheTool_VersionDisplay_VersionFlagProvided_OutputsVersion
               - NuGetCacheTool_HelpDisplay_HelpFlagProvided_OutputsUsageInformation
@@ -185,7 +186,7 @@ sections:
               to read or write files outside intended directories. The observable behavior is that
               absolute paths and parent-directory references are rejected with an error.
             children:
-              - NuGetCache-SelfTest-SafePathCombine
+              - NuGetCache-Utilities-PathSafety
             tests:
               - PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException
               - PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException

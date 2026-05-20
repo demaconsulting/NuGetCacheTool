@@ -21,6 +21,8 @@ This document covers the verification design for the same software items describ
   - **Context** — argument parser and I/O owner
 - **SelfTest** — self-validation subsystem
   - **Validation** — self-validation test runner
+- **Utilities** — shared utilities subsystem
+  - **TemporaryDirectory** — disposable temporary directory
   - **PathHelpers** — safe path combination utilities
 - **Program** — entry point and execution orchestrator
 
@@ -51,7 +53,9 @@ NuGetCacheTool (System)
 ├── CLI (Subsystem)
 │   └── Context (Unit)
 ├── SelfTest (Subsystem)
-│   ├── Validation (Unit)
+│   └── Validation (Unit)
+├── Utilities (Subsystem)
+│   ├── TemporaryDirectory (Unit)
 │   └── PathHelpers (Unit)
 └── Program (Unit)
 

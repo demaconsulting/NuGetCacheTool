@@ -22,7 +22,9 @@ NuGetCacheTool (System)
 ├── CLI (Subsystem)
 │   └── Context (Unit)
 ├── SelfTest (Subsystem)
-│   ├── Validation (Unit)
+│   └── Validation (Unit)
+├── Utilities (Subsystem)
+│   ├── TemporaryDirectory (Unit)
 │   └── PathHelpers (Unit)
 └── Program (Unit)
 
@@ -38,8 +40,10 @@ src/DemaConsulting.NuGet.CacheTool/
 ├── Cli/
 │   └── Context.cs               — CLI subsystem: argument parsing and output management
 ├── SelfTest/
-│   ├── PathHelpers.cs           — SelfTest subsystem: safe path combination utilities
 │   └── Validation.cs            — SelfTest subsystem: self-validation test execution
+├── Utilities/
+│   ├── PathHelpers.cs           — Utilities subsystem: safe path combination utilities
+│   └── TemporaryDirectory.cs    — Utilities subsystem: disposable temporary directory
 └── Program.cs                   — top-level entry point and application orchestration
 ```
 

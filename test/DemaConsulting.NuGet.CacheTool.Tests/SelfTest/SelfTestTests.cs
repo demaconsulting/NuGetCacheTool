@@ -20,6 +20,7 @@
 
 using DemaConsulting.NuGet.CacheTool.Cli;
 using DemaConsulting.NuGet.CacheTool.SelfTest;
+using DemaConsulting.NuGet.CacheTool.Utilities;
 
 namespace DemaConsulting.NuGet.CacheTool.Tests.SelfTest;
 
