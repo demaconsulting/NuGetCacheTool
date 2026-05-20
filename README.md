@@ -77,7 +77,7 @@ pwsh ./build.ps1
 | `-?`, `-h`, `--help`      | Display help message                                         |
 | `--silent`                | Suppress console output                                      |
 | `--validate`              | Run self-validation                                          |
-| `--results <file>`        | Write validation results to file; `.trx` → TRX format, `.xml` → JUnit XML format |
+| `--results <file>`        | Write results to file (`.trx`=TRX, `.xml`=JUnit XML)         |
 | `--log <file>`            | Write output to log file                                     |
 | `[package]:[version]`     | Cache the specified NuGet package                            |
 

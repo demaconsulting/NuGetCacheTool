@@ -23,6 +23,7 @@ words:
   - Newtonsoft
   - xunit
   - notapackage
+  - Postconditions
   - nugetcache
   - Pandoc
   - reqstream
