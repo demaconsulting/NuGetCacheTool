@@ -41,7 +41,7 @@ sections:
         title: The TemporaryDirectory class shall delete the temporary directory and all its contents on disposal, and shall
           not throw if the directory no longer exists.
         justification: |
-          Automatic cleanup prevents accumulation of temporary artefacts after a test run
+          Automatic cleanup prevents accumulation of temporary artifacts after a test run
           or self-test execution. Suppressing cleanup errors ensures disposal does not mask
           the original outcome or break using blocks.
         tests:

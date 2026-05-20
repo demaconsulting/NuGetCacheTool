@@ -25,7 +25,7 @@ sections:
         justification: |
           A shared TemporaryDirectory utility prevents both production self-test code and
           test infrastructure from duplicating directory-lifecycle management and ensures
-          consistent cleanup behaviour across all consumers.
+          consistent cleanup behavior across all consumers.
         children:
           - NuGetCache-TemporaryDirectory-DirectoryCreation
           - NuGetCache-TemporaryDirectory-FilePathResolution
