@@ -24,11 +24,8 @@ namespace DemaConsulting.NuGet.CacheTool.Utilities;
 ///     A disposable temporary directory that is automatically deleted when disposed.
 /// </summary>
 /// <remarks>
-///     The temporary directory is created under <see cref="Environment.CurrentDirectory"/>
-///     rather than <see cref="Path.GetTempPath()"/>. This avoids OS symlink issues such as
-///     <c>/tmp</c> resolving to <c>/private/tmp</c> on macOS, which can cause
-///     path-comparison failures when the OS returns the real (resolved) path instead
-///     of the symlink path used to construct it.
+///     The temporary directory is created under <see cref="Path.GetTempPath()"/>, so callers can
+///     use the class when the current working directory is read-only.
 /// </remarks>
 internal sealed class TemporaryDirectory : IDisposable
 {
@@ -39,7 +36,7 @@ internal sealed class TemporaryDirectory : IDisposable
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="TemporaryDirectory"/> class,
-    ///     creating a uniquely-named subdirectory under <see cref="Environment.CurrentDirectory"/>.
+    ///     creating a uniquely-named subdirectory under <see cref="Path.GetTempPath()"/>.
     /// </summary>
     /// <exception cref="InvalidOperationException">
     ///     Thrown when the temporary directory cannot be created due to an
@@ -48,7 +45,7 @@ internal sealed class TemporaryDirectory : IDisposable
     /// </exception>
     public TemporaryDirectory()
     {
-        var effectiveBase = Environment.CurrentDirectory;
+        var effectiveBase = Path.GetFullPath(Path.GetTempPath());
         DirectoryPath = PathHelpers.SafePathCombine(effectiveBase, $"tmp-{Guid.NewGuid():N}");
 
         // Create the directory and surface any failure as InvalidOperationException so
@@ -100,8 +97,7 @@ internal sealed class TemporaryDirectory : IDisposable
     /// <remarks>
     ///     <see cref="IOException"/> and <see cref="UnauthorizedAccessException"/> are
     ///     intentionally suppressed during disposal. Cleanup failures are non-fatal: the
-    ///     operating system or the user's temp-folder maintenance process will eventually
-    ///     reclaim the directory, and allowing an exception to escape from
+    ///     directory may remain on disk when deletion is blocked, and allowing an exception to escape from
     ///     <c>Dispose</c> would break <c>using</c> blocks and mask the original outcome.
     /// </remarks>
     public void Dispose()
