@@ -20,6 +20,37 @@ the entry point and all operational units.
 | `_logWriter` | `StreamWriter?` | Log file writer; null if `--log` not specified |
 | `_hasErrors` | `bool` | Internal flag set by `WriteError`; drives `ExitCode` |
 
+#### Key Methods
+
+##### Create(string[] args) — static factory
+
+Parses command-line arguments and returns a configured `Context` instance.
+
+- **Preconditions**: `args` is a non-null string array
+- **Postconditions**: returns a `Context` with all flags and packages populated; log file open if `--log` was specified
+- **Algorithm**: instantiates `ArgumentParser` and processes `args` left-to-right, recognizing flags and package arguments; multi-token arguments (`--log`, `--results`) consume the following token as their value
+
+##### WriteLine(string message)
+
+Writes a line to stdout (if not in silent mode) and to the log file (if open).
+
+- **Preconditions**: context is not disposed
+- **Postconditions**: line written to console and/or log file
+
+##### WriteError(string message)
+
+Writes a line to stderr (if not in silent mode), to the log file (always if open), and sets `ExitCode` to 1.
+
+- **Preconditions**: context is not disposed
+- **Postconditions**: line written to stderr and/or log file; `ExitCode` is 1
+
+##### Dispose()
+
+Flushes and closes the log file writer if open.
+
+- **Preconditions**: context may or may not have been disposed before
+- **Postconditions**: `_logWriter` is closed and set to null; safe to call multiple times
+
 #### ArgumentParser Inner Class
 
 `ArgumentParser` is a private inner class that implements the argument parsing
@@ -54,6 +85,20 @@ sets `_hasErrors = true`, which causes `ExitCode` to return `1`.
 - **Consumed by `Program`**: `Program.Main` creates the context and passes it to `Program.Run`
 - **Consumed by `Validation`**: `Validation.Run` uses `Context` for output and results path
 - **Consumed by `PathHelpers`**: indirectly via `Validation.Run` calling `SafePathCombine`
+
+#### Error Handling
+
+| Scenario | Behavior |
+| -------- | -------- |
+| Unknown argument in `Create()` | Throws `ArgumentException` identifying the unsupported argument |
+| `--log` or `--results` flag without a value | Throws `ArgumentException` |
+| Log file cannot be opened | Throws `ArgumentException` wrapping the underlying I/O exception message |
+| `WriteError()` called | Sets `_hasErrors = true` (causing `ExitCode` to return 1); writes message to stderr and log file |
+| `WriteLine()` called in silent mode | Suppresses console output; still writes to log file if open |
+| `Dispose()` called multiple times | Safe; the `StreamWriter` is set to null after first disposal |
+
+Argument-parsing errors propagate to `Program.Main`, which catches `ArgumentException` and
+writes the message to `Console.Error` before returning exit code 1.
 
 #### Resource Management
 

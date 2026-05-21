@@ -11,6 +11,8 @@ one named review-set.
 
 ## Scope
 
+This document covers all review-sets defined in `.reviewmark.yaml` for NuGet Cache Tool.
+
 This review plan covers:
 
 - C# source code files requiring formal review
@@ -31,3 +33,7 @@ This document is intended for:
 - Quality assurance teams validating review coverage
 - Project stakeholders reviewing compliance status
 - Auditors verifying that all required files have been reviewed
+
+## References
+
+N/A

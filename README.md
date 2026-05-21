@@ -11,6 +11,14 @@
 
 DEMA Consulting NuGet cache management tool for .NET developers.
 
+## Overview
+
+NuGet Cache Tool is a .NET global tool that ensures NuGet packages are cached in the
+global packages folder. It is designed for CI/CD pipelines and build environments where
+packages need to be pre-populated to enable offline or air-gapped operations. The tool
+accepts one or more `package:version` arguments, downloads each package to the global
+NuGet cache if not already present, and optionally outputs the resolved cache path.
+
 ## Features
 
 This tool provides:
@@ -55,6 +63,12 @@ nuget-cache --validate --results results.trx
 nuget-cache --silent --log output.log
 ```
 
+## Building
+
+```pwsh
+pwsh ./build.ps1
+```
+
 ## Command-Line Options
 
 | Option                    | Description                                                  |
@@ -63,7 +77,7 @@ nuget-cache --silent --log output.log
 | `-?`, `-h`, `--help`      | Display help message                                         |
 | `--silent`                | Suppress console output                                      |
 | `--validate`              | Run self-validation                                          |
-| `--results <file>`        | Write validation results to file (TRX or JUnit format)       |
+| `--results <file>`        | Write results to file (`.trx`=TRX, `.xml`=JUnit XML)         |
 | `--log <file>`            | Write output to log file                                     |
 | `[package]:[version]`     | Cache the specified NuGet package                            |
 
@@ -78,11 +92,25 @@ Generated documentation includes:
 - **Requirements Justifications**: Detailed requirement rationale
 - **Trace Matrix**: Requirements to test traceability
 
+## User Guide
+
+The NuGet Cache Tool User Guide is available on the
+[NuGet Cache Tool releases page](https://github.com/demaconsulting/NuGetCacheTool/releases).
+
+## Contributing
+
+See [CONTRIBUTING.md](https://github.com/demaconsulting/NuGetCacheTool/blob/main/CONTRIBUTING.md) for contribution guidelines.
+
 ## License
 
 Copyright (c) DEMA Consulting. Licensed under the MIT License. See [LICENSE][link-license] for details.
 
 By contributing to this project, you agree that your contributions will be licensed under the MIT License.
+
+## Support
+
+- [Report a bug or request a feature](https://github.com/demaconsulting/NuGetCacheTool/issues)
+- [Ask a question or start a discussion](https://github.com/demaconsulting/NuGetCacheTool/discussions)
 
 <!-- Badge References -->
 [badge-forks]: https://img.shields.io/github/forks/demaconsulting/NuGetCacheTool?style=plastic

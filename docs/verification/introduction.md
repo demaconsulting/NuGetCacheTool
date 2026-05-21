@@ -17,12 +17,14 @@ This document covers the verification design for the same software items describ
 *NuGet Cache Tool Software Design Document*:
 
 - **NuGetCacheTool** — the system as a whole
-- **Program** — entry point and execution orchestrator
-- **Cli** — command-line interface subsystem
+- **CLI** — command-line interface subsystem
   - **Context** — argument parser and I/O owner
 - **SelfTest** — self-validation subsystem
   - **Validation** — self-validation test runner
+- **Utilities** — shared utilities subsystem
+  - **TemporaryDirectory** — disposable temporary directory
   - **PathHelpers** — safe path combination utilities
+- **Program** — entry point and execution orchestrator
 
 The following topics are out of scope:
 
@@ -48,12 +50,14 @@ The following tree shows the software items covered by this document:
 
 ```text
 NuGetCacheTool (System)
-├── Program (Unit)
-├── Cli (Subsystem)
+├── CLI (Subsystem)
 │   └── Context (Unit)
-└── SelfTest (Subsystem)
-    ├── Validation (Unit)
-    └── PathHelpers (Unit)
+├── SelfTest (Subsystem)
+│   └── Validation (Unit)
+├── Utilities (Subsystem)
+│   ├── TemporaryDirectory (Unit)
+│   └── PathHelpers (Unit)
+└── Program (Unit)
 
 OTS Items
 ├── BuildMark
@@ -70,17 +74,21 @@ OTS Items
 
 ## Companion Artifact Structure
 
-In-house items have corresponding artifacts in parallel directory trees:
+Each local software item has corresponding artifacts in parallel directory trees:
 
-- Requirements: `docs/reqstream/{system}/.../{item}.yaml` (kebab-case)
-- Design docs: `docs/design/{system}/.../{item}.md` (kebab-case)
-- Verification design: `docs/verification/{system}/.../{item}.md` (kebab-case)
-- Source code: `src/{System}/.../{Item}.cs` (PascalCase for C#)
-- Tests: `test/{System}.Tests/.../{Item}Tests.cs` (PascalCase for C#)
+- Requirements: `docs/reqstream/nuget-cache-tool.yaml`, `docs/reqstream/nuget-cache-tool/.../{item}.yaml`
+- Design: `docs/design/nuget-cache-tool.md`, `docs/design/nuget-cache-tool/.../{item}.md`
+- Verification: `docs/verification/nuget-cache-tool.md`, `docs/verification/nuget-cache-tool/.../{item}.md`
+- Source: `src/DemaConsulting.NuGet.CacheTool/.../{Item}.cs`
+- Tests: `test/DemaConsulting.NuGet.CacheTool.Tests/.../{Item}Tests.cs`
 
-OTS items have parallel artifacts in:
+OTS items have integration/usage verification documentation parallel to system folders:
 
-- Requirements: `docs/reqstream/ots/{ots-name}.yaml` (kebab-case)
-- Verification: `docs/verification/ots/{ots-name}.md` (kebab-case)
+- Requirements: `docs/reqstream/ots/nuget-caching.yaml`, `docs/reqstream/ots/test-results.yaml`
+- Verification: `docs/verification/ots/nuget-caching.md`, `docs/verification/ots/test-results.md`
 
 Review-sets: defined in `.reviewmark.yaml`
+
+## References
+
+- [REF-1] NuGet Cache Tool Releases, available at the demaconsulting/NuGetCacheTool GitHub repository releases page.

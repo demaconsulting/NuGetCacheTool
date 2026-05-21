@@ -10,6 +10,9 @@ maintained throughout development.
 
 ## Scope
 
+Covers static analysis of all source code in `src/` for NuGet Cache Tool.
+Test code is excluded from static analysis requirements.
+
 This code quality report covers:
 
 - Quality gate status and conditions
@@ -33,3 +36,7 @@ This document is intended for:
 - Quality assurance teams reviewing code quality
 - Project stakeholders evaluating project health
 - Contributors understanding quality standards
+
+## References
+
+N/A

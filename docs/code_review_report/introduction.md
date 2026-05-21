@@ -11,6 +11,8 @@ reviewed files.
 
 ## Scope
 
+This document covers all completed reviews for review-sets defined in `.reviewmark.yaml`.
+
 This review report covers:
 
 - Current review-set status (current, stale, or missing)
@@ -31,3 +33,7 @@ This document is intended for:
 - Quality assurance teams validating review currency
 - Project stakeholders reviewing compliance status
 - Auditors verifying that all reviews remain valid for the current release
+
+## References
+
+N/A

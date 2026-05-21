@@ -1,0 +1,37 @@
+---
+# NuGet Cache Tool Utilities Subsystem Requirements
+
+sections:
+  - title: Utilities Subsystem Requirements
+    requirements:
+      - id: NuGetCache-Utilities-PathSafety
+        title: The Utilities subsystem shall prevent path traversal attacks when combining file paths.
+        justification: |
+          Accepting user-controlled path components without validation could allow
+          an attacker to read or write files outside intended directories. The
+          PathHelpers.SafePathCombine method must reject absolute paths and parent-directory
+          references (e.g. "..") in the relative component.
+        children:
+          - NuGetCache-PathHelpers-SafePathCombine
+          - NuGetCache-PathHelpers-NullArguments
+        tests:
+          - Utilities_PathTraversal_TraversalAttempt_ThrowsArgumentException
+          - Utilities_PathSafety_SafePathCombine_StaysWithinBase
+
+      - id: NuGetCache-Utilities-TempDirectory
+        title: The Utilities subsystem shall provide a disposable temporary directory facility for use by self-test and test
+          code.
+        justification: |
+          A shared TemporaryDirectory utility prevents both production self-test code and
+          test infrastructure from duplicating directory-lifecycle management and ensures
+          consistent cleanup behavior across all consumers.
+        children:
+          - NuGetCache-TemporaryDirectory-DirectoryCreation
+          - NuGetCache-TemporaryDirectory-FilePathResolution
+          - NuGetCache-TemporaryDirectory-TraversalRejection
+          - NuGetCache-TemporaryDirectory-Disposal
+        tests:
+          - Utilities_PathResolution_ValidRelativePath_ReturnsPathWithinDirectory
+          - Utilities_PathResolution_NestedRelativePath_CreatesIntermediateDirectories
+          - Utilities_PathTraversal_TraversalAttempt_ThrowsArgumentException
+          - Utilities_DirectoryLifecycle_CreateAndDispose_DirectoryCreatedThenDeleted

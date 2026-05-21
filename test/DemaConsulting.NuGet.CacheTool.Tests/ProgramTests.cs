@@ -52,6 +52,7 @@ public class ProgramTests
 
             // Assert
             var output = outWriter.ToString();
+            Assert.Equal(0, context.ExitCode);
             Assert.DoesNotContain("Copyright", output);
             Assert.DoesNotContain("NuGet Cache Tool version", output);
             Assert.False(string.IsNullOrWhiteSpace(output), "Version flag should output a non-empty version string");
@@ -81,6 +82,7 @@ public class ProgramTests
 
             // Assert
             var output = outWriter.ToString();
+            Assert.Equal(0, context.ExitCode);
             Assert.Contains("Usage:", output);
             Assert.Contains("Options:", output);
             Assert.Contains("--version", output);
@@ -111,6 +113,7 @@ public class ProgramTests
 
             // Assert
             var output = outWriter.ToString();
+            Assert.Equal(0, context.ExitCode);
             Assert.Contains("Total Tests:", output);
         }
         finally
@@ -138,6 +141,7 @@ public class ProgramTests
 
             // Assert - banner is printed even with no package arguments
             var output = outWriter.ToString();
+            Assert.Equal(0, context.ExitCode);
             Assert.Contains("NuGet Cache Tool version", output);
             Assert.Contains("Copyright", output);
         }

@@ -1,8 +1,12 @@
 # Introduction
 
+This guide describes how to install, configure, and use NuGet Cache Tool.
+
 ## Purpose
 
-NuGet Cache Tool is a NuGet cache management tool for DEMA Consulting .NET developers.
+NuGet Cache Tool is a general-purpose .NET global tool for CI/CD pipelines that ensures
+NuGet packages are pre-cached in the global packages folder before build steps that depend
+on them.
 
 ## Scope
 
@@ -13,6 +17,10 @@ This user guide covers:
 - Usage examples for common tasks
 - Command-line options reference
 - Practical examples for various scenarios
+
+## References
+
+- [REF-1] NuGet Cache Tool Releases, available at the demaconsulting/NuGetCacheTool GitHub repository releases page.
 
 # Installation
 
@@ -108,7 +116,7 @@ The following command-line options are supported:
 ## Example 1: Basic Usage
 
 ```bash
-nuget-cache
+nuget-cache DemaConsulting.NuGet.Caching:0.1.0
 ```
 
 ## Example 2: Self-Validation with Results

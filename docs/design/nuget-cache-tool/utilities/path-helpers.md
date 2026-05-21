@@ -5,6 +5,21 @@
 `PathHelpers` provides safe path combination utilities that prevent path traversal
 attacks when user-controlled path components are combined with a trusted base path.
 
+#### Data Model
+
+`PathHelpers` is a static class with no instance state and no persistent data. All
+behavior is encapsulated in the pure static method `SafePathCombine`.
+
+#### Key Methods
+
+##### SafePathCombine(string basePath, string relativePath)
+
+Combines `basePath` and `relativePath`, rejecting any result that escapes the base directory.
+
+- **Preconditions**: both arguments are non-null
+- **Postconditions**: returned path is within `basePath`; throws on traversal or absolute override
+- **Algorithm**: (1) reject null inputs via `ArgumentNullException.ThrowIfNull`; (2) combine paths with `Path.Combine`; (3) resolve both `basePath` and combined path to absolute form using `Path.GetFullPath`; (4) call `Path.GetRelativePath(absoluteBase, absoluteCombined)` and reject if result is `".."`, starts with `".."`+separator, or is itself rooted
+
 #### SafePathCombine Algorithm
 
 `SafePathCombine(basePath, relativePath)` applies the following steps:
@@ -49,4 +64,24 @@ attacks when user-controlled path components are combined with a trusted base pa
 
 #### Interactions
 
-- **Called by `Validation`**: constructs log file paths inside temporary directories
+- **Called by `TemporaryDirectory`**: enforces the directory boundary in `GetFilePath`
+- **Called by `Validation`** (SelfTest subsystem): constructs log file paths inside temporary
+  directories via `TemporaryDirectory.GetFilePath`
+
+#### Error Handling
+
+| Scenario | Exception thrown |
+| -------- | ---------------- |
+| `basePath` is null | `ArgumentNullException` (parameter: `basePath`) |
+| `relativePath` is null | `ArgumentNullException` (parameter: `relativePath`) |
+| `relativePath` is empty | Returns `basePath` unchanged (no exception) |
+| Combined path escapes the base directory | `ArgumentException` (parameter: `relativePath`) |
+| Combined path is absolute (cross-root override) | `ArgumentException` (parameter: `relativePath`) |
+
+All errors are reported by throwing immediately; no partial state is produced and
+no error accumulation occurs.
+
+#### Dependencies
+
+`PathHelpers` depends exclusively on `System.IO.Path` from the .NET BCL. It has no
+dependency on other units, subsystems, or third-party packages.

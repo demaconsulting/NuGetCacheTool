@@ -18,5 +18,5 @@ sections:
               functioning correctly in the deployment environment.
             tags: [ots]
             tests:
-              - NuGetCacheTool_ValidateWithResults_GeneratesTrxFile
-              - NuGetCacheTool_ValidateWithResults_GeneratesJUnitFile
+              - NuGetCacheTool_ResultsFile_ValidateWithTrxExtension_GeneratesTrxFile
+              - NuGetCacheTool_ResultsFile_ValidateWithXmlExtension_GeneratesJUnitFile

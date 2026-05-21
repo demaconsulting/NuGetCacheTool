@@ -48,15 +48,23 @@ sections:
               - Context_Create_LogFlag_OpensLogFile
               - Context_WriteError_WritesToLogFile
 
+          - id: NuGetCache-Context-ErrorOutput
+            title: The Context class shall write error messages to stderr when an error occurs and silent mode is not active.
+            justification: |
+              Users and automated callers must receive a descriptive error message. Error
+              messages are routed to stderr to allow separation from standard output in
+              shell pipelines.
+            tests:
+              - Context_WriteError_NotSilent_WritesToConsole
+
           - id: NuGetCache-Context-ErrorTracking
-            title: The Context class shall track errors and expose a non-zero exit code on failure.
+            title: The Context class shall track errors and expose a non-zero exit code when any error has occurred.
             justification: |
               Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
-              programmatically via the process exit code, and error messages must be visible
-              on stderr unless silent mode is active.
+              programmatically via the process exit code. A single WriteError call is
+              sufficient to cause ExitCode to return 1 for the lifetime of the context.
             tests:
               - Context_WriteError_SetsErrorExitCode
-              - Context_WriteError_NotSilent_WritesToConsole
 
           - id: NuGetCache-Context-InvalidArguments
             title: The Context class shall reject unknown or malformed command-line arguments with a descriptive error.

@@ -1,8 +1,8 @@
 ---
-title: NuGet Cache Tool Trace Matrix
-subtitle: Requirements Traceability Matrix for the NuGet Cache Tool
+title: NuGet Cache Tool Trace Matrix Report
+subtitle: Requirements Trace Matrix for the NuGet Cache Tool
 author: DEMA Consulting
-description: Requirements Traceability Matrix for the NuGet Cache Tool
+description: Requirements Trace Matrix and Traceability Report for the NuGet Cache Tool
 lang: en-US
 keywords:
   - NuGet Cache Tool

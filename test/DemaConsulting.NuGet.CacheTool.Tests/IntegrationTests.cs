@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using DemaConsulting.NuGet.CacheTool.SelfTest;
+using DemaConsulting.NuGet.CacheTool.Utilities;
 
 namespace DemaConsulting.NuGet.CacheTool.Tests;
 
@@ -28,6 +28,7 @@ namespace DemaConsulting.NuGet.CacheTool.Tests;
 [Collection("Sequential")]
 public class IntegrationTests
 {
+    /// <summary>Full path to the NuGet Cache Tool DLL under test.</summary>
     private readonly string _dllPath;
 
     /// <summary>
@@ -47,8 +48,9 @@ public class IntegrationTests
     ///     Test that version flag outputs version information.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_VersionFlag_OutputsVersion()
+    public void NuGetCacheTool_VersionDisplay_VersionFlagProvided_OutputsVersion()
     {
+        // Arrange: no setup required
         // Act
         var exitCode = Runner.Run(
             out var output,
@@ -67,8 +69,9 @@ public class IntegrationTests
     ///     Test that help flag outputs usage information.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_HelpFlag_OutputsUsageInformation()
+    public void NuGetCacheTool_HelpDisplay_HelpFlagProvided_OutputsUsageInformation()
     {
+        // Arrange: no setup required
         // Act
         var exitCode = Runner.Run(
             out var output,
@@ -87,8 +90,9 @@ public class IntegrationTests
     ///     Test that validate flag runs self-validation.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_ValidateFlag_RunsValidation()
+    public void NuGetCacheTool_SelfValidation_ValidateFlagProvided_RunsValidation()
     {
+        // Arrange: no setup required
         // Act
         var exitCode = Runner.Run(
             out var output,
@@ -106,7 +110,7 @@ public class IntegrationTests
     ///     Test that validate with results flag generates TRX file.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_ValidateWithResults_GeneratesTrxFile()
+    public void NuGetCacheTool_ResultsFile_ValidateWithTrxExtension_GeneratesTrxFile()
     {
         // Arrange
         var resultsFile = Path.GetTempFileName();
@@ -144,7 +148,7 @@ public class IntegrationTests
     ///     Test that validate with results flag generates JUnit XML file.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_ValidateWithResults_GeneratesJUnitFile()
+    public void NuGetCacheTool_ResultsFile_ValidateWithXmlExtension_GeneratesJUnitFile()
     {
         // Arrange
         var resultsFile = Path.GetTempFileName();
@@ -183,8 +187,9 @@ public class IntegrationTests
     ///     Test that silent flag suppresses output.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_SilentFlag_SuppressesOutput()
+    public void NuGetCacheTool_SilentMode_SilentFlagProvided_SuppressesOutput()
     {
+        // Arrange: no setup required
         // Act
         var exitCode = Runner.Run(
             out var output,
@@ -201,7 +206,7 @@ public class IntegrationTests
     ///     Test that log flag writes output to file.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_LogFlag_WritesOutputToFile()
+    public void NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile()
     {
         // Arrange
         var logFile = Path.GetTempFileName();
@@ -236,8 +241,9 @@ public class IntegrationTests
     ///     Test that unknown argument returns error.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_UnknownArgument_ReturnsError()
+    public void NuGetCacheTool_ErrorHandling_UnknownArgumentProvided_ReturnsError()
     {
+        // Arrange: no setup required
         // Act
         var exitCode = Runner.Run(
             out var output,
@@ -254,8 +260,9 @@ public class IntegrationTests
     ///     Test that a package argument caches the package and outputs the path.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_CachePackage_OutputsPath()
+    public void NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath()
     {
+        // Arrange: no setup required
         // Act
         var exitCode = Runner.Run(
             out var output,
@@ -273,8 +280,9 @@ public class IntegrationTests
     ///     Test that attempting to cache a nonexistent package returns an error.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_CacheNonexistentPackage_ReturnsError()
+    public void NuGetCacheTool_PackageCaching_NonexistentPackageProvided_ReturnsError()
     {
+        // Arrange: no setup required
         // Act
         var exitCode = Runner.Run(
             out var output,
@@ -291,10 +299,12 @@ public class IntegrationTests
     ///     Test that specifying an invalid log file path returns an error.
     /// </summary>
     [Fact]
-    public void NuGetCacheTool_LogFlag_WithInvalidFilename_ReturnsError()
+    public void NuGetCacheTool_LogFile_InvalidFilenameProvided_ReturnsError()
     {
-        // Arrange - use a hard-coded path into a nonexistent directory to ensure failure
-        const string invalidLogPath = "/nonexistent_dir_xyz_abc/invalid.log";
+        // Arrange - use a path into a nonexistent directory under a managed temporary root
+        using var temporaryDirectory = new TemporaryDirectory();
+        var invalidLogRelativePath = Path.Combine("nonexistent_subdir_xyz_abc", "invalid.log");
+        var invalidLogPath = PathHelpers.SafePathCombine(temporaryDirectory.DirectoryPath, invalidLogRelativePath);
 
         // Act
         var exitCode = Runner.Run(

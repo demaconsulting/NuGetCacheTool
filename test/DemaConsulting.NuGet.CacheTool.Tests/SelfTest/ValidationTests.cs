@@ -20,6 +20,7 @@
 
 using DemaConsulting.NuGet.CacheTool.Cli;
 using DemaConsulting.NuGet.CacheTool.SelfTest;
+using DemaConsulting.NuGet.CacheTool.Utilities;
 
 namespace DemaConsulting.NuGet.CacheTool.Tests.SelfTest;
 
@@ -36,7 +37,8 @@ public class ValidationTests
     public void Validation_Run_TrxResultsRequested_WritesTrxFile()
     {
         // Arrange: prepare a temporary TRX results file path
-        var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".trx"));
+        using var temporaryDirectory = new TemporaryDirectory();
+        var resultsFile = temporaryDirectory.GetFilePath($"{Guid.NewGuid():N}.trx");
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
@@ -68,7 +70,8 @@ public class ValidationTests
     public void Validation_Run_JUnitResultsRequested_WritesJUnitFile()
     {
         // Arrange: prepare a temporary JUnit XML results file path
-        var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".xml"));
+        using var temporaryDirectory = new TemporaryDirectory();
+        var resultsFile = temporaryDirectory.GetFilePath($"{Guid.NewGuid():N}.xml");
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
@@ -117,7 +120,8 @@ public class ValidationTests
     public void Validation_Run_WithSilentContext_PrintsSummary()
     {
         // Arrange: setup unique log file path to capture silent context output
-        var logFile = Path.Combine(Path.GetTempPath(), $"validation_test_{Guid.NewGuid()}.log");
+        using var temporaryDirectory = new TemporaryDirectory();
+        var logFile = temporaryDirectory.GetFilePath($"validation_test_{Guid.NewGuid():N}.log");
         try
         {
             using (var context = Context.Create(["--silent", "--log", logFile]))

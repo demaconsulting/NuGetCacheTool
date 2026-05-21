@@ -115,14 +115,32 @@ reviews:
       - "src/**/SelfTest/Validation.cs"
       - "test/**/SelfTest/ValidationTests.cs"
 
-  - id: NuGetCacheTool-SelfTest-PathHelpers
+  # NuGetCacheTool - Utilities
+  - id: NuGetCacheTool-Utilities
+    title: Review of NuGet Cache Tool Utilities subsystem architecture and interfaces
+    paths:
+      - "docs/reqstream/nuget-cache-tool/utilities.yaml"
+      - "docs/design/nuget-cache-tool/utilities.md"
+      - "docs/verification/nuget-cache-tool/utilities.md"
+      - "test/**/Utilities/UtilitiesTests.cs"
+
+  - id: NuGetCacheTool-Utilities-PathHelpers
     title: Review of NuGet Cache Tool PathHelpers unit implementation
     paths:
-      - "docs/reqstream/nuget-cache-tool/self-test/path-helpers.yaml"
-      - "docs/design/nuget-cache-tool/self-test/path-helpers.md"
-      - "docs/verification/nuget-cache-tool/self-test/path-helpers.md"
-      - "src/**/SelfTest/PathHelpers.cs"
-      - "test/**/SelfTest/PathHelpersTests.cs"
+      - "docs/reqstream/nuget-cache-tool/utilities/path-helpers.yaml"
+      - "docs/design/nuget-cache-tool/utilities/path-helpers.md"
+      - "docs/verification/nuget-cache-tool/utilities/path-helpers.md"
+      - "src/**/Utilities/PathHelpers.cs"
+      - "test/**/Utilities/PathHelpersTests.cs"
+
+  - id: NuGetCacheTool-Utilities-TemporaryDirectory
+    title: Review of NuGet Cache Tool TemporaryDirectory unit implementation
+    paths:
+      - "docs/reqstream/nuget-cache-tool/utilities/temporary-directory.yaml"
+      - "docs/design/nuget-cache-tool/utilities/temporary-directory.md"
+      - "docs/verification/nuget-cache-tool/utilities/temporary-directory.md"
+      - "src/**/Utilities/TemporaryDirectory.cs"
+      - "test/**/Utilities/TemporaryDirectoryTests.cs"
 
   # OTS Items
   - id: OTS-BuildMark

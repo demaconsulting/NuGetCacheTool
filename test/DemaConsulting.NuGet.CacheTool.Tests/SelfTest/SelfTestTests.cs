@@ -20,6 +20,7 @@
 
 using DemaConsulting.NuGet.CacheTool.Cli;
 using DemaConsulting.NuGet.CacheTool.SelfTest;
+using DemaConsulting.NuGet.CacheTool.Utilities;
 
 namespace DemaConsulting.NuGet.CacheTool.Tests.SelfTest;
 
@@ -90,7 +91,8 @@ public class SelfTestTests
     public void SelfTest_ResultsFile_GeneratesTrxFile()
     {
         // Arrange: prepare a temporary TRX results file path
-        var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".trx"));
+        using var temporaryDirectory = new TemporaryDirectory();
+        var resultsFile = temporaryDirectory.GetFilePath($"{Guid.NewGuid():N}.trx");
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
@@ -122,7 +124,8 @@ public class SelfTestTests
     public void SelfTest_ResultsFile_GeneratesJUnitFile()
     {
         // Arrange: prepare a temporary JUnit XML results file path
-        var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".xml"));
+        using var temporaryDirectory = new TemporaryDirectory();
+        var resultsFile = temporaryDirectory.GetFilePath($"{Guid.NewGuid():N}.xml");
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
@@ -148,48 +151,4 @@ public class SelfTestTests
         }
     }
 
-    /// <summary>
-    ///     Test that the SelfTest subsystem correctly combines valid file paths.
-    /// </summary>
-    [Fact]
-    public void SelfTest_SafePathCombine_AcceptsValidPaths()
-    {
-        // Arrange: prepare a base path and a valid relative path
-        var basePath = Path.GetTempPath();
-        var relativePath = "valid-subdir/file.txt";
-
-        // Act: combine the base path and relative path safely
-        var result = PathHelpers.SafePathCombine(basePath, relativePath);
-
-        // Assert: verify the combined path matches the expected result
-        Assert.Equal(Path.Combine(basePath, relativePath), result);
-    }
-
-    /// <summary>
-    ///     Test that the SelfTest subsystem rejects path traversal attempts.
-    /// </summary>
-    [Fact]
-    public void SelfTest_SafePathCombine_RejectsPathTraversal()
-    {
-        // Arrange: prepare a base path and a traversal attempt
-        var basePath = Path.GetTempPath();
-
-        // Act: verify that path traversal is rejected with an exception
-        Assert.Throws<ArgumentException>(() =>
-            PathHelpers.SafePathCombine(basePath, "../traversal/attempt"));
-    }
-
-    /// <summary>
-    ///     Test that SafePathCombine rejects an absolute path as the relative argument.
-    /// </summary>
-    [Fact]
-    public void SelfTest_SafePathCombine_RejectsAbsolutePath()
-    {
-        // Arrange: prepare a base path
-        const string basePath = "/tmp/base";
-
-        // Act: call SafePathCombine with an absolute path as the relative argument
-        Assert.Throws<ArgumentException>(() =>
-            PathHelpers.SafePathCombine(basePath, "/etc/passwd"));
-    }
 }

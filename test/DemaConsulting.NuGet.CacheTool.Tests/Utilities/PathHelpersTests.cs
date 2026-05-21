@@ -18,9 +18,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-using DemaConsulting.NuGet.CacheTool.SelfTest;
+using DemaConsulting.NuGet.CacheTool.Utilities;
 
-namespace DemaConsulting.NuGet.CacheTool.Tests.SelfTest;
+namespace DemaConsulting.NuGet.CacheTool.Tests.Utilities;
 
 /// <summary>
 ///     Tests for the PathHelpers class.

@@ -1,5 +1,5 @@
 ---
-title: NuGet Cache Tool Requirements
+title: NuGet Cache Tool Requirements Document
 subtitle: Requirements Specification for the NuGet Cache Tool
 author: DEMA Consulting
 description: Requirements Specification for the NuGet Cache Tool
