@@ -18,15 +18,15 @@ path-boundary enforcement flows end-to-end from `TemporaryDirectory.GetFilePath`
 | `TemporaryDirectory` | Created directly; exercises directory creation, file-path resolution, and disposal.    |
 | `PathHelpers`        | Called directly via `SafePathCombine` in the path-safety scenario; also exercised      |
 |                      | indirectly through `TemporaryDirectory.GetFilePath` in all other scenarios.            |
-| Real filesystem      | All tests create and delete real directories under `Environment.CurrentDirectory`.     |
+| Real filesystem      | All tests create and delete real directories under `Path.GetTempPath()`.               |
 
 ### Test Environment
 
 Utilities subsystem tests run under the standard xUnit v3 test runner within the
 `DemaConsulting.NuGet.CacheTool.Tests` project. Tests use the `[Collection("Sequential")]`
-attribute because they create and delete real directories under `Environment.CurrentDirectory`;
-sequential execution prevents interference between concurrent test runs sharing the same
-working directory. No external services or network connectivity are required.
+attribute because they create and delete real directories under `Path.GetTempPath()`;
+sequential execution prevents interference between concurrent test runs. No external
+services or network connectivity are required.
 
 ### Acceptance Criteria
 

@@ -5,13 +5,12 @@ sections:
   - title: TemporaryDirectory Unit Requirements
     requirements:
       - id: NuGetCache-TemporaryDirectory-DirectoryCreation
-        title: The TemporaryDirectory class shall create a unique temporary directory under the current working directory
-          on construction.
+        title: The TemporaryDirectory class shall create a unique temporary directory under the operating system temporary
+          path on construction.
         justification: |
-          Using Environment.CurrentDirectory as the base — rather than Path.GetTempPath() —
-          avoids the macOS /tmp → /private/tmp symlink issue that causes path-comparison
-          failures. A GUID-derived name guarantees uniqueness so concurrent test runs do not
-          collide.
+          Using Path.GetTempPath() avoids failures when the current working directory is
+          read-only. A GUID-derived name guarantees uniqueness so concurrent test runs do
+          not collide.
         tests:
           - TemporaryDirectory_Constructor_CreatesDirectory
           - TemporaryDirectory_Constructor_CreatesUniqueDirectories

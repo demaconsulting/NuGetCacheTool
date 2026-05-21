@@ -8,7 +8,7 @@ It defines test scenarios, dependency usage, and requirement coverage for
 
 `TemporaryDirectory` is verified with unit tests in `TemporaryDirectoryTests.cs`. Tests
 exercise construction, file-path resolution, path-traversal rejection, and disposal directly
-against the file system under `Environment.CurrentDirectory`.
+against the file system under `Path.GetTempPath()`.
 
 #### Dependencies
 
@@ -19,8 +19,8 @@ against the file system under `Environment.CurrentDirectory`.
 #### Test Environment
 
 Tests run under `[Collection("Sequential")]` because they create and delete real directories
-under `Environment.CurrentDirectory`. Sequential execution prevents interference between
-concurrent test runs sharing the same working directory.
+under `Path.GetTempPath()`. Sequential execution prevents interference between concurrent
+test runs.
 
 #### Acceptance Criteria
 
