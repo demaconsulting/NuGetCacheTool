@@ -303,9 +303,8 @@ public class IntegrationTests
     {
         // Arrange - use a path into a nonexistent directory under a managed temporary root
         using var temporaryDirectory = new TemporaryDirectory();
-        var invalidLogPath = PathHelpers.SafePathCombine(
-            temporaryDirectory.DirectoryPath,
-            Path.Combine("nonexistent_subdir_xyz_abc", "invalid.log"));
+        var invalidLogRelativePath = Path.Combine("nonexistent_subdir_xyz_abc", "invalid.log");
+        var invalidLogPath = PathHelpers.SafePathCombine(temporaryDirectory.DirectoryPath, invalidLogRelativePath);
 
         // Act
         var exitCode = Runner.Run(
