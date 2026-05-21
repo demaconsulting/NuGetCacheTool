@@ -301,8 +301,11 @@ public class IntegrationTests
     [Fact]
     public void NuGetCacheTool_LogFile_InvalidFilenameProvided_ReturnsError()
     {
-        // Arrange - use a path into a nonexistent directory to ensure failure on all platforms
-        var invalidLogPath = Path.Combine(Path.GetTempPath(), "nonexistent_subdir_xyz_abc", "invalid.log");
+        // Arrange - use a path into a nonexistent directory under a managed temporary root
+        using var temporaryDirectory = new TemporaryDirectory();
+        var invalidLogPath = PathHelpers.SafePathCombine(
+            temporaryDirectory.DirectoryPath,
+            Path.Combine("nonexistent_subdir_xyz_abc", "invalid.log"));
 
         // Act
         var exitCode = Runner.Run(

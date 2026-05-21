@@ -20,6 +20,7 @@
 
 using DemaConsulting.NuGet.CacheTool.Cli;
 using DemaConsulting.NuGet.CacheTool.SelfTest;
+using DemaConsulting.NuGet.CacheTool.Utilities;
 
 namespace DemaConsulting.NuGet.CacheTool.Tests.SelfTest;
 
@@ -90,7 +91,8 @@ public class SelfTestTests
     public void SelfTest_ResultsFile_GeneratesTrxFile()
     {
         // Arrange: prepare a temporary TRX results file path
-        var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".trx"));
+        using var temporaryDirectory = new TemporaryDirectory();
+        var resultsFile = temporaryDirectory.GetFilePath($"{Guid.NewGuid():N}.trx");
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
@@ -122,7 +124,8 @@ public class SelfTestTests
     public void SelfTest_ResultsFile_GeneratesJUnitFile()
     {
         // Arrange: prepare a temporary JUnit XML results file path
-        var resultsFile = Path.Combine(Path.GetTempPath(), Path.ChangeExtension(Path.GetRandomFileName(), ".xml"));
+        using var temporaryDirectory = new TemporaryDirectory();
+        var resultsFile = temporaryDirectory.GetFilePath($"{Guid.NewGuid():N}.xml");
         try
         {
             using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
