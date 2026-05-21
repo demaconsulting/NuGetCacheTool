@@ -4,7 +4,8 @@ resource-path:
   - docs/design/nuget-cache-tool
   - docs/design/nuget-cache-tool/cli
   - docs/design/nuget-cache-tool/self-test
-  - docs/design/nuget-cache-tool/utilities  - docs/design/ots
+  - docs/design/nuget-cache-tool/utilities
+  - docs/design/ots
   - docs/template
 
 input-files:

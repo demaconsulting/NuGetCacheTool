@@ -122,9 +122,7 @@ reviews:
       - "docs/reqstream/nuget-cache-tool/utilities.yaml"
       - "docs/design/nuget-cache-tool/utilities.md"
       - "docs/verification/nuget-cache-tool/utilities.md"
-      - "docs/design/nuget-cache-tool/utilities/path-helpers.md"
-      - "docs/verification/nuget-cache-tool/utilities/path-helpers.md"
-      - "test/**/Utilities/TemporaryDirectoryTests.cs"
+      - "test/**/Utilities/UtilitiesTests.cs"
 
   - id: NuGetCacheTool-Utilities-PathHelpers
     title: Review of NuGet Cache Tool PathHelpers unit implementation

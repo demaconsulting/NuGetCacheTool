@@ -15,9 +15,8 @@ sections:
           - NuGetCache-PathHelpers-SafePathCombine
           - NuGetCache-PathHelpers-NullArguments
         tests:
-          - SelfTest_SafePathCombine_AcceptsValidPaths
-          - SelfTest_SafePathCombine_RejectsPathTraversal
-          - SelfTest_SafePathCombine_RejectsAbsolutePath
+          - Utilities_PathTraversal_TraversalAttempt_ThrowsArgumentException
+          - Utilities_PathSafety_SafePathCombine_StaysWithinBase
 
       - id: NuGetCache-Utilities-TempDirectory
         title: The Utilities subsystem shall provide a disposable temporary directory facility for use by self-test and test
@@ -32,10 +31,7 @@ sections:
           - NuGetCache-TemporaryDirectory-TraversalRejection
           - NuGetCache-TemporaryDirectory-Disposal
         tests:
-          - TemporaryDirectory_Constructor_CreatesDirectory
-          - TemporaryDirectory_Constructor_CreatesUniqueDirectories
-          - TemporaryDirectory_GetFilePath_SimpleFile_ReturnsPathUnderDirectory
-          - TemporaryDirectory_GetFilePath_NestedPath_CreatesIntermediateDirectories
-          - TemporaryDirectory_GetFilePath_TraversalAttempt_ThrowsArgumentException
-          - TemporaryDirectory_Dispose_DeletesDirectory
-          - TemporaryDirectory_Dispose_AlreadyDeleted_DoesNotThrow
+          - Utilities_PathResolution_ValidRelativePath_ReturnsPathWithinDirectory
+          - Utilities_PathResolution_NestedRelativePath_CreatesIntermediateDirectories
+          - Utilities_PathTraversal_TraversalAttempt_ThrowsArgumentException
+          - Utilities_DirectoryLifecycle_CreateAndDispose_DirectoryCreatedThenDeleted
