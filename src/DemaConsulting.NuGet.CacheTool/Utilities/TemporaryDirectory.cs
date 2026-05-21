@@ -24,8 +24,11 @@ namespace DemaConsulting.NuGet.CacheTool.Utilities;
 ///     A disposable temporary directory that is automatically deleted when disposed.
 /// </summary>
 /// <remarks>
-///     The temporary directory is created under <see cref="Path.GetTempPath()"/>, so callers can
-///     use the class when the current working directory is read-only.
+///     The temporary directory is created under <see cref="Environment.CurrentDirectory"/>
+///     rather than <see cref="Path.GetTempPath()"/>. This avoids OS symlink issues such as
+///     <c>/tmp</c> resolving to <c>/private/tmp</c> on macOS, which can cause
+///     path-comparison failures when the OS returns the real (resolved) path instead
+///     of the symlink path used to construct it.
 /// </remarks>
 internal sealed class TemporaryDirectory : IDisposable
 {
@@ -36,7 +39,7 @@ internal sealed class TemporaryDirectory : IDisposable
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="TemporaryDirectory"/> class,
-    ///     creating a uniquely-named subdirectory under <see cref="Path.GetTempPath()"/>.
+    ///     creating a uniquely-named subdirectory under <see cref="Environment.CurrentDirectory"/>.
     /// </summary>
     /// <exception cref="InvalidOperationException">
     ///     Thrown when the temporary directory cannot be created due to an
@@ -45,7 +48,7 @@ internal sealed class TemporaryDirectory : IDisposable
     /// </exception>
     public TemporaryDirectory()
     {
-        var effectiveBase = Path.GetFullPath(Path.GetTempPath());
+        var effectiveBase = Environment.CurrentDirectory;
         DirectoryPath = PathHelpers.SafePathCombine(effectiveBase, $"tmp-{Guid.NewGuid():N}");
 
         // Create the directory and surface any failure as InvalidOperationException so

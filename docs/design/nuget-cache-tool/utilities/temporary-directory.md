@@ -9,9 +9,11 @@ production self-test code (`Validation`) and by unit and integration test infras
 `TemporaryDirectory` encapsulates three responsibilities:
 
 1. **Construction** — generates a uniquely-named subdirectory path using
-   `PathHelpers.SafePathCombine(Path.GetFullPath(Path.GetTempPath()), "tmp-{guid}")` and calls
-   `Directory.CreateDirectory` to create it on disk. Using the OS temp directory allows
-   construction to succeed even when the current working directory is read-only.
+   `PathHelpers.SafePathCombine(Environment.CurrentDirectory, "tmp-{guid}")` and calls
+   `Directory.CreateDirectory` to create it on disk. Using `Environment.CurrentDirectory`
+   rather than `Path.GetTempPath()` avoids the macOS `/tmp` → `/private/tmp` symlink issue
+   that causes path-comparison failures when the OS returns the resolved path instead of the
+   construction path.
 2. **File-path resolution** — `GetFilePath(relativePath)` delegates to
    `PathHelpers.SafePathCombine` to enforce the directory boundary, then calls
    `Directory.CreateDirectory` on the parent of the returned path so that any intermediate
@@ -29,7 +31,7 @@ single `string` property `DirectoryPath` set on construction.
 
 ##### TemporaryDirectory() constructor
 
-Creates a uniquely-named subdirectory under `Path.GetFullPath(Path.GetTempPath())`.
+Creates a uniquely-named subdirectory under `Environment.CurrentDirectory`.
 
 **Throws:**
 

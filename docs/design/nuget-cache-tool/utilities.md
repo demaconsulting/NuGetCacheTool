@@ -16,7 +16,7 @@ path-traversal attacks.
   and rejects any result that escapes the base directory; throws `ArgumentNullException` for
   null arguments and `ArgumentException` for traversal or absolute-path overrides.
 - `TemporaryDirectory()` constructor — creates a uniquely-named subdirectory under
-  `Path.GetFullPath(Path.GetTempPath())`. Throws `InvalidOperationException` if the directory
+  `Environment.CurrentDirectory`. Throws `InvalidOperationException` if the directory
   cannot be created.
 - `TemporaryDirectory.DirectoryPath` — the full path to the created directory.
 - `TemporaryDirectory.GetFilePath(string relativePath)` — returns the absolute path to a
@@ -34,9 +34,10 @@ within the same subsystem.
 
 ### Design
 
-`TemporaryDirectory` uses `Path.GetFullPath(Path.GetTempPath())` as the base for the
-temporary directory. This allows temporary-directory creation to succeed when the
-current working directory is read-only.
+`TemporaryDirectory` uses `Environment.CurrentDirectory` rather than `Path.GetTempPath()`
+as the base for the temporary directory. This avoids the macOS `/tmp` → `/private/tmp`
+symlink issue that causes path-comparison failures when the OS returns the resolved
+(real) path instead of the symlink path used during construction.
 
 #### Unit Collaboration
 
