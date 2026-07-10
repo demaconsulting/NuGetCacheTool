@@ -32,7 +32,3 @@ BuildMark did not produce the required output.
 in the release artifacts.
 
 **Requirement coverage**: `NuGetCache-OTS-BuildMark`.
-
-### Requirements Coverage
-
-- **`NuGetCache-OTS-BuildMark`**: BuildMark_MarkdownReportGeneration

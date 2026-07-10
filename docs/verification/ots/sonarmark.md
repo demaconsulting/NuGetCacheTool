@@ -57,8 +57,3 @@ not retrieve and render quality data correctly.
 **Expected**: Exits 0 and produces a non-empty markdown quality report.
 
 **Requirement coverage**: `NuGetCache-OTS-SonarMark`.
-
-### Requirements Coverage
-
-- **`NuGetCache-OTS-SonarMark`**: SonarMark_QualityGateRetrieval, SonarMark_IssuesRetrieval,
-  SonarMark_HotSpotsRetrieval, SonarMark_MarkdownReportGeneration

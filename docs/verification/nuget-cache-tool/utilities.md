@@ -33,8 +33,8 @@ working directory. No external services or network connectivity are required.
 The Utilities subsystem test suite passes when all of the following conditions are met:
 
 - All test scenarios defined in `UtilitiesTests.cs` pass.
-- Every Utilities subsystem requirement listed in the Requirements Coverage section is covered by
-  at least one passing scenario.
+- Every Utilities subsystem requirement is covered by at least one passing scenario, as tracked
+  in the ReqStream trace matrix.
 - No tests may be skipped or marked as expected failures.
 
 ### Test Scenarios
@@ -89,12 +89,3 @@ path between the absolute base and the absolute combined path contains no leadin
 and is not rooted.
 
 **Requirement coverage**: `NuGetCache-Utilities-PathSafety`.
-
-### Requirements Coverage
-
-- **`NuGetCache-Utilities-PathSafety`**: Utilities_PathTraversal_TraversalAttempt_ThrowsArgumentException,
-  Utilities_PathSafety_SafePathCombine_StaysWithinBase
-- **`NuGetCache-Utilities-TempDirectory`**: Utilities_PathResolution_ValidRelativePath_ReturnsPathWithinDirectory,
-  Utilities_PathResolution_NestedRelativePath_CreatesIntermediateDirectories,
-  Utilities_PathTraversal_TraversalAttempt_ThrowsArgumentException,
-  Utilities_DirectoryLifecycle_CreateAndDispose_DirectoryCreatedThenDeleted

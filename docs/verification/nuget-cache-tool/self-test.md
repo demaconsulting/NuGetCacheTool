@@ -67,9 +67,12 @@ The SelfTest subsystem test suite passes when all of the following conditions ar
 
 **Requirement coverage**: `NuGetCache-SelfTest-ResultsFile`.
 
-### Requirements Coverage
+#### SelfTest_ResultsFile_UnsupportedExtension_ReportsErrorAndSkipsFile
 
-- **`NuGetCache-SelfTest-Validation`**: SelfTest_Validation_ExecutesSelfValidationTests,
-  SelfTest_Validation_ReportsPassFail
-- **`NuGetCache-SelfTest-ResultsFile`**: SelfTest_ResultsFile_GeneratesTrxFile,
-  SelfTest_ResultsFile_GeneratesJUnitFile
+**Scenario**: `Validation.Run` is called with `["--validate", "--silent", "--results", resultsFile]`
+where `resultsFile` has an unsupported extension (neither `.trx` nor `.xml`).
+
+**Expected**: Non-zero exit code (an error is reported via `context.WriteError`); no results
+file is created at the requested path.
+
+**Requirement coverage**: `NuGetCache-SelfTest-ResultsFile`.

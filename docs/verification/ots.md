@@ -42,13 +42,16 @@ When an OTS item is upgraded to a new version:
 
 | OTS Item | Verification Document |
 | -------- | --------------------- |
-| BuildMark | [ots/buildmark.md](ots/buildmark.md) |
-| FileAssert | [ots/fileassert.md](ots/fileassert.md) |
-| Pandoc | [ots/pandoc.md](ots/pandoc.md) |
-| ReqStream | [ots/reqstream.md](ots/reqstream.md) |
-| ReviewMark | [ots/reviewmark.md](ots/reviewmark.md) |
-| SarifMark | [ots/sarifmark.md](ots/sarifmark.md) |
-| SonarMark | [ots/sonarmark.md](ots/sonarmark.md) |
-| VersionMark | [ots/versionmark.md](ots/versionmark.md) |
-| WeasyPrint | [ots/weasyprint.md](ots/weasyprint.md) |
-| xUnit | [ots/xunit.md](ots/xunit.md) |
+| BuildMark | ots/buildmark.md |
+| FileAssert | ots/fileassert.md |
+| DemaConsulting.NuGet.Caching | ots/nuget-caching.md |
+| Pandoc | ots/pandoc.md |
+| ReqStream | ots/reqstream.md |
+| ReviewMark | ots/reviewmark.md |
+| SarifMark | ots/sarifmark.md |
+| SonarMark | ots/sonarmark.md |
+| SysML2Tools | ots/sysml2tools.md |
+| DemaConsulting.TestResults | ots/test-results.md |
+| VersionMark | ots/versionmark.md |
+| WeasyPrint | ots/weasyprint.md |
+| xUnit | ots/xunit.md |

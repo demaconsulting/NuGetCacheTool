@@ -29,6 +29,10 @@ namespace DemaConsulting.NuGet.CacheTool.Utilities;
 ///     <c>/tmp</c> resolving to <c>/private/tmp</c> on macOS, which can cause
 ///     path-comparison failures when the OS returns the real (resolved) path instead
 ///     of the symlink path used to construct it.
+///     Instances are NOT thread-safe: <see cref="GetFilePath"/> and <see cref="Dispose"/> perform
+///     file-system operations without any locking or synchronization, so a single instance must
+///     not be used concurrently from multiple threads. Each thread or task requiring an isolated
+///     temporary directory should create its own instance.
 /// </remarks>
 internal sealed class TemporaryDirectory : IDisposable
 {

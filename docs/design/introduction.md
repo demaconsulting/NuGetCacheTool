@@ -9,7 +9,31 @@ the software structure and folder layout.
 
 ## Scope
 
-This design documentation covers all software items of the NuGet Cache Tool system.
+This design documentation covers the following software items:
+
+Local items:
+
+- **NuGetCacheTool**: system, subsystem, and unit design for all local components.
+
+OTS items:
+
+- **DemaConsulting.NuGet.Caching**: integration and usage design.
+- **DemaConsulting.TestResults**: integration and usage design.
+- **SysML2Tools**: integration and usage design.
+
+`DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` are runtime dependencies that
+this project's own source code integrates with directly, so each has an integration/usage design
+document describing that source-level integration. `SysML2Tools` is build-time tooling — it is
+not called by this project's source code at runtime — but it still has its own design document
+here because it generates the SysML2 software-structure model and diagrams referenced below, so
+its usage is design-relevant even though it is not a source dependency. The SysML2
+software-structure model itself represents runtime software composition only; build-time-only
+tooling (including SysML2Tools, along with BuildMark, FileAssert, Pandoc, ReqStream, ReviewMark,
+SarifMark, SonarMark, VersionMark, WeasyPrint, and xUnit) is deliberately excluded from that
+structural model — see the clarifying comment in `docs/sysml2/model/ots.sysml` for the rationale.
+Requirements and verification evidence for the full set of build-pipeline OTS tooling is tracked
+separately; see *OTS Verification* in the verification documentation.
+
 It applies to the current release and all subsequent releases until superseded.
 
 The following items are explicitly excluded from this design documentation:
@@ -17,21 +41,12 @@ The following items are explicitly excluded from this design documentation:
 
 ## Software Structure
 
-```text
-NuGetCacheTool (System)
-├── CLI (Subsystem)
-│   └── Context (Unit)
-├── SelfTest (Subsystem)
-│   └── Validation (Unit)
-├── Utilities (Subsystem)
-│   ├── TemporaryDirectory (Unit)
-│   └── PathHelpers (Unit)
-└── Program (Unit)
+The software structure is modeled in SysML2 under `docs/sysml2/` and rendered to the
+diagram below by SysML2Tools as part of the build pipeline. AI agents should query the
+SysML2 model directly (see the `sysml2tools-query` skill) rather than parsing this
+diagram or the prose below.
 
-OTS Items
-├── DemaConsulting.NuGet.Caching
-└── DemaConsulting.TestResults
-```
+![Software Structure](SoftwareStructureView.svg)
 
 ## Folder Layout
 
@@ -59,9 +74,12 @@ Each local software item has corresponding artifacts in parallel directory trees
 
 OTS items have integration/usage design documentation parallel to system folders:
 
-- Requirements: `docs/reqstream/ots/nuget-caching.yaml`, `docs/reqstream/ots/test-results.yaml`
-- Design: `docs/design/ots/nuget-caching.md`, `docs/design/ots/test-results.md`
-- Verification: `docs/verification/ots/nuget-caching.md`, `docs/verification/ots/test-results.md`
+- Requirements: `docs/reqstream/ots/nuget-caching.yaml`, `docs/reqstream/ots/test-results.yaml`,
+  `docs/reqstream/ots/sysml2tools.yaml`
+- Design: `docs/design/ots/nuget-caching.md`, `docs/design/ots/test-results.md`,
+  `docs/design/ots/sysml2tools.md`
+- Verification: `docs/verification/ots/nuget-caching.md`, `docs/verification/ots/test-results.md`,
+  `docs/verification/ots/sysml2tools.md`
 
 Review-sets: defined in `.reviewmark.yaml`
 

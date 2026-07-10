@@ -34,6 +34,8 @@ public class ContextTests
     [Fact]
     public void Context_Create_NoArguments_ReturnsDefaultContext()
     {
+        // Arrange - no setup required, using an empty argument list
+
         // Act
         using var context = Context.Create([]);
 
@@ -200,8 +202,12 @@ public class ContextTests
     [Fact]
     public void Context_Create_UnknownArgument_ThrowsArgumentException()
     {
-        // Act & Assert
+        // Arrange - no setup required, using an unknown argument directly
+
+        // Act
         var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--unknown"]));
+
+        // Assert
         Assert.Contains("Unsupported argument", exception.Message);
     }
 
@@ -211,7 +217,9 @@ public class ContextTests
     [Fact]
     public void Context_Create_PackageArgument_AddsToPackagesList()
     {
-        // Arrange & Act
+        // Arrange - no setup required, using a package argument directly
+
+        // Act
         using var context = Context.Create(["DemaConsulting.NuGet.Caching:0.1.0"]);
 
         // Assert
@@ -306,8 +314,13 @@ public class ContextTests
     [Fact]
     public void Context_Create_WithoutColonInPackage_ThrowsArgumentException()
     {
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() => Context.Create(["notapackage"]));
+        // Arrange - no setup required, using a malformed package argument directly
+
+        // Act
+        var exception = Assert.Throws<ArgumentException>(() => Context.Create(["notapackage"]));
+
+        // Assert
+        Assert.NotNull(exception);
     }
 
     /// <summary>
@@ -343,8 +356,12 @@ public class ContextTests
     [Fact]
     public void Context_Create_LogFlag_WithoutValue_ThrowsArgumentException()
     {
-        // Act & Assert
+        // Arrange - no setup required, using the --log flag without a value
+
+        // Act
         var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--log"]));
+
+        // Assert
         Assert.Contains("--log", exception.Message);
     }
 
@@ -354,8 +371,12 @@ public class ContextTests
     [Fact]
     public void Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException()
     {
-        // Act & Assert
+        // Arrange - no setup required, using the --results flag without a value
+
+        // Act
         var exception = Assert.Throws<ArgumentException>(() => Context.Create(["--results"]));
+
+        // Assert
         Assert.Contains("--results", exception.Message);
     }
 

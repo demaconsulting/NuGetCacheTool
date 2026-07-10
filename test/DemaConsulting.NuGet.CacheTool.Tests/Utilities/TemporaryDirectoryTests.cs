@@ -18,6 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System.Diagnostics;
 using DemaConsulting.NuGet.CacheTool.Utilities;
 
 namespace DemaConsulting.NuGet.CacheTool.Tests.Utilities;
@@ -32,7 +33,7 @@ public class TemporaryDirectoryTests
     ///     Test that the constructor creates the directory on disk.
     /// </summary>
     [Fact]
-    public void TemporaryDirectory_Constructor_CreatesDirectory()
+    public void TemporaryDirectory_Constructor_WhenCalled_CreatesDirectoryOnDisk()
     {
         // Act
         using var tmpDir = new TemporaryDirectory();
@@ -46,7 +47,7 @@ public class TemporaryDirectoryTests
     ///     Test that two instances produce distinct directory paths.
     /// </summary>
     [Fact]
-    public void TemporaryDirectory_Constructor_CreatesUniqueDirectories()
+    public void TemporaryDirectory_Constructor_MultipleInstances_CreatesUniqueDirectories()
     {
         // Act
         using var tmpDir1 = new TemporaryDirectory();
@@ -99,23 +100,26 @@ public class TemporaryDirectoryTests
         // Arrange
         using var tmpDir = new TemporaryDirectory();
 
-        // Act + Assert
-        Assert.Throws<ArgumentException>(() => tmpDir.GetFilePath("../escaped.txt"));
+        // Act
+        var act = () => tmpDir.GetFilePath("../escaped.txt");
+
+        // Assert
+        Assert.Throws<ArgumentException>(act);
     }
 
     /// <summary>
     ///     Test that Dispose deletes the temporary directory and its contents.
     /// </summary>
     [Fact]
-    public void TemporaryDirectory_Dispose_DeletesDirectory()
+    public void TemporaryDirectory_Dispose_WhenCalled_DeletesDirectory()
     {
         // Arrange
-        string dirPath;
-        using (var tmpDir = new TemporaryDirectory())
-        {
-            dirPath = tmpDir.DirectoryPath;
-            File.WriteAllText(tmpDir.GetFilePath("file.txt"), "content");
-        }
+        var tmpDir = new TemporaryDirectory();
+        var dirPath = tmpDir.DirectoryPath;
+        File.WriteAllText(tmpDir.GetFilePath("file.txt"), "content");
+
+        // Act
+        tmpDir.Dispose();
 
         // Assert
         Assert.False(Directory.Exists(dirPath),
@@ -132,8 +136,105 @@ public class TemporaryDirectoryTests
         var tmpDir = new TemporaryDirectory();
         Directory.Delete(tmpDir.DirectoryPath, recursive: true);
 
-        // Act + Assert: second disposal should not throw
-        var exception = Record.Exception(() => tmpDir.Dispose());
+        // Act
+        var act = () => tmpDir.Dispose();
+
+        // Assert: second disposal should not throw
+        var exception = Record.Exception(act);
         Assert.Null(exception);
+    }
+
+    /// <summary>
+    ///     Test that the constructor wraps a directory-creation failure (for example, caused by
+    ///     insufficient filesystem permissions on the parent directory) in an
+    ///     <see cref="InvalidOperationException"/>.
+    /// </summary>
+    [Fact]
+    public void TemporaryDirectory_Constructor_DirectoryCreationFails_ThrowsInvalidOperationException()
+    {
+        // Arrange: create a parent directory, deny subdirectory-creation rights on it, and
+        // point Environment.CurrentDirectory at it so the constructor's Directory.CreateDirectory
+        // call fails.
+        var parentDir = Path.Combine(Path.GetTempPath(), $"locked-{Guid.NewGuid():N}");
+        Directory.CreateDirectory(parentDir);
+        var originalCurrentDirectory = Environment.CurrentDirectory;
+
+        try
+        {
+            DenySubdirectoryCreation(parentDir);
+            Environment.CurrentDirectory = parentDir;
+
+            // Act
+            var act = () => new TemporaryDirectory();
+
+            // Assert
+            var exception = Assert.Throws<InvalidOperationException>(act);
+            Assert.Contains("Failed to create temporary directory", exception.Message, StringComparison.Ordinal);
+        }
+        finally
+        {
+            Environment.CurrentDirectory = originalCurrentDirectory;
+            RestoreSubdirectoryCreation(parentDir);
+            Directory.Delete(parentDir, recursive: true);
+        }
+    }
+
+    /// <summary>
+    ///     Revokes the current user's permission to create subdirectories within
+    ///     <paramref name="directory"/>, forcing subsequent <see cref="Directory.CreateDirectory(string)"/>
+    ///     calls beneath it to fail.
+    /// </summary>
+    /// <param name="directory">The directory to lock down.</param>
+    private static void DenySubdirectoryCreation(string directory)
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            RunIcacls(directory, $"/deny \"{Environment.UserName}:(AD,WD)\"");
+        }
+        else
+        {
+            File.SetUnixFileMode(
+                directory,
+                UnixFileMode.UserRead | UnixFileMode.UserExecute |
+                UnixFileMode.GroupRead | UnixFileMode.GroupExecute |
+                UnixFileMode.OtherRead | UnixFileMode.OtherExecute);
+        }
+    }
+
+    /// <summary>
+    ///     Restores the current user's permission to create subdirectories within
+    ///     <paramref name="directory"/> so it can be cleaned up.
+    /// </summary>
+    /// <param name="directory">The directory to restore.</param>
+    private static void RestoreSubdirectoryCreation(string directory)
+    {
+        if (OperatingSystem.IsWindows())
+        {
+            RunIcacls(directory, "/reset");
+        }
+        else
+        {
+            File.SetUnixFileMode(
+                directory,
+                UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+        }
+    }
+
+    /// <summary>
+    ///     Runs the Windows <c>icacls</c> utility against <paramref name="directory"/> with the
+    ///     supplied arguments and waits for it to complete.
+    /// </summary>
+    /// <param name="directory">The directory to target.</param>
+    /// <param name="arguments">The <c>icacls</c> arguments to apply, excluding the target path.</param>
+    private static void RunIcacls(string directory, string arguments)
+    {
+        using var process = Process.Start(new ProcessStartInfo("icacls", $"\"{directory}\" {arguments}")
+        {
+            UseShellExecute = false,
+            CreateNoWindow = true,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true
+        });
+        process!.WaitForExit();
     }
 }

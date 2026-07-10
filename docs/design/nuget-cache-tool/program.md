@@ -1,5 +1,7 @@
 ## Program Unit Design
 
+![NuGetCacheTool Structure](NuGetCacheToolView.svg)
+
 ### Purpose
 
 `Program` is the main entry point and orchestration unit. It creates the `Context`,
@@ -81,7 +83,7 @@ A third handler catches any other `Exception`. It writes `"Unexpected error: {me
 to record the unhandled exception in event logs and generate a crash dump, providing diagnostics
 for unexpected failures without suppressing the error.
 
-### Interactions
+### Dependencies
 
 | Dependency | Usage |
 | ---------- | ----- |

@@ -1,5 +1,7 @@
 ### Context Unit Design
 
+![Cli Structure](CliView.svg)
+
 #### Purpose
 
 The `Context` class provides command-line argument parsing and centralized output
@@ -80,25 +82,35 @@ value follows.
 `WriteError(string)` writes to stderr (unless silent), writes to the log file, and
 sets `_hasErrors = true`, which causes `ExitCode` to return `1`.
 
-#### Interactions
-
-- **Consumed by `Program`**: `Program.Main` creates the context and passes it to `Program.Run`
-- **Consumed by `Validation`**: `Validation.Run` uses `Context` for output and results path
-- **Consumed by `PathHelpers`**: indirectly via `Validation.Run` calling `SafePathCombine`
-
 #### Error Handling
 
 | Scenario | Behavior |
 | -------- | -------- |
 | Unknown argument in `Create()` | Throws `ArgumentException` identifying the unsupported argument |
 | `--log` or `--results` flag without a value | Throws `ArgumentException` |
-| Log file cannot be opened | Throws `ArgumentException` wrapping the underlying I/O exception message |
+| Log file cannot be opened | Throws `InvalidOperationException` wrapping the underlying I/O exception message |
 | `WriteError()` called | Sets `_hasErrors = true` (causing `ExitCode` to return 1); writes message to stderr and log file |
 | `WriteLine()` called in silent mode | Suppresses console output; still writes to log file if open |
 | `Dispose()` called multiple times | Safe; the `StreamWriter` is set to null after first disposal |
 
 Argument-parsing errors propagate to `Program.Main`, which catches `ArgumentException` and
 writes the message to `Console.Error` before returning exit code 1.
+
+#### Dependencies
+
+`Context` depends only on the .NET BCL: `System.IO.StreamWriter` for log-file output and
+`System.Console` for stdout/stderr. It does not depend on any other unit in the NuGet
+Cache Tool system; it is a low-level building block consumed by `Program` and `Validation`.
+
+#### Callers
+
+- **`Program`**: `Program.Main` creates the context via `Context.Create` and passes it to
+  `Program.Run`.
+- **`Validation`** (SelfTest subsystem): `Validation.Run` receives a `Context` instance and
+  uses it for output and results-path resolution.
+- **`PathHelpers`** (indirectly): when `Validation.Run` constructs temporary log file paths
+  through `TemporaryDirectory.GetFilePath`, the `Context` supplied to `Validation` is the
+  origin of the resulting output; `PathHelpers` itself is not called directly by `Context`.
 
 #### Resource Management
 

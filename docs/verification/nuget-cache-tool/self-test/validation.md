@@ -69,10 +69,3 @@ the log file only.
 **Expected**: Log file contains "Total Tests:", "Passed:", and "Failed:".
 
 **Requirement coverage**: `NuGetCache-Validation-SelfValidation`.
-
-#### Requirements Coverage
-
-- **`NuGetCache-Validation-SelfValidation`**: Validation_Run_WithSilentContext_PrintsSummary
-- **`NuGetCache-Validation-ResultsFile`**: Validation_Run_TrxResultsRequested_WritesTrxFile,
-  Validation_Run_JUnitResultsRequested_WritesJUnitFile,
-  Validation_Run_UnsupportedResultsFormat_ReportsError

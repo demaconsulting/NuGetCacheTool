@@ -96,13 +96,3 @@ is 0.
 **Expected**: Exit code 1; error output contains "Error".
 
 **Requirement coverage**: `NuGetCache-Program-ErrorOutput`.
-
-### Requirements Coverage
-
-- **`NuGetCache-Program-VersionDisplay`**: Program_Run_WithVersionFlag_DisplaysVersionOnly,
-  Program_Version_ReturnsNonEmptyString
-- **`NuGetCache-Program-HelpDisplay`**: Program_Run_WithHelpFlag_DisplaysUsageInformation
-- **`NuGetCache-Program-CachePackages`**: Program_Run_WithPackageArgument_CachesPackage
-- **`NuGetCache-Program-Banner`**: Program_Run_NoArguments_DisplaysDefaultBehavior
-- **`NuGetCache-Program-ErrorOutput`**: Program_Run_WithValidateAndUnsupportedResultsFormat_SetsErrorExitCode
-- **`NuGetCache-Program-SelfValidation`**: Program_Run_WithValidateFlag_RunsValidation

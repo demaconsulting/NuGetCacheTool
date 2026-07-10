@@ -147,6 +147,18 @@ internal static class Validation
     }
 
     /// <summary>
+    ///     Known package/version used to prove the cache-package self-test actually resolves a
+    ///     real, existing cached package directory rather than merely producing log output.
+    /// </summary>
+    private const string CachePackageTestId = "DemaConsulting.NuGet.Caching";
+
+    /// <summary>
+    ///     Known package version used alongside <see cref="CachePackageTestId"/> for the
+    ///     cache-package self-test.
+    /// </summary>
+    private const string CachePackageTestVersion = "0.1.0";
+
+    /// <summary>
     ///     Runs a test for NuGet package caching functionality.
     /// </summary>
     /// <param name="context">The context for output.</param>
@@ -158,16 +170,40 @@ internal static class Validation
             testResults,
             "NuGetCache_CachePackage",
             "Cache Package Test",
-            ["DemaConsulting.NuGet.Caching:0.1.0"],
+            [$"{CachePackageTestId}:{CachePackageTestVersion}"],
             logContent =>
             {
-                // Verify that a non-empty path was written to the log
-                if (!string.IsNullOrWhiteSpace(logContent))
+                // The log contains the banner followed by the cached package path as its final
+                // line (see Program.RunToolLogic), so the path must be extracted from the last
+                // non-blank line rather than treating the whole log as the path. Verify the log
+                // contains a cached package path rather than accepting any non-empty output: the
+                // path must actually exist on disk, and must be named for the requested package id
+                // and version, so this test genuinely proves that caching produced a valid, usable
+                // package location.
+                var packagePath = logContent
+                    .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
+                    .LastOrDefault()
+                    ?.Trim();
+
+                if (string.IsNullOrWhiteSpace(packagePath))
                 {
-                    return null;
+                    return "Package path not found in log";
                 }
 
-                return "Package path not found in log";
+                if (!Directory.Exists(packagePath))
+                {
+                    return $"Cached package path '{packagePath}' does not exist on disk";
+                }
+
+                var normalizedPath = packagePath.Replace('\\', '/').ToLowerInvariant();
+                if (!normalizedPath.Contains(CachePackageTestId.ToLowerInvariant()) ||
+                    !normalizedPath.Contains(CachePackageTestVersion))
+                {
+                    return $"Cached package path '{packagePath}' does not reference the expected " +
+                        $"package '{CachePackageTestId}' version '{CachePackageTestVersion}'";
+                }
+
+                return null;
             });
     }
 

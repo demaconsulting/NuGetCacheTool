@@ -52,7 +52,7 @@ sections:
               - Cli_PackageArgument_AddedToPackagesList
 
           - id: NuGetCache-Cli-ErrorOutput
-            title: The CLI shall write error messages to the output stream when an error occurs.
+            title: The CLI shall write error messages to stderr when an error occurs.
             justification: |
               Users and automated callers must receive a descriptive error message so they
               can diagnose the failure condition without inspecting internal state.
@@ -101,16 +101,34 @@ sections:
             tests:
               - Cli_ResultsFlag_SetsResultsFileOnContext
 
-          - id: NuGetCache-Cli-InvalidArguments
-            title: The CLI shall reject unknown or malformed command-line arguments with a descriptive error.
+          - id: NuGetCache-Cli-InvalidArguments-UnknownFlag
+            title: The CLI shall reject an unknown command-line flag with a descriptive error.
             justification: |
-              Providing clear feedback for invalid arguments helps users quickly correct
+              Providing clear feedback for an unrecognized flag helps users quickly correct
               mistakes and prevents silent misconfiguration.
             children:
-              - NuGetCache-Context-InvalidArguments
+              - NuGetCache-Context-InvalidArguments-UnknownFlag
             tests:
               - Cli_UnknownArgument_ThrowsArgumentException
+
+          - id: NuGetCache-Cli-InvalidArguments-MissingLogValue
+            title: The CLI shall reject the --log flag when no file path value follows it.
+            justification: |
+              Providing clear feedback when --log is supplied without a value helps users
+              quickly correct mistakes and prevents silent misconfiguration.
+            children:
+              - NuGetCache-Context-InvalidArguments-MissingLogValue
+            tests:
               - Cli_LogFlagWithoutValue_ThrowsArgumentException
+
+          - id: NuGetCache-Cli-InvalidArguments-MissingResultsValue
+            title: The CLI shall reject the --results flag when no file path value follows it.
+            justification: |
+              Providing clear feedback when --results is supplied without a value helps users
+              quickly correct mistakes and prevents silent misconfiguration.
+            children:
+              - NuGetCache-Context-InvalidArguments-MissingResultsValue
+            tests:
               - Cli_ResultsFlagWithoutValue_ThrowsArgumentException
 
           - id: NuGetCache-Cli-SilentLogInteraction

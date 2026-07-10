@@ -40,7 +40,3 @@ VersionMark did not execute correctly.
 **Expected**: Exits 0 and produces a non-empty versions markdown file.
 
 **Requirement coverage**: `NuGetCache-OTS-VersionMark`.
-
-### Requirements Coverage
-
-- **`NuGetCache-OTS-VersionMark`**: VersionMark_CapturesVersions, VersionMark_GeneratesMarkdownReport

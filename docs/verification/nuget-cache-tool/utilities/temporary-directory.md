@@ -24,23 +24,30 @@ concurrent test runs sharing the same working directory.
 
 #### Acceptance Criteria
 
-All unit tests in `TemporaryDirectoryTests.cs` pass; all requirements listed in the
-Requirements Coverage section have at least one passing test scenario; no tests may be
-skipped or marked as expected failures.
+All unit tests in `TemporaryDirectoryTests.cs` pass; every requirement for this unit has at
+least one passing test scenario, per the ReqStream trace matrix; no tests may be skipped or
+marked as expected failures.
 
 #### Test Scenarios
 
-##### TemporaryDirectory_Constructor_CreatesDirectory
+##### TemporaryDirectory_Constructor_WhenCalled_CreatesDirectoryOnDisk
 
 **Scenario**: A `TemporaryDirectory` instance is constructed.
 
 **Expected**: `Directory.Exists(DirectoryPath)` returns `true`.
 
-##### TemporaryDirectory_Constructor_CreatesUniqueDirectories
+##### TemporaryDirectory_Constructor_MultipleInstances_CreatesUniqueDirectories
 
 **Scenario**: Two `TemporaryDirectory` instances are constructed in sequence.
 
 **Expected**: Their `DirectoryPath` values are distinct.
+
+##### TemporaryDirectory_Constructor_DirectoryCreationFails_ThrowsInvalidOperationException
+
+**Scenario**: `TemporaryDirectory` is constructed in an environment where the underlying
+directory-creation call fails (for example, due to file-system permissions).
+
+**Expected**: `InvalidOperationException` is thrown.
 
 ##### TemporaryDirectory_GetFilePath_SimpleFile_ReturnsPathUnderDirectory
 
@@ -61,7 +68,7 @@ skipped or marked as expected failures.
 
 **Expected**: `ArgumentException` is thrown.
 
-##### TemporaryDirectory_Dispose_DeletesDirectory
+##### TemporaryDirectory_Dispose_WhenCalled_DeletesDirectory
 
 **Scenario**: A `TemporaryDirectory` is created, a file is written inside it, and the
 instance is disposed.
@@ -73,17 +80,3 @@ instance is disposed.
 **Scenario**: The underlying directory is deleted manually before `Dispose` is called.
 
 **Expected**: No exception is thrown.
-
-#### Requirements Coverage
-
-- **`NuGetCache-TemporaryDirectory-DirectoryCreation`**:
-  TemporaryDirectory_Constructor_CreatesDirectory,
-  TemporaryDirectory_Constructor_CreatesUniqueDirectories.
-- **`NuGetCache-TemporaryDirectory-FilePathResolution`**:
-  TemporaryDirectory_GetFilePath_SimpleFile_ReturnsPathUnderDirectory,
-  TemporaryDirectory_GetFilePath_NestedPath_CreatesIntermediateDirectories.
-- **`NuGetCache-TemporaryDirectory-TraversalRejection`**:
-  TemporaryDirectory_GetFilePath_TraversalAttempt_ThrowsArgumentException.
-- **`NuGetCache-TemporaryDirectory-Disposal`**:
-  TemporaryDirectory_Dispose_DeletesDirectory,
-  TemporaryDirectory_Dispose_AlreadyDeleted_DoesNotThrow.

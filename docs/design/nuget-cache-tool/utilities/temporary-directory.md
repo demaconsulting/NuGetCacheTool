@@ -1,5 +1,7 @@
 ### TemporaryDirectory Design
 
+![Utilities Structure](UtilitiesView.svg)
+
 The `TemporaryDirectory` class provides a disposable temporary directory that is
 automatically created on construction and deleted on disposal. It is used by both
 production self-test code (`Validation`) and by unit and integration test infrastructure.

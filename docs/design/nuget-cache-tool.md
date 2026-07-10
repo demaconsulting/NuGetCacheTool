@@ -1,8 +1,10 @@
 # NuGet Cache Tool System Design
 
+![NuGetCacheTool Structure](NuGetCacheToolView.svg)
+
 ## Architecture
 
-The NuGet Cache Tool is a .NET global tool organized into two subsystems and one
+The NuGet Cache Tool is a .NET global tool organized into three subsystems and one
 top-level unit, all residing in a single assembly.
 
 ### Major Components
@@ -24,7 +26,7 @@ top-level unit, all residing in a single assembly.
 | --------- | ----------- |
 | CLI entry point (`nuget-cache [options] [package:version ...]`) | Main command-line invocation pattern accepted by the tool |
 | stdout | Package paths are written one per line on success; banner and help text on non-version invocations |
-| stderr (`Error: {message}`) | Error messages are written to stderr when an error occurs and silent mode is not active |
+| stderr | Error messages are written to stderr when an error occurs and silent mode is not active; `Program.Main` prefixes caught top-level exceptions with `"Error: "`, while `Context.WriteError` writes caller-supplied text unchanged |
 | Exit code | 0 = success; non-zero = failure |
 
 ## Dependencies
@@ -67,7 +69,7 @@ args
 ### Platform Constraints
 
 - The tool targets .NET 8, .NET 9, and .NET 10 on Windows, Linux, and macOS (see
-  [Platform and Runtime Targeting](#platform-and-runtime-targeting) below)
+  *Platform and Runtime Targeting* below)
 - All platform-specific behavior is delegated to the .NET SDK and the
   `DemaConsulting.NuGet.Caching` library; the tool itself contains no platform-conditional code
 
@@ -120,7 +122,7 @@ These tests use the same `Program.Run` path as normal usage, capturing output vi
 | --------- | ------- | --------- |
 | `NuGetCache_VersionDisplay` | `--version` | Version string is present and contains dots |
 | `NuGetCache_HelpDisplay` | `--help` | Output contains `Usage:` and `Options:` |
-| `NuGetCache_CachePackage` | `DemaConsulting.NuGet.Caching:0.1.0` | A non-empty package path is returned |
+| `NuGetCache_CachePackage` | `DemaConsulting.NuGet.Caching:0.1.0` | A non-empty package path is returned, using a fixed test version pinned independently of the tool's own dependency version |
 
 When `--results` is supplied, these tests are emitted as test results (TRX (`.trx`)
 or JUnit XML (`.xml`), depending on the `--results` file extension) and serve as

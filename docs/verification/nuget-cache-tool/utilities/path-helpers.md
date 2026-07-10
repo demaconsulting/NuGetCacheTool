@@ -73,6 +73,17 @@ The PathHelpers unit test suite passes when all of the following conditions are 
 
 **Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
 
+##### PathHelpers_SafePathCombine_RootedPathInsideBase_ThrowsArgumentException
+
+**Scenario**: `SafePathCombine` is called with a rooted `relativePath` that already resolves
+inside `basePath` (for example, `basePath` combined with itself to form the rooted input).
+
+**Expected**: `ArgumentException` is thrown with "Invalid path component" in the message, proving
+the rooted-path rejection happens upfront rather than only after resolving whether the result
+escapes `basePath`.
+
+**Requirement coverage**: `NuGetCache-PathHelpers-SafePathCombine`.
+
 ##### PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly
 
 **Scenario**: `SafePathCombine` is called with `"./subfolder/file.txt"`.
@@ -121,17 +132,3 @@ The PathHelpers unit test suite passes when all of the following conditions are 
 **Expected**: `ArgumentNullException` is thrown.
 
 **Requirement coverage**: `NuGetCache-PathHelpers-NullArguments`.
-
-#### Requirements Coverage
-
-- **`NuGetCache-PathHelpers-SafePathCombine`**: PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly,
-  PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException,
-  PathHelpers_SafePathCombine_DoubleDotsInMiddle_ThrowsArgumentException,
-  PathHelpers_SafePathCombine_UnixAbsolutePath_ThrowsArgumentException,
-  PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException,
-  PathHelpers_SafePathCombine_CurrentDirectoryReference_CombinesCorrectly,
-  PathHelpers_SafePathCombine_NestedPaths_CombinesCorrectly,
-  PathHelpers_SafePathCombine_EmptyRelativePath_ReturnsBasePath,
-  PathHelpers_SafePathCombine_DoubleDotPrefix_CombinesCorrectly
-- **`NuGetCache-PathHelpers-NullArguments`**: PathHelpers_SafePathCombine_NullBase_ThrowsArgumentNullException,
-  PathHelpers_SafePathCombine_NullRelative_ThrowsArgumentNullException

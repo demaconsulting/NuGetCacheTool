@@ -114,6 +114,35 @@ public class ValidationTests
     }
 
     /// <summary>
+    ///     Test that Run's cache-package self-test passes because it resolves a real, existing
+    ///     cached package directory - not merely because some non-whitespace text was logged.
+    /// </summary>
+    [Fact]
+    public void Validation_Run_CachePackageSelfTest_PassesWithRealCachedPackagePath()
+    {
+        // Arrange: redirect stdout to capture validation output
+        var originalOut = Console.Out;
+        try
+        {
+            using var outWriter = new StringWriter();
+            Console.SetOut(outWriter);
+            using var context = Context.Create(["--validate"]);
+
+            // Act: run self-validation, which includes the cache-package self-test
+            Validation.Run(context);
+
+            // Assert: the cache-package self-test reports success and the overall run passes
+            var output = outWriter.ToString();
+            Assert.Contains("Cache Package Test - PASSED", output);
+            Assert.Equal(0, context.ExitCode);
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
+
+    /// <summary>
     ///     Test that Run prints a summary containing total, passed, and failed counts.
     /// </summary>
     [Fact]

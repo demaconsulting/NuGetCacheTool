@@ -81,9 +81,3 @@ at least one page, and includes expected document content.
 **Expected**: FileAssert exits 0 for the user guide PDF document.
 
 **Requirement coverage**: `NuGetCache-OTS-WeasyPrint`.
-
-### Requirements Coverage
-
-- **`NuGetCache-OTS-WeasyPrint`**: WeasyPrint_BuildNotesPdf, WeasyPrint_CodeQualityPdf,
-  WeasyPrint_ReviewPlanPdf, WeasyPrint_ReviewReportPdf, WeasyPrint_DesignPdf,
-  WeasyPrint_VerificationPdf, WeasyPrint_UserGuidePdf

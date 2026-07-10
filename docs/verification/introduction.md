@@ -26,51 +26,24 @@ This document covers the verification design for the same software items describ
   - **PathHelpers** — safe path combination utilities
 - **Program** — entry point and execution orchestrator
 
+The following OTS items are covered, matching the *NuGet Cache Tool Software Design Document*:
+
+- **DemaConsulting.NuGet.Caching** — integration and usage verification.
+- **DemaConsulting.TestResults** — integration and usage verification.
+- **SysML2Tools** — integration and usage verification.
+
+These three are the OTS items integrated by NuGetCacheTool's own source code, so each has
+requirement-linked, unit-level verification design here. The remaining build-pipeline-only OTS
+tooling (BuildMark, FileAssert, Pandoc, ReqStream, ReviewMark, SarifMark, SonarMark, VersionMark,
+WeasyPrint, xUnit) is verified separately at a lighter evidence bar — pipeline-integration
+evidence rather than per-unit test scenarios — documented in *OTS Verification*
+(`docs/verification/ots.md`) rather than in this per-requirement verification design.
+
 The following topics are out of scope:
 
 - Test infrastructure (xUnit framework, test helpers, Runner utility)
-- Build pipeline and CI/CD configuration
-
-The following OTS items are also covered:
-
-- **BuildMark** — build-notes documentation tool
-- **FileAssert** — document assertion tool
-- **Pandoc** — Markdown-to-HTML conversion tool
-- **ReqStream** — requirements traceability tool
-- **ReviewMark** — file review enforcement tool
-- **SarifMark** — SARIF report conversion tool
-- **SonarMark** — SonarCloud quality report tool
-- **VersionMark** — tool-version documentation tool
-- **WeasyPrint** — HTML-to-PDF conversion tool
-- **xUnit** — unit-testing framework
-
-## Software Structure
-
-The following tree shows the software items covered by this document:
-
-```text
-NuGetCacheTool (System)
-├── CLI (Subsystem)
-│   └── Context (Unit)
-├── SelfTest (Subsystem)
-│   └── Validation (Unit)
-├── Utilities (Subsystem)
-│   ├── TemporaryDirectory (Unit)
-│   └── PathHelpers (Unit)
-└── Program (Unit)
-
-OTS Items
-├── BuildMark
-├── FileAssert
-├── Pandoc
-├── ReqStream
-├── ReviewMark
-├── SarifMark
-├── SonarMark
-├── VersionMark
-├── WeasyPrint
-└── xUnit
-```
+- Build pipeline and CI/CD configuration itself (as distinct from the OTS tooling it invokes,
+  which is covered by *OTS Verification* as described above)
 
 ## Companion Artifact Structure
 
@@ -84,8 +57,10 @@ Each local software item has corresponding artifacts in parallel directory trees
 
 OTS items have integration/usage verification documentation parallel to system folders:
 
-- Requirements: `docs/reqstream/ots/nuget-caching.yaml`, `docs/reqstream/ots/test-results.yaml`
-- Verification: `docs/verification/ots/nuget-caching.md`, `docs/verification/ots/test-results.md`
+- Requirements: `docs/reqstream/ots/nuget-caching.yaml`, `docs/reqstream/ots/test-results.yaml`,
+  `docs/reqstream/ots/sysml2tools.yaml`
+- Verification: `docs/verification/ots/nuget-caching.md`, `docs/verification/ots/test-results.md`,
+  `docs/verification/ots/sysml2tools.md`
 
 Review-sets: defined in `.reviewmark.yaml`
 
