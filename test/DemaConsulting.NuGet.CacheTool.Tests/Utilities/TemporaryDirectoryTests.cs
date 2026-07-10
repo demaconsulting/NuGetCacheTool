@@ -128,11 +128,10 @@ public class TemporaryDirectoryTests
         }
         finally
         {
-            // Ensure cleanup even if an assertion or setup step throws before Dispose() runs
-            if (Directory.Exists(dirPath))
-            {
-                Directory.Delete(dirPath, recursive: true);
-            }
+            // Ensure cleanup even if an assertion or setup step throws before Dispose() runs.
+            // Dispose() itself suppresses non-fatal IO/permission errors and is safe to call
+            // twice, so route cleanup through it rather than deleting the directory directly.
+            tmpDir.Dispose();
         }
     }
 

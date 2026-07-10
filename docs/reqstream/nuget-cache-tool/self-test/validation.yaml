@@ -18,6 +18,7 @@ sections:
               - NuGetCache_VersionDisplay
               - NuGetCache_HelpDisplay
               - NuGetCache_CachePackage
+              - Validation_Run_CachePackageSelfTest_PassesWithRealCachedPackagePath
 
           - id: NuGetCache-Validation-ResultsFile
             title: The Validation class shall write validation results to a file in TRX or JUnit format.

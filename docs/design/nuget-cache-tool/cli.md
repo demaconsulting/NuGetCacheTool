@@ -48,7 +48,7 @@ The `Context` unit exposes the following public API:
 | Dependency | Direction | Description |
 | ---------- | --------- | ----------- |
 | `Program` | Top-level unit (entry point) | Creates `Context` and dispatches to CLI subsystem |
-| `SelfTest` subsystem | Upstream | `Program` passes the `Context` it created (via CLI) to `Validation.Run`; `Validation` consumes `Context` for output and results-path resolution |
+| `SelfTest` subsystem | Downstream | `Program` passes the `Context` it created (via CLI) to `Validation.Run`; `Validation` consumes `Context` for output and results-path resolution |
 
 #### Error Handling
 
