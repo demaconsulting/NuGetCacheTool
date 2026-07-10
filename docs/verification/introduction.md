@@ -32,15 +32,22 @@ The following OTS items are covered, matching the *NuGet Cache Tool Software Des
 - **DemaConsulting.TestResults** — integration and usage verification.
 - **SysML2Tools** — integration and usage verification.
 
-These three are the OTS items integrated by NuGetCacheTool's own source code, so each has
-requirement-linked, unit-level verification design here. The remaining build-pipeline-only OTS
-tooling (BuildMark, FileAssert, Pandoc, ReqStream, ReviewMark, SarifMark, SonarMark, VersionMark,
-WeasyPrint, xUnit) is verified separately at a lighter evidence bar — pipeline-integration
-evidence rather than per-unit test scenarios — documented in *OTS Verification*
-(`docs/verification/ots.md`) rather than in this per-requirement verification design.
+`DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` are runtime OTS packages that
+this project's own source code integrates with directly, so each has requirement-linked,
+unit-level verification design here. `SysML2Tools` is invoked from `lint.ps1` and
+`.github/workflows/build.yaml` — build/pipeline-integrated rather than called by the shipped
+tool's runtime code — but it still has its own verification design here because it generates
+the SysML2 model and diagrams referenced by the design documentation. The remaining
+build-pipeline-only OTS tooling (BuildMark, FileAssert, Pandoc, ReqStream, ReviewMark,
+SarifMark, SonarMark, VersionMark, WeasyPrint, xUnit) is verified separately at a lighter
+evidence bar — pipeline-integration evidence rather than per-unit test scenarios — documented
+in *OTS Verification* (`docs/verification/ots.md`) rather than in this per-requirement
+verification design.
 
 The following topics are out of scope:
 
+- The `DemaConsulting.NuGet.CacheTool.Tests` test project itself (its source is the verification
+  mechanism, not a verified software item)
 - Test infrastructure (xUnit framework, test helpers, Runner utility)
 - Build pipeline and CI/CD configuration itself (as distinct from the OTS tooling it invokes,
   which is covered by *OTS Verification* as described above)

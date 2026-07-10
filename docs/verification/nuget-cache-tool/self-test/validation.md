@@ -69,3 +69,12 @@ the log file only.
 **Expected**: Log file contains "Total Tests:", "Passed:", and "Failed:".
 
 **Requirement coverage**: `NuGetCache-Validation-SelfValidation`.
+
+##### Validation_Run_CachePackageSelfTest_PassesWithRealCachedPackagePath
+
+**Scenario**: `Validation.Run` is called with `["--validate"]` against a real, populated NuGet
+global packages folder; standard output is captured.
+
+**Expected**: Captured output contains "Cache Package Test - PASSED"; exit code 0.
+
+**Requirement coverage**: `NuGetCache-Validation-SelfValidation`.

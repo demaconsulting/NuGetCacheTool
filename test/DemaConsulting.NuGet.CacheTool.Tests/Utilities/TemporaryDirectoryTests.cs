@@ -115,14 +115,25 @@ public class TemporaryDirectoryTests
         // Arrange
         var tmpDir = new TemporaryDirectory();
         var dirPath = tmpDir.DirectoryPath;
-        File.WriteAllText(tmpDir.GetFilePath("file.txt"), "content");
+        try
+        {
+            File.WriteAllText(tmpDir.GetFilePath("file.txt"), "content");
 
-        // Act
-        tmpDir.Dispose();
+            // Act
+            tmpDir.Dispose();
 
-        // Assert
-        Assert.False(Directory.Exists(dirPath),
-            "Directory should be deleted after disposal.");
+            // Assert
+            Assert.False(Directory.Exists(dirPath),
+                "Directory should be deleted after disposal.");
+        }
+        finally
+        {
+            // Ensure cleanup even if an assertion or setup step throws before Dispose() runs
+            if (Directory.Exists(dirPath))
+            {
+                Directory.Delete(dirPath, recursive: true);
+            }
+        }
     }
 
     /// <summary>

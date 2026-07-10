@@ -107,20 +107,30 @@ public class UtilitiesTests
         // Arrange: create the temporary directory and capture its path before disposal
         var tmpDir = new TemporaryDirectory();
         var capturedPath = tmpDir.DirectoryPath;
+        try
+        {
+            // Act: write a file into the directory via GetFilePath, then dispose the directory
+            var filePath = tmpDir.GetFilePath("sentinel.txt");
+            File.WriteAllText(filePath, "lifecycle test");
+            var existedBeforeDisposal = Directory.Exists(capturedPath);
+            var fileExistedBeforeDisposal = File.Exists(filePath);
+            tmpDir.Dispose();
 
-        // Act: write a file into the directory via GetFilePath, then dispose the directory
-        var filePath = tmpDir.GetFilePath("sentinel.txt");
-        File.WriteAllText(filePath, "lifecycle test");
-        var existedBeforeDisposal = Directory.Exists(capturedPath);
-        var fileExistedBeforeDisposal = File.Exists(filePath);
-        tmpDir.Dispose();
-
-        // Assert: the directory was usable before disposal, and is gone afterward
-        Assert.True(existedBeforeDisposal, "Directory must exist before disposal");
-        Assert.True(fileExistedBeforeDisposal, "File written via GetFilePath must be accessible");
-        Assert.False(
-            Directory.Exists(capturedPath),
-            $"Directory '{capturedPath}' should have been deleted by Dispose");
+            // Assert: the directory was usable before disposal, and is gone afterward
+            Assert.True(existedBeforeDisposal, "Directory must exist before disposal");
+            Assert.True(fileExistedBeforeDisposal, "File written via GetFilePath must be accessible");
+            Assert.False(
+                Directory.Exists(capturedPath),
+                $"Directory '{capturedPath}' should have been deleted by Dispose");
+        }
+        finally
+        {
+            // Ensure cleanup even if an assertion or setup step throws before Dispose() runs
+            if (Directory.Exists(capturedPath))
+            {
+                Directory.Delete(capturedPath, recursive: true);
+            }
+        }
     }
 
     /// <summary>
