@@ -108,9 +108,6 @@ Cache Tool system; it is a low-level building block consumed by `Program` and `V
   `Program.Run`.
 - **`Validation`** (SelfTest subsystem): `Validation.Run` receives a `Context` instance and
   uses it for output and results-path resolution.
-- **`PathHelpers`** (indirectly): when `Validation.Run` constructs temporary log file paths
-  through `TemporaryDirectory.GetFilePath`, the `Context` supplied to `Validation` is the
-  origin of the resulting output; `PathHelpers` itself is not called directly by `Context`.
 
 #### Resource Management
 

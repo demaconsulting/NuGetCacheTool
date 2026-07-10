@@ -19,25 +19,20 @@ OTS items:
 
 - **DemaConsulting.NuGet.Caching**: integration and usage design.
 - **DemaConsulting.TestResults**: integration and usage design.
-- **SysML2Tools**: integration and usage design.
-
-`DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` are runtime dependencies that
-this project's own source code integrates with directly, so each has an integration/usage design
-document describing that source-level integration. `SysML2Tools` is build-time tooling — it is
-not called by this project's source code at runtime — but it still has its own design document
-here because it generates the SysML2 software-structure model and diagrams referenced below, so
-its usage is design-relevant even though it is not a source dependency. The SysML2
-software-structure model itself represents runtime software composition only; build-time-only
-tooling (including SysML2Tools, along with BuildMark, FileAssert, Pandoc, ReqStream, ReviewMark,
-SarifMark, SonarMark, VersionMark, WeasyPrint, and xUnit) is deliberately excluded from that
-structural model — see the clarifying comment in `docs/sysml2/model/ots.sysml` for the rationale.
-Requirements and verification evidence for the full set of build-pipeline OTS tooling is tracked
-separately; see *OTS Verification* in the verification documentation.
+- **SysML2Tools**: integration and usage design (the one build-time-only OTS tool with a
+  dedicated design document, since it generates the SysML2 model and diagrams referenced
+  below).
 
 It applies to the current release and all subsequent releases until superseded.
 
-The following items are explicitly excluded from this design documentation:
-`DemaConsulting.NuGet.CacheTool.Tests` and CI/CD pipeline configuration.
+The following topics are out of scope:
+
+- External library internals
+- Build pipeline configuration
+- Test projects (`DemaConsulting.NuGet.CacheTool.Tests`)
+- All other build-pipeline-only OTS tooling (BuildMark, FileAssert, Pandoc, ReqStream,
+  ReviewMark, SarifMark, SonarMark, VersionMark, WeasyPrint, and xUnit); see *OTS Verification*
+  in the verification documentation for their requirements and verification coverage
 
 ## Software Structure
 
@@ -50,17 +45,11 @@ diagram or the prose below.
 
 ## Folder Layout
 
-```text
-src/DemaConsulting.NuGet.CacheTool/
-├── Cli/
-│   └── Context.cs               — CLI subsystem: argument parsing and output management
-├── SelfTest/
-│   └── Validation.cs            — SelfTest subsystem: self-validation test execution
-├── Utilities/
-│   ├── PathHelpers.cs           — Utilities subsystem: safe path combination utilities
-│   └── TemporaryDirectory.cs    — Utilities subsystem: disposable temporary directory
-└── Program.cs                   — top-level entry point and application orchestration
-```
+- **src/** - source files and projects
+  - **DemaConsulting.NuGet.CacheTool/** - NuGetCacheTool system source
+    - **Cli/** - CLI subsystem
+    - **SelfTest/** - SelfTest subsystem
+    - **Utilities/** - Utilities subsystem
 
 ## Companion Artifact Structure
 

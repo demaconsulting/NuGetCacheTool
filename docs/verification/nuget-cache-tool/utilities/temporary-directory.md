@@ -10,6 +10,12 @@ It defines test scenarios, dependency usage, and requirement coverage for
 exercise construction, file-path resolution, path-traversal rejection, and disposal directly
 against the file system under `Environment.CurrentDirectory`.
 
+The constructor's `InvalidOperationException` wrapping of `Directory.CreateDirectory` failures
+(see *TemporaryDirectory Design*) is a defensive guard, not a directly unit-tested scenario:
+reliably forcing that underlying call to fail requires environment-specific, OS-level
+file-system permission manipulation (for example, Windows `icacls`) that is itself flaky and
+platform-fragile, so this path is verified by code inspection rather than an automated test.
+
 #### Dependencies
 
 | Dependency    | Usage in Tests                                                         |
@@ -41,13 +47,6 @@ marked as expected failures.
 **Scenario**: Two `TemporaryDirectory` instances are constructed in sequence.
 
 **Expected**: Their `DirectoryPath` values are distinct.
-
-##### TemporaryDirectory_Constructor_DirectoryCreationFails_ThrowsInvalidOperationException
-
-**Scenario**: `TemporaryDirectory` is constructed in an environment where the underlying
-directory-creation call fails (for example, due to file-system permissions).
-
-**Expected**: `InvalidOperationException` is thrown.
 
 ##### TemporaryDirectory_GetFilePath_SimpleFile_ReturnsPathUnderDirectory
 

@@ -58,13 +58,3 @@ sections:
                   the code under test).
                 tests:
                   - TemporaryDirectory_Dispose_AlreadyDeleted_DoesNotThrow
-
-              - id: NuGetCache-TemporaryDirectory-Constructor-CreationFailure
-                title: The TemporaryDirectory class shall throw an InvalidOperationException when the temporary directory
-                  cannot be created.
-                justification: |
-                  Surfacing a clear, specific exception when directory creation fails (for example,
-                  due to file-system permissions) helps callers distinguish this failure from other
-                  error conditions rather than propagating an unrelated low-level I/O exception.
-                tests:
-                  - TemporaryDirectory_Constructor_DirectoryCreationFails_ThrowsInvalidOperationException

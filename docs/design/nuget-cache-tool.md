@@ -122,7 +122,7 @@ These tests use the same `Program.Run` path as normal usage, capturing output vi
 | --------- | ------- | --------- |
 | `NuGetCache_VersionDisplay` | `--version` | Version string is present and contains dots |
 | `NuGetCache_HelpDisplay` | `--help` | Output contains `Usage:` and `Options:` |
-| `NuGetCache_CachePackage` | `DemaConsulting.NuGet.Caching:0.1.0` | A non-empty package path is returned, using a fixed test version pinned independently of the tool's own dependency version |
+| `NuGetCache_CachePackage` | `DemaConsulting.NuGet.Caching:{fixed test version}` | A non-empty package path is returned, using a fixed test version pinned independently of the tool's own dependency version |
 
 When `--results` is supplied, these tests are emitted as test results (TRX (`.trx`)
 or JUnit XML (`.xml`), depending on the `--results` file extension) and serve as

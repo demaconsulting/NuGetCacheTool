@@ -38,7 +38,12 @@ Creates a uniquely-named subdirectory under `Environment.CurrentDirectory`.
 **Throws:**
 
 - `InvalidOperationException` — wraps any `IOException`, `UnauthorizedAccessException`, or
-  `ArgumentException` raised by `Directory.CreateDirectory`.
+  `ArgumentException` raised by `Directory.CreateDirectory`. This is a defensive guard against
+  file-system failures (for example, permission restrictions or an unwritable working
+  directory); it is not covered by a dedicated automated test because reliably forcing
+  `Directory.CreateDirectory` to fail requires environment-specific, OS-level permission
+  manipulation (for example, Windows `icacls`) that is itself flaky and platform-fragile. The
+  wrapping behavior is reviewed by code inspection instead.
 
 ##### GetFilePath(string relativePath) → string
 
