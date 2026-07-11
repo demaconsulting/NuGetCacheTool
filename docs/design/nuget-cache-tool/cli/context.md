@@ -93,7 +93,8 @@ sets `_hasErrors = true`, which causes `ExitCode` to return `1`.
 | `WriteLine()` called in silent mode | Suppresses console output; still writes to log file if open |
 | `Dispose()` called multiple times | Safe; the `StreamWriter` is set to null after first disposal |
 
-Argument-parsing errors propagate to `Program.Main`, which catches `ArgumentException` and
+Argument-parsing errors propagate to `Program.Main`, which catches both `ArgumentException` and
+`InvalidOperationException` (for example, when the log file cannot be opened) and
 writes the message to `Console.Error` before returning exit code 1.
 
 #### Dependencies
