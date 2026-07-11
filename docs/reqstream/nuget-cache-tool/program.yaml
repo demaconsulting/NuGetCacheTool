@@ -70,7 +70,7 @@ sections:
               Validation is performed by Context.Create before packages reach RunToolLogic,
               with a defensive check inside RunToolLogic for belt-and-suspenders safety.
             children:
-              - NuGetCache-Context-InvalidArguments
+              - NuGetCache-Context-InvalidArguments-MalformedPackage
             tests:
               - Context_Create_WithoutColonInPackage_ThrowsArgumentException
 

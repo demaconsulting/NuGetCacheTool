@@ -1,7 +1,8 @@
 ## CLI Subsystem Verification
 
 This document describes the subsystem-level verification design for the `Cli` subsystem. It
-defines the overall verification strategy and requirement coverage for the CLI subsystem.
+defines the overall verification strategy and test scenarios for the CLI subsystem. Requirement
+traceability is tracked in the ReqStream trace matrix, not in this document.
 
 ### Verification Approach
 
@@ -30,8 +31,8 @@ The CLI subsystem test suite passes when all of the following conditions are met
 
 - All test scenarios defined in `CliTests.cs` pass.
 - No scenario produces an unexpected context state, exit code, or console output.
-- Every CLI subsystem requirement listed in the Requirements Coverage section is covered by at
-  least one passing scenario.
+- Every CLI subsystem requirement is covered by at least one passing scenario, as tracked in the
+  ReqStream trace matrix.
 
 ### Test Scenarios
 
@@ -41,15 +42,11 @@ The CLI subsystem test suite passes when all of the following conditions are met
 
 **Expected**: `context.Version` is true; `context.Help` is false; exit code is 0.
 
-**Requirement coverage**: `NuGetCache-Cli-VersionFlag`.
-
 #### Cli_ShortVersionFlag_SetsVersionOnContext
 
 **Scenario**: Context is created from `["-v"]`.
 
 **Expected**: `context.Version` is true; exit code is 0.
-
-**Requirement coverage**: `NuGetCache-Cli-VersionFlag`.
 
 #### Cli_HelpFlag_SetsHelpOnContext
 
@@ -57,23 +54,17 @@ The CLI subsystem test suite passes when all of the following conditions are met
 
 **Expected**: `context.Help` is true; `context.Version` is false; exit code is 0.
 
-**Requirement coverage**: `NuGetCache-Cli-HelpFlag`.
-
 #### Cli_ShortHelpFlagH_SetsHelpOnContext
 
 **Scenario**: Context is created from `["-h"]`.
 
 **Expected**: `context.Help` is true; exit code is 0.
 
-**Requirement coverage**: `NuGetCache-Cli-HelpFlag`.
-
 #### Cli_ShortHelpFlagQuestionMark_SetsHelpOnContext
 
 **Scenario**: Context is created from `["-?"]`.
 
 **Expected**: `context.Help` is true; exit code is 0.
-
-**Requirement coverage**: `NuGetCache-Cli-HelpFlag`.
 
 #### Cli_SilentFlag_SuppressesAllOutput
 
@@ -82,15 +73,11 @@ The CLI subsystem test suite passes when all of the following conditions are met
 
 **Expected**: Neither message appears on stdout or stderr.
 
-**Requirement coverage**: `NuGetCache-Cli-SilentFlag`.
-
 #### Cli_PackageArgument_AddedToPackagesList
 
 **Scenario**: Context is created from `["Package.One:1.0.0", "Package.Two:2.3.4"]`.
 
 **Expected**: `context.Packages` contains exactly 2 entries matching both arguments.
-
-**Requirement coverage**: `NuGetCache-Cli-CachePackages`.
 
 #### Cli_ErrorOutput_SetsNonZeroExitCode
 
@@ -98,15 +85,11 @@ The CLI subsystem test suite passes when all of the following conditions are met
 
 **Expected**: Exit code is non-zero.
 
-**Requirement coverage**: `NuGetCache-Cli-ErrorOutput`.
-
 #### Cli_ErrorOutput_WritesMessageToConsole
 
 **Scenario**: Context is created from `[]`; `context.WriteError` is called with a message.
 
 **Expected**: The error message appears in stderr.
-
-**Requirement coverage**: `NuGetCache-Cli-ErrorOutput`.
 
 #### Cli_UnknownArgument_ThrowsArgumentException
 
@@ -114,15 +97,11 @@ The CLI subsystem test suite passes when all of the following conditions are met
 
 **Expected**: `ArgumentException` is thrown with a message containing "Unsupported argument".
 
-**Requirement coverage**: `NuGetCache-Cli-InvalidArguments`.
-
 #### Cli_LogFlag_WritesToLogFile
 
 **Scenario**: Context is created from `["--log", logFile]`; `context.WriteLine` is called.
 
 **Expected**: The log file is created and contains the written message.
-
-**Requirement coverage**: `NuGetCache-Cli-LogFlag`.
 
 #### Cli_ValidateFlag_SetsValidateOnContext
 
@@ -130,15 +109,11 @@ The CLI subsystem test suite passes when all of the following conditions are met
 
 **Expected**: `context.Validate` is true; exit code is 0.
 
-**Requirement coverage**: `NuGetCache-Cli-ValidateFlag`.
-
 #### Cli_ResultsFlag_SetsResultsFileOnContext
 
 **Scenario**: Context is created from `["--results", "results.trx"]`.
 
 **Expected**: `context.ResultsFile` equals "results.trx"; exit code is 0.
-
-**Requirement coverage**: `NuGetCache-Cli-ResultsFlag`.
 
 #### Cli_LogFlagWithoutValue_ThrowsArgumentException
 
@@ -146,15 +121,11 @@ The CLI subsystem test suite passes when all of the following conditions are met
 
 **Expected**: `ArgumentException` is thrown.
 
-**Requirement coverage**: `NuGetCache-Cli-InvalidArguments`.
-
 #### Cli_ResultsFlagWithoutValue_ThrowsArgumentException
 
 **Scenario**: Context is created from `["--results"]` (missing value).
 
 **Expected**: `ArgumentException` is thrown.
-
-**Requirement coverage**: `NuGetCache-Cli-InvalidArguments`.
 
 #### Cli_SilentAndLog_WritesToLogFileOnly
 
@@ -162,22 +133,3 @@ The CLI subsystem test suite passes when all of the following conditions are met
 called.
 
 **Expected**: Message does not appear on stdout; log file is created and contains the message.
-
-**Requirement coverage**: `NuGetCache-Cli-SilentLogInteraction`.
-
-### Requirements Coverage
-
-- **`NuGetCache-Cli-VersionFlag`**: Cli_VersionFlag_SetsVersionOnContext,
-  Cli_ShortVersionFlag_SetsVersionOnContext
-- **`NuGetCache-Cli-HelpFlag`**: Cli_HelpFlag_SetsHelpOnContext, Cli_ShortHelpFlagH_SetsHelpOnContext,
-  Cli_ShortHelpFlagQuestionMark_SetsHelpOnContext
-- **`NuGetCache-Cli-SilentFlag`**: Cli_SilentFlag_SuppressesAllOutput
-- **`NuGetCache-Cli-CachePackages`**: Cli_PackageArgument_AddedToPackagesList
-- **`NuGetCache-Cli-ErrorOutput`**: Cli_ErrorOutput_SetsNonZeroExitCode,
-  Cli_ErrorOutput_WritesMessageToConsole
-- **`NuGetCache-Cli-LogFlag`**: Cli_LogFlag_WritesToLogFile
-- **`NuGetCache-Cli-ValidateFlag`**: Cli_ValidateFlag_SetsValidateOnContext
-- **`NuGetCache-Cli-ResultsFlag`**: Cli_ResultsFlag_SetsResultsFileOnContext
-- **`NuGetCache-Cli-InvalidArguments`**: Cli_UnknownArgument_ThrowsArgumentException,
-  Cli_LogFlagWithoutValue_ThrowsArgumentException, Cli_ResultsFlagWithoutValue_ThrowsArgumentException
-- **`NuGetCache-Cli-SilentLogInteraction`**: Cli_SilentAndLog_WritesToLogFileOnly

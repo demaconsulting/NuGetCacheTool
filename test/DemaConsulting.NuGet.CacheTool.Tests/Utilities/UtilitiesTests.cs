@@ -90,8 +90,11 @@ public class UtilitiesTests
         // Arrange: create a temporary directory on the real filesystem
         using var tmpDir = new TemporaryDirectory();
 
-        // Act / Assert: a traversal path must be rejected before any filesystem access
-        Assert.Throws<ArgumentException>(() => tmpDir.GetFilePath("../escape.txt"));
+        // Act
+        var act = () => tmpDir.GetFilePath("../escape.txt");
+
+        // Assert: a traversal path must be rejected before any filesystem access
+        Assert.Throws<ArgumentException>(act);
     }
 
     /// <summary>
@@ -102,23 +105,31 @@ public class UtilitiesTests
     public void Utilities_DirectoryLifecycle_CreateAndDispose_DirectoryCreatedThenDeleted()
     {
         // Arrange: create the temporary directory and capture its path before disposal
-        string capturedPath;
-        using (var tmpDir = new TemporaryDirectory())
+        var tmpDir = new TemporaryDirectory();
+        var capturedPath = tmpDir.DirectoryPath;
+        try
         {
-            capturedPath = tmpDir.DirectoryPath;
-
-            // Act: write a file into the directory via GetFilePath to prove the directory is usable
+            // Act: write a file into the directory via GetFilePath, then dispose the directory
             var filePath = tmpDir.GetFilePath("sentinel.txt");
             File.WriteAllText(filePath, "lifecycle test");
+            var existedBeforeDisposal = Directory.Exists(capturedPath);
+            var fileExistedBeforeDisposal = File.Exists(filePath);
+            tmpDir.Dispose();
 
-            Assert.True(Directory.Exists(capturedPath), "Directory must exist before disposal");
-            Assert.True(File.Exists(filePath), "File written via GetFilePath must be accessible");
+            // Assert: the directory was usable before disposal, and is gone afterward
+            Assert.True(existedBeforeDisposal, "Directory must exist before disposal");
+            Assert.True(fileExistedBeforeDisposal, "File written via GetFilePath must be accessible");
+            Assert.False(
+                Directory.Exists(capturedPath),
+                $"Directory '{capturedPath}' should have been deleted by Dispose");
         }
-
-        // Assert: the directory (and its contents) must be gone after the using block closes
-        Assert.False(
-            Directory.Exists(capturedPath),
-            $"Directory '{capturedPath}' should have been deleted by Dispose");
+        finally
+        {
+            // Ensure cleanup even if an assertion or setup step throws before Dispose() runs.
+            // Dispose() itself suppresses non-fatal IO/permission errors and is safe to call
+            // twice, so route cleanup through it rather than deleting the directory directly.
+            tmpDir.Dispose();
+        }
     }
 
     /// <summary>

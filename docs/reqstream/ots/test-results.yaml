@@ -8,15 +8,26 @@ sections:
     sections:
       - title: TestResults Requirements
         requirements:
-          - id: NuGetCache-OTS-TestResults
-            title: DemaConsulting.TestResults shall serialize self-validation results to TRX and JUnit XML formats.
+          - id: NuGetCache-OTS-TestResults-Trx
+            title: DemaConsulting.TestResults shall serialize self-validation results to TRX format.
             justification: |
-              DemaConsulting.TestResults provides TrxSerializer and JUnitSerializer used by
-              Validation.Run to write self-validation outcomes as standard test result files.
-              The integration tests invoke the tool with --validate --results and assert that
-              well-formed TRX and JUnit XML files are produced, confirming the library is
-              functioning correctly in the deployment environment.
+              DemaConsulting.TestResults provides TrxSerializer used by Validation.Run to write
+              self-validation outcomes as a standard MSTest-compatible TRX file. The integration
+              test invokes the tool with --validate --results using a .trx extension and asserts
+              that a well-formed TRX file is produced, confirming the library is functioning
+              correctly in the deployment environment.
             tags: [ots]
             tests:
               - NuGetCacheTool_ResultsFile_ValidateWithTrxExtension_GeneratesTrxFile
+
+          - id: NuGetCache-OTS-TestResults-JUnit
+            title: DemaConsulting.TestResults shall serialize self-validation results to JUnit XML format.
+            justification: |
+              DemaConsulting.TestResults provides JUnitSerializer used by Validation.Run to write
+              self-validation outcomes as a standard JUnit-compatible XML file. The integration
+              test invokes the tool with --validate --results using a .xml extension and asserts
+              that a well-formed JUnit XML file is produced, confirming the library is
+              functioning correctly in the deployment environment.
+            tags: [ots]
+            tests:
               - NuGetCacheTool_ResultsFile_ValidateWithXmlExtension_GeneratesJUnitFile

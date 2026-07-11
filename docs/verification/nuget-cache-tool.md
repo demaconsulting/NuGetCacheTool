@@ -4,7 +4,7 @@ This document describes the system-level verification design for the NuGet Cache
 defines the overall verification strategy, test environments, interface simulation approach, and
 end-to-end integration test scenarios that together demonstrate the system meets its requirements.
 
-## Verification Strategy
+## Verification Approach
 
 System-level verification uses end-to-end integration tests that invoke the tool as a real process
 via the `Runner.Run` helper in `IntegrationTests.cs`. Each test exercises the full stack — argument
@@ -16,9 +16,18 @@ observable outputs only.
 
 **Note**: `Runner.Run` merges stdout and stderr into a single combined output string. Per-stream
 assertions (e.g., "standard error is empty") are therefore not possible at the integration test
-level; all assertions are made against the combined output.
+level; all assertions are made against the combined output. Direct proof that error messages are
+written specifically to stderr is instead carried by the `NuGetCache-Cli-ErrorOutput` and
+`NuGetCache-Program-ErrorOutput` requirements — see *CLI Subsystem Verification* and *Program
+Verification* — which capture stdout and stderr separately in their unit-level tests. Likewise,
+the specific interaction between `--silent` and `--log` is proven precisely by
+`NuGetCache-Cli-SilentLogInteraction` (see *CLI Subsystem Verification*), and the already-cached
+idempotency behavior is proven precisely by `NuGetCache-Program-CachePackages` (see *Program
+Verification*) together with the underlying `DemaConsulting.NuGet.Caching` OTS behavior (see
+*DemaConsulting.NuGet.Caching Verification*); the system-level scenarios below confirm the
+end-to-end behavior but do not, on their own, isolate these specific edge cases.
 
-## Test Environments
+## Test Environment
 
 Integration tests are executed across the following environments to satisfy multi-runtime and
 multi-platform requirements:
@@ -45,8 +54,8 @@ The system-level integration test suite passes when all of the following conditi
 - All integration test scenarios defined in `IntegrationTests.cs` pass on every supported runtime
   and platform combination (.NET 8, 9, and 10 on Windows, Linux, and macOS).
 - No test scenario produces an unexpected exit code or output pattern.
-- Every system-level requirement listed in the Requirements Coverage section is covered by at least
-  one passing scenario.
+- Every system-level requirement is covered by at least one passing scenario, per the ReqStream
+  trace matrix.
 
 ## External Interface Simulation
 
@@ -63,7 +72,7 @@ implementations:
 - **Path construction** — The `IntegrationTests` constructor uses `PathHelpers.SafePathCombine`
   (Utilities subsystem) to locate the tool DLL at a path derived from `AppContext.BaseDirectory`.
 
-## Integration Test Scenarios
+## Test Scenarios
 
 The following integration test scenarios are defined in `IntegrationTests.cs`.
 
@@ -140,45 +149,3 @@ passed.
 `/nonexistent_dir_xyz_abc/invalid.log`.
 
 **Expected**: Exit code non-zero; combined output contains "Error".
-
-## Requirements Coverage
-
-**Note on `NuGetCache-Sys-PathSafety`**: This security requirement is verified at unit level
-(see `docs/verification/nuget-cache-tool/utilities/path-helpers.md`). At the system level,
-`NuGetCacheTool_LogFile_InvalidFilenameProvided_ReturnsError` exercises error handling for
-invalid paths, but dedicated path-traversal prevention is verified in the PathHelpers unit tests.
-
-The following list maps each system-level requirement to the integration test scenarios that
-verify it.
-
-- **`NuGetCache-Sys-Integration`**: NuGetCacheTool_VersionDisplay_VersionFlagProvided_OutputsVersion,
-  NuGetCacheTool_HelpDisplay_HelpFlagProvided_OutputsUsageInformation, NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath,
-  NuGetCacheTool_SelfValidation_ValidateFlagProvided_RunsValidation, NuGetCacheTool_SilentMode_SilentFlagProvided_SuppressesOutput,
-  NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile, NuGetCacheTool_ErrorHandling_UnknownArgumentProvided_ReturnsError,
-  NuGetCacheTool_PackageCaching_NonexistentPackageProvided_ReturnsError
-- **`NuGetCache-Sys-ValidateResults`**: NuGetCacheTool_ResultsFile_ValidateWithTrxExtension_GeneratesTrxFile,
-  NuGetCacheTool_ResultsFile_ValidateWithXmlExtension_GeneratesJUnitFile
-- **`NuGetCache-Sys-SilentMode`**: NuGetCacheTool_SilentMode_SilentFlagProvided_SuppressesOutput
-- **`NuGetCache-Sys-LogFile`**: NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile,
-  NuGetCacheTool_LogFile_InvalidFilenameProvided_ReturnsError
-- **`NuGetCache-Sys-Banner`**: NuGetCacheTool_SelfValidation_ValidateFlagProvided_RunsValidation,
-  NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile
-- **`NuGetCache-Sys-InvalidArguments`**: NuGetCacheTool_ErrorHandling_UnknownArgumentProvided_ReturnsError
-- **`NuGetCache-Sys-ExitCode`**: NuGetCacheTool_PackageCaching_NonexistentPackageProvided_ReturnsError,
-  NuGetCacheTool_ErrorHandling_UnknownArgumentProvided_ReturnsError
-- **`NuGetCache-Sys-StderrOutput`**: NuGetCacheTool_PackageCaching_NonexistentPackageProvided_ReturnsError,
-  NuGetCacheTool_ErrorHandling_UnknownArgumentProvided_ReturnsError.
-  **Accepted limitation**: `Runner.Run` merges stdout and stderr into a single combined
-  output string, so these tests can only confirm that "Error" appears somewhere in the
-  combined output rather than confirming the message was sent specifically to stderr.
-  Stderr routing is verified at the unit level by `Context_WriteError_NotSilent_WritesToConsole`
-  in `docs/verification/nuget-cache-tool/cli/context.md`.
-- **`NuGetCache-Sys-SilentLogInteraction`**: NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile
-
-- **`NuGetCache-Sys-PathSafety`**: Verified at unit level in
-  `docs/verification/nuget-cache-tool/utilities/path-helpers.md`.
-  The `PathHelpers.SafePathCombine` unit tests (PathHelpers_SafePathCombine_PathTraversalWithDoubleDots_ThrowsArgumentException,
-  PathHelpers_SafePathCombine_WindowsAbsolutePath_ThrowsArgumentException,
-  PathHelpers_SafePathCombine_UnixAbsolutePath_ThrowsArgumentException) directly exercise
-  the path-traversal prevention mechanism. No integration-level scenario is required
-  because path safety is a pure unit-level concern that does not depend on external interfaces.

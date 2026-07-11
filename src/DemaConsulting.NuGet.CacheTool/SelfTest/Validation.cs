@@ -147,6 +147,18 @@ internal static class Validation
     }
 
     /// <summary>
+    ///     Known package/version used to prove the cache-package self-test actually resolves a
+    ///     real, existing cached package directory rather than merely producing log output.
+    /// </summary>
+    private const string CachePackageTestId = "DemaConsulting.NuGet.Caching";
+
+    /// <summary>
+    ///     Known package version used alongside <see cref="CachePackageTestId"/> for the
+    ///     cache-package self-test.
+    /// </summary>
+    private const string CachePackageTestVersion = "0.1.0";
+
+    /// <summary>
     ///     Runs a test for NuGet package caching functionality.
     /// </summary>
     /// <param name="context">The context for output.</param>
@@ -158,17 +170,74 @@ internal static class Validation
             testResults,
             "NuGetCache_CachePackage",
             "Cache Package Test",
-            ["DemaConsulting.NuGet.Caching:0.1.0"],
+            [$"{CachePackageTestId}:{CachePackageTestVersion}"],
             logContent =>
             {
-                // Verify that a non-empty path was written to the log
-                if (!string.IsNullOrWhiteSpace(logContent))
+                // The log contains the banner followed by the cached package path as its final
+                // line (see Program.RunToolLogic), so the path must be extracted from the last
+                // non-blank line rather than treating the whole log as the path. Verify the log
+                // contains a cached package path rather than accepting any non-empty output: the
+                // path must actually exist on disk, and must be named for the requested package id
+                // and version, so this test genuinely proves that caching produced a valid, usable
+                // package location.
+                var packagePath = logContent
+                    .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
+                    .LastOrDefault()
+                    ?.Trim();
+
+                if (string.IsNullOrWhiteSpace(packagePath))
                 {
-                    return null;
+                    return "Package path not found in log";
                 }
 
-                return "Package path not found in log";
+                if (!Directory.Exists(packagePath))
+                {
+                    return $"Cached package path '{packagePath}' does not exist on disk";
+                }
+
+                return ValidateCachePackagePath(packagePath, CachePackageTestId, CachePackageTestVersion);
             });
+    }
+
+    /// <summary>
+    ///     Verifies that <paramref name="packagePath"/> is named for the exact requested package
+    ///     identity by checking the directory name (version) and its parent directory name
+    ///     (package ID) explicitly, rather than a substring match against the full path. A
+    ///     substring match could produce false positives — for example, version "0.1.0" would
+    ///     also match a path for "0.1.0-beta" or "10.1.0" — which would silently defeat this
+    ///     regression check. Extracted as its own method (rather than an inline check) so it can
+    ///     be exercised directly by unit tests against known-good and known-bad paths, proving
+    ///     the check itself would catch a regression rather than only proving the overall
+    ///     self-test happens to pass today.
+    /// </summary>
+    /// <param name="packagePath">The resolved cached package directory path.</param>
+    /// <param name="expectedPackageId">The expected package ID.</param>
+    /// <param name="expectedVersion">The expected package version.</param>
+    /// <returns>An error message if the path does not match, or null if it does.</returns>
+    internal static string? ValidateCachePackagePath(
+        string packagePath,
+        string expectedPackageId,
+        string expectedVersion)
+    {
+        var trimmedPath = packagePath.TrimEnd('/', '\\');
+
+        // Path.GetFileName and Path.GetDirectoryName return nullable strings (GetDirectoryName
+        // returns null for a root path such as "/", and an empty string for a bare relative name
+        // with no parent segment); declare explicitly as string? so the nullability is
+        // self-documenting rather than relying on var inference. string.Equals safely treats a
+        // null or empty candidate as a non-match rather than throwing.
+        string? versionDirectoryName = Path.GetFileName(trimmedPath);
+        string? parentDirectory = Path.GetDirectoryName(trimmedPath);
+        string? packageIdDirectoryName = parentDirectory is null ? null : Path.GetFileName(parentDirectory);
+
+        if (!string.Equals(versionDirectoryName, expectedVersion, StringComparison.OrdinalIgnoreCase) ||
+            !string.Equals(packageIdDirectoryName, expectedPackageId, StringComparison.OrdinalIgnoreCase))
+        {
+            return $"Cached package path '{packagePath}' does not reference the expected " +
+                $"package '{expectedPackageId}' version '{expectedVersion}'";
+        }
+
+        return null;
     }
 
     /// <summary>

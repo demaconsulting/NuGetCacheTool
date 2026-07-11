@@ -114,6 +114,143 @@ public class ValidationTests
     }
 
     /// <summary>
+    ///     Test that Run's cache-package self-test passes because it resolves a real, existing
+    ///     cached package directory - not merely because some non-whitespace text was logged.
+    /// </summary>
+    [Fact]
+    public void Validation_Run_CachePackageSelfTest_PassesWithRealCachedPackagePath()
+    {
+        // Arrange: redirect stdout to capture validation output
+        var originalOut = Console.Out;
+        try
+        {
+            using var outWriter = new StringWriter();
+            Console.SetOut(outWriter);
+            using var context = Context.Create(["--validate"]);
+
+            // Act: run self-validation, which includes the cache-package self-test
+            Validation.Run(context);
+
+            // Assert: the cache-package self-test reports success and the overall run passes
+            var output = outWriter.ToString();
+            Assert.Contains("Cache Package Test - PASSED", output);
+            Assert.Equal(0, context.ExitCode);
+        }
+        finally
+        {
+            Console.SetOut(originalOut);
+        }
+    }
+
+    /// <summary>
+    ///     Test that ValidateCachePackagePath accepts a path whose directory name and parent
+    ///     directory name exactly match the expected version and package ID.
+    /// </summary>
+    [Fact]
+    public void Validation_ValidateCachePackagePath_ExactMatch_ReturnsNull()
+    {
+        // Arrange: a path exactly matching the expected package id and version
+        var path = Path.Combine("packages", "demaconsulting.nuget.caching", "0.1.0");
+
+        // Act: validate the path against the expected identity
+        var result = Validation.ValidateCachePackagePath(path, "DemaConsulting.NuGet.Caching", "0.1.0");
+
+        // Assert: no error is reported
+        Assert.Null(result);
+    }
+
+    /// <summary>
+    ///     Test that ValidateCachePackagePath rejects a path whose version directory merely
+    ///     contains the expected version as a substring (e.g. a pre-release suffix), proving the
+    ///     check is an exact match rather than a substring match.
+    /// </summary>
+    [Fact]
+    public void Validation_ValidateCachePackagePath_VersionSuffixSubstringMatch_ReturnsError()
+    {
+        // Arrange: a version directory that contains, but is not equal to, the expected version
+        var path = Path.Combine("packages", "demaconsulting.nuget.caching", "0.1.0-beta");
+
+        // Act: validate the path against the expected identity
+        var result = Validation.ValidateCachePackagePath(path, "DemaConsulting.NuGet.Caching", "0.1.0");
+
+        // Assert: an error is reported since the version does not exactly match
+        Assert.NotNull(result);
+    }
+
+    /// <summary>
+    ///     Test that ValidateCachePackagePath rejects a path whose version directory merely
+    ///     contains the expected version as a substring (e.g. a higher major version), proving the
+    ///     check is an exact match rather than a substring match.
+    /// </summary>
+    [Fact]
+    public void Validation_ValidateCachePackagePath_VersionPrefixSubstringMatch_ReturnsError()
+    {
+        // Arrange: a version directory that contains, but is not equal to, the expected version
+        var path = Path.Combine("packages", "demaconsulting.nuget.caching", "10.1.0");
+
+        // Act: validate the path against the expected identity
+        var result = Validation.ValidateCachePackagePath(path, "DemaConsulting.NuGet.Caching", "0.1.0");
+
+        // Assert: an error is reported since the version does not exactly match
+        Assert.NotNull(result);
+    }
+
+    /// <summary>
+    ///     Test that ValidateCachePackagePath rejects a path whose parent directory does not
+    ///     match the expected package ID.
+    /// </summary>
+    [Fact]
+    public void Validation_ValidateCachePackagePath_WrongPackageId_ReturnsError()
+    {
+        // Arrange: a path for a different package ID
+        var path = Path.Combine("packages", "some.other.package", "0.1.0");
+
+        // Act: validate the path against the expected identity
+        var result = Validation.ValidateCachePackagePath(path, "DemaConsulting.NuGet.Caching", "0.1.0");
+
+        // Assert: an error is reported since the package ID does not match
+        Assert.NotNull(result);
+    }
+
+    /// <summary>
+    ///     Test that ValidateCachePackagePath rejects a root path with no parent directory
+    ///     segment at all (<see cref="Path.GetDirectoryName(string)"/> returns null for a root
+    ///     such as "/"), proving the null-parent-directory branch is handled as a non-match
+    ///     rather than throwing.
+    /// </summary>
+    [Fact]
+    public void Validation_ValidateCachePackagePath_NoParentDirectory_ReturnsError()
+    {
+        // Arrange: a root path, which has no parent directory segment
+        const string path = "/";
+
+        // Act: validate the path against the expected identity
+        var result = Validation.ValidateCachePackagePath(path, "DemaConsulting.NuGet.Caching", "0.1.0");
+
+        // Assert: an error is reported since there is no package ID directory to match
+        Assert.NotNull(result);
+    }
+
+    /// <summary>
+    ///     Test that ValidateCachePackagePath rejects a bare relative directory name with no
+    ///     path separator (<see cref="Path.GetDirectoryName(string)"/> returns an empty string,
+    ///     not null, for this case), proving the empty-parent-directory-name case is handled as
+    ///     a non-match.
+    /// </summary>
+    [Fact]
+    public void Validation_ValidateCachePackagePath_BareRelativeName_ReturnsError()
+    {
+        // Arrange: a bare directory name with no parent path segment
+        const string path = "0.1.0";
+
+        // Act: validate the path against the expected identity
+        var result = Validation.ValidateCachePackagePath(path, "DemaConsulting.NuGet.Caching", "0.1.0");
+
+        // Assert: an error is reported since the (empty) package ID directory does not match
+        Assert.NotNull(result);
+    }
+
+    /// <summary>
     ///     Test that Run prints a summary containing total, passed, and failed counts.
     /// </summary>
     [Fact]

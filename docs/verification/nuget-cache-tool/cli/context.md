@@ -27,8 +27,8 @@ The Context unit test suite passes when all of the following conditions are met:
 
 - All test scenarios defined in `ContextTests.cs` pass.
 - Console and log-file output assertions match expected values for every flag combination.
-- Every Context unit requirement listed in the Requirements Coverage section is covered by at
-  least one passing scenario.
+- Every Context unit requirement is covered by at least one passing scenario, per the ReqStream
+  trace matrix.
 
 #### Test Scenarios
 
@@ -166,7 +166,7 @@ The Context unit test suite passes when all of the following conditions are met:
 
 **Expected**: `ArgumentException` is thrown with "Unsupported argument" in the message.
 
-**Requirement coverage**: `NuGetCache-Context-InvalidArguments`.
+**Requirement coverage**: `NuGetCache-Context-InvalidArguments-UnknownFlag`.
 
 ##### Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
 
@@ -174,7 +174,7 @@ The Context unit test suite passes when all of the following conditions are met:
 
 **Expected**: `ArgumentException` is thrown with "--log" in the message.
 
-**Requirement coverage**: `NuGetCache-Context-InvalidArguments`.
+**Requirement coverage**: `NuGetCache-Context-InvalidArguments-MissingLogValue`.
 
 ##### Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
 
@@ -182,7 +182,7 @@ The Context unit test suite passes when all of the following conditions are met:
 
 **Expected**: `ArgumentException` is thrown with "--results" in the message.
 
-**Requirement coverage**: `NuGetCache-Context-InvalidArguments`.
+**Requirement coverage**: `NuGetCache-Context-InvalidArguments-MissingResultsValue`.
 
 ##### Context_Create_WithoutColonInPackage_ThrowsArgumentException
 
@@ -190,7 +190,7 @@ The Context unit test suite passes when all of the following conditions are met:
 
 **Expected**: `ArgumentException` is thrown.
 
-**Requirement coverage**: `NuGetCache-Context-InvalidArguments`.
+**Requirement coverage**: `NuGetCache-Context-InvalidArguments-MalformedPackage`.
 
 ##### Context_WriteError_Silent_DoesNotWriteToConsole
 
@@ -199,23 +199,3 @@ The Context unit test suite passes when all of the following conditions are met:
 **Expected**: The message does not appear in stderr.
 
 **Requirement coverage**: `NuGetCache-Context-SilentOutput`.
-
-#### Requirements Coverage
-
-- **`NuGetCache-Context-ArgumentParsing`**: Context_Create_NoArguments_ReturnsDefaultContext,
-  Context_Create_VersionFlag_SetsVersionTrue, Context_Create_ShortVersionFlag_SetsVersionTrue,
-  Context_Create_HelpFlag_SetsHelpTrue, Context_Create_ShortHelpFlag_H_SetsHelpTrue,
-  Context_Create_ShortHelpFlag_Question_SetsHelpTrue, Context_Create_SilentFlag_SetsSilentTrue,
-  Context_Create_ValidateFlag_SetsValidateTrue, Context_Create_ResultsFlag_SetsResultsFile,
-  Context_Create_LogFlag_OpensLogFile, Context_Create_PackageArgument_AddsToPackagesList
-- **`NuGetCache-Context-SilentOutput`**: Context_Create_SilentFlag_SetsSilentTrue,
-  Context_WriteLine_NotSilent_WritesToConsole, Context_WriteLine_Silent_DoesNotWriteToConsole,
-  Context_WriteError_Silent_DoesNotWriteToConsole
-- **`NuGetCache-Context-LogFile`**: Context_Create_LogFlag_OpensLogFile,
-  Context_WriteError_WritesToLogFile
-- **`NuGetCache-Context-ErrorTracking`**: Context_WriteError_SetsErrorExitCode,
-  Context_WriteError_NotSilent_WritesToConsole
-- **`NuGetCache-Context-InvalidArguments`**: Context_Create_UnknownArgument_ThrowsArgumentException,
-  Context_Create_LogFlag_WithoutValue_ThrowsArgumentException,
-  Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException,
-  Context_Create_WithoutColonInPackage_ThrowsArgumentException

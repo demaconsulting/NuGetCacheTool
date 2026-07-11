@@ -1,5 +1,7 @@
 ## NuGet Cache Tool Utilities Subsystem Design
 
+![Utilities Structure](UtilitiesView.svg)
+
 ### Overview
 
 The Utilities subsystem provides shared helper functionality used by production code and

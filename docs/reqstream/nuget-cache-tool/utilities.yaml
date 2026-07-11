@@ -29,7 +29,8 @@ sections:
           - NuGetCache-TemporaryDirectory-DirectoryCreation
           - NuGetCache-TemporaryDirectory-FilePathResolution
           - NuGetCache-TemporaryDirectory-TraversalRejection
-          - NuGetCache-TemporaryDirectory-Disposal
+          - NuGetCache-TemporaryDirectory-Disposal-DeletesContents
+          - NuGetCache-TemporaryDirectory-Disposal-IdempotentWhenMissing
         tests:
           - Utilities_PathResolution_ValidRelativePath_ReturnsPathWithinDirectory
           - Utilities_PathResolution_NestedRelativePath_CreatesIntermediateDirectories

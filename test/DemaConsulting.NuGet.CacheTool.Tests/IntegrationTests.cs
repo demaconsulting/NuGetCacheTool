@@ -113,8 +113,8 @@ public class IntegrationTests
     public void NuGetCacheTool_ResultsFile_ValidateWithTrxExtension_GeneratesTrxFile()
     {
         // Arrange
-        var resultsFile = Path.GetTempFileName();
-        resultsFile = Path.ChangeExtension(resultsFile, ".trx");
+        var originalTempFile = Path.GetTempFileName();
+        var resultsFile = Path.ChangeExtension(originalTempFile, ".trx");
 
         try
         {
@@ -141,6 +141,11 @@ public class IntegrationTests
             {
                 File.Delete(resultsFile);
             }
+
+            if (File.Exists(originalTempFile))
+            {
+                File.Delete(originalTempFile);
+            }
         }
     }
 
@@ -151,8 +156,8 @@ public class IntegrationTests
     public void NuGetCacheTool_ResultsFile_ValidateWithXmlExtension_GeneratesJUnitFile()
     {
         // Arrange
-        var resultsFile = Path.GetTempFileName();
-        resultsFile = Path.ChangeExtension(resultsFile, ".xml");
+        var originalTempFile = Path.GetTempFileName();
+        var resultsFile = Path.ChangeExtension(originalTempFile, ".xml");
 
         try
         {
@@ -179,6 +184,11 @@ public class IntegrationTests
             if (File.Exists(resultsFile))
             {
                 File.Delete(resultsFile);
+            }
+
+            if (File.Exists(originalTempFile))
+            {
+                File.Delete(originalTempFile);
             }
         }
     }

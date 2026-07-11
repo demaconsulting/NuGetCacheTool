@@ -79,8 +79,3 @@ a valid HTML title element, and includes expected document content.
 **Expected**: FileAssert exits 0 for the user guide HTML document.
 
 **Requirement coverage**: `NuGetCache-OTS-Pandoc`.
-
-### Requirements Coverage
-
-- **`NuGetCache-OTS-Pandoc`**: Pandoc_BuildNotesHtml, Pandoc_CodeQualityHtml, Pandoc_ReviewPlanHtml,
-  Pandoc_ReviewReportHtml, Pandoc_DesignHtml, Pandoc_VerificationHtml, Pandoc_UserGuideHtml

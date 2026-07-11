@@ -88,16 +88,3 @@ summary even when the context is configured for silent operation.
 **Expected**: xUnit executes the test, the test passes, and the result appears in the TRX output.
 
 **Requirement coverage**: `NuGetCache-OTS-xUnit-Execute`, `NuGetCache-OTS-xUnit-Report`.
-
-### Requirements Coverage
-
-- **`NuGetCache-OTS-xUnit-Execute`**: Context_Create_NoArguments_ReturnsDefaultContext,
-  Context_Create_VersionFlag_SetsVersionTrue, Context_Create_SilentFlag_SetsSilentTrue,
-  Context_Create_LogFlag_OpensLogFile, Context_Create_UnknownArgument_ThrowsArgumentException,
-  PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly,
-  Program_Run_WithVersionFlag_DisplaysVersionOnly, Validation_Run_WithSilentContext_PrintsSummary
-- **`NuGetCache-OTS-xUnit-Report`**: Context_Create_NoArguments_ReturnsDefaultContext,
-  Context_Create_VersionFlag_SetsVersionTrue, Context_Create_SilentFlag_SetsSilentTrue,
-  Context_Create_LogFlag_OpensLogFile, Context_Create_UnknownArgument_ThrowsArgumentException,
-  PathHelpers_SafePathCombine_ValidPaths_CombinesCorrectly,
-  Program_Run_WithVersionFlag_DisplaysVersionOnly, Validation_Run_WithSilentContext_PrintsSummary

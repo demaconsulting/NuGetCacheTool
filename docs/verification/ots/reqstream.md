@@ -35,7 +35,3 @@ coverage.
 **Expected**: Exits 0; would exit non-zero if any requirement lacked coverage.
 
 **Requirement coverage**: `NuGetCache-OTS-ReqStream`.
-
-### Requirements Coverage
-
-- **`NuGetCache-OTS-ReqStream`**: ReqStream_EnforcementMode

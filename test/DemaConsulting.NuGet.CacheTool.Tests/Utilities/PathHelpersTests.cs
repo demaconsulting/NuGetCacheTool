@@ -55,9 +55,11 @@ public class PathHelpersTests
         var basePath = "/home/user/project";
         var relativePath = "../etc/passwd";
 
-        // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() =>
-            PathHelpers.SafePathCombine(basePath, relativePath));
+        // Act
+        var act = () => PathHelpers.SafePathCombine(basePath, relativePath);
+
+        // Assert
+        var exception = Assert.Throws<ArgumentException>(act);
         Assert.Contains("Invalid path component", exception.Message);
     }
 
@@ -71,9 +73,11 @@ public class PathHelpersTests
         var basePath = "/home/user/project";
         var relativePath = "subfolder/../../../etc/passwd";
 
-        // Act & Assert
-        var exception = Assert.Throws<ArgumentException>(() =>
-            PathHelpers.SafePathCombine(basePath, relativePath));
+        // Act
+        var act = () => PathHelpers.SafePathCombine(basePath, relativePath);
+
+        // Assert
+        var exception = Assert.Throws<ArgumentException>(act);
         Assert.Contains("Invalid path component", exception.Message);
     }
 
@@ -85,10 +89,13 @@ public class PathHelpersTests
     {
         // Arrange
         const string basePath = "/tmp/base";
+        const string relativePath = "/etc/passwd";
 
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() =>
-            PathHelpers.SafePathCombine(basePath, "/etc/passwd"));
+        // Act
+        var act = () => PathHelpers.SafePathCombine(basePath, relativePath);
+
+        // Assert
+        Assert.Throws<ArgumentException>(act);
     }
 
     /// <summary>
@@ -105,10 +112,33 @@ public class PathHelpersTests
 
         // Arrange
         const string basePath = "/tmp/base";
+        const string relativePath = @"C:\Windows\System32";
 
-        // Act & Assert
-        Assert.Throws<ArgumentException>(() =>
-            PathHelpers.SafePathCombine(basePath, @"C:\Windows\System32"));
+        // Act
+        var act = () => PathHelpers.SafePathCombine(basePath, relativePath);
+
+        // Assert
+        Assert.Throws<ArgumentException>(act);
+    }
+
+    /// <summary>
+    ///     Test that SafePathCombine throws ArgumentException for a rooted relative path that
+    ///     would still resolve inside the base directory, proving rooted paths are rejected
+    ///     upfront regardless of where they would resolve to.
+    /// </summary>
+    [Fact]
+    public void PathHelpers_SafePathCombine_RootedPathInsideBase_ThrowsArgumentException()
+    {
+        // Arrange: a rooted relative path that already resolves inside the base directory
+        var basePath = Path.GetTempPath();
+        var relativePath = Path.Combine(basePath, "child.txt");
+
+        // Act
+        var act = () => PathHelpers.SafePathCombine(basePath, relativePath);
+
+        // Assert
+        var exception = Assert.Throws<ArgumentException>(act);
+        Assert.Contains("Invalid path component", exception.Message);
     }
 
     /// <summary>
@@ -185,9 +215,14 @@ public class PathHelpersTests
     [Fact]
     public void PathHelpers_SafePathCombine_NullBase_ThrowsArgumentNullException()
     {
-        // Act: verify that a null base path throws ArgumentNullException
-        Assert.Throws<ArgumentNullException>(() =>
-            PathHelpers.SafePathCombine(null!, "relative/path"));
+        // Arrange
+        const string relativePath = "relative/path";
+
+        // Act
+        var act = () => PathHelpers.SafePathCombine(null!, relativePath);
+
+        // Assert
+        Assert.Throws<ArgumentNullException>(act);
     }
 
     /// <summary>
@@ -196,8 +231,13 @@ public class PathHelpersTests
     [Fact]
     public void PathHelpers_SafePathCombine_NullRelative_ThrowsArgumentNullException()
     {
-        // Act: verify that a null relative path throws ArgumentNullException
-        Assert.Throws<ArgumentNullException>(() =>
-            PathHelpers.SafePathCombine("/base/path", null!));
+        // Arrange
+        const string basePath = "/base/path";
+
+        // Act
+        var act = () => PathHelpers.SafePathCombine(basePath, null!);
+
+        // Assert
+        Assert.Throws<ArgumentNullException>(act);
     }
 }

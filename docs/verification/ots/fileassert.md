@@ -42,7 +42,3 @@ asserted document content at each stage of the pipeline.
 **Expected**: Displays usage information without error.
 
 **Requirement coverage**: `NuGetCache-OTS-FileAssert`.
-
-### Requirements Coverage
-
-- **`NuGetCache-OTS-FileAssert`**: FileAssert_VersionDisplay, FileAssert_HelpDisplay

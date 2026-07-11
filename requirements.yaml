@@ -24,3 +24,4 @@ includes:
   - docs/reqstream/ots/nuget-caching.yaml
   - docs/reqstream/ots/test-results.yaml
   - docs/reqstream/ots/sonarscanner.yaml
+  - docs/reqstream/ots/sysml2tools.yaml

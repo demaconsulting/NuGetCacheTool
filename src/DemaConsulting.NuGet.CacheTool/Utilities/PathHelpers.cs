@@ -26,14 +26,16 @@ namespace DemaConsulting.NuGet.CacheTool.Utilities;
 internal static class PathHelpers
 {
     /// <summary>
-    ///     Safely combines two paths, ensuring the resolved combined path stays within the base directory.
+    ///     Safely combines two paths, ensuring <paramref name="relativePath"/> is not rooted
+    ///     and that the resolved combined path stays within the base directory.
     /// </summary>
     /// <param name="basePath">The base path.</param>
     /// <param name="relativePath">The relative path to combine.</param>
     /// <returns>The combined path.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="basePath"/> or <paramref name="relativePath"/> is <see langword="null"/>.</exception>
     /// <exception cref="ArgumentException">
-    ///     Thrown when the resolved combined path escapes the base directory, or when a supplied path is invalid.
+    ///     Thrown when <paramref name="relativePath"/> is rooted (absolute), when the resolved combined
+    ///     path escapes the base directory, or when a supplied path is invalid.
     /// </exception>
     /// <exception cref="NotSupportedException">Thrown when a supplied path contains an unsupported format.</exception>
     /// <exception cref="PathTooLongException">Thrown when the combined or resolved path exceeds the system-defined maximum length.</exception>
@@ -42,6 +44,14 @@ internal static class PathHelpers
         // Validate inputs
         ArgumentNullException.ThrowIfNull(basePath);
         ArgumentNullException.ThrowIfNull(relativePath);
+
+        // Security check: reject rooted (absolute) relative paths outright, regardless of
+        // where they would resolve to. This prevents a caller from overriding the base
+        // directory entirely by supplying an absolute path.
+        if (Path.IsPathRooted(relativePath))
+        {
+            throw new ArgumentException($"Invalid path component: {relativePath}", nameof(relativePath));
+        }
 
         // Combine the paths (preserves the caller's relative/absolute style)
         var combinedPath = Path.Combine(basePath, relativePath);

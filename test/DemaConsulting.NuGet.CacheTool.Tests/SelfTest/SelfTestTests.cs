@@ -151,4 +151,24 @@ public class SelfTestTests
         }
     }
 
+    /// <summary>
+    ///     Test that the SelfTest subsystem reports an error and writes no results file when
+    ///     an unsupported --results file extension is specified.
+    /// </summary>
+    [Fact]
+    public void SelfTest_ResultsFile_UnsupportedExtension_ReportsErrorAndSkipsFile()
+    {
+        // Arrange: prepare a results file path with an unsupported extension
+        using var temporaryDirectory = new TemporaryDirectory();
+        var resultsFile = temporaryDirectory.GetFilePath($"{Guid.NewGuid():N}.json");
+        using var context = Context.Create(["--validate", "--silent", "--results", resultsFile]);
+
+        // Act: run self-validation requesting an unsupported results format
+        Validation.Run(context);
+
+        // Assert: the unsupported extension is reported as an error and no file is written
+        Assert.NotEqual(0, context.ExitCode);
+        Assert.False(File.Exists(resultsFile), "Results file should not be created for an unsupported extension");
+    }
+
 }

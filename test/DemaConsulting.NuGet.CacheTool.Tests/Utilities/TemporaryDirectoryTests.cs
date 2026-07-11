@@ -32,7 +32,7 @@ public class TemporaryDirectoryTests
     ///     Test that the constructor creates the directory on disk.
     /// </summary>
     [Fact]
-    public void TemporaryDirectory_Constructor_CreatesDirectory()
+    public void TemporaryDirectory_Constructor_WhenCalled_CreatesDirectoryOnDisk()
     {
         // Act
         using var tmpDir = new TemporaryDirectory();
@@ -46,7 +46,7 @@ public class TemporaryDirectoryTests
     ///     Test that two instances produce distinct directory paths.
     /// </summary>
     [Fact]
-    public void TemporaryDirectory_Constructor_CreatesUniqueDirectories()
+    public void TemporaryDirectory_Constructor_MultipleInstances_CreatesUniqueDirectories()
     {
         // Act
         using var tmpDir1 = new TemporaryDirectory();
@@ -99,27 +99,40 @@ public class TemporaryDirectoryTests
         // Arrange
         using var tmpDir = new TemporaryDirectory();
 
-        // Act + Assert
-        Assert.Throws<ArgumentException>(() => tmpDir.GetFilePath("../escaped.txt"));
+        // Act
+        var act = () => tmpDir.GetFilePath("../escaped.txt");
+
+        // Assert
+        Assert.Throws<ArgumentException>(act);
     }
 
     /// <summary>
     ///     Test that Dispose deletes the temporary directory and its contents.
     /// </summary>
     [Fact]
-    public void TemporaryDirectory_Dispose_DeletesDirectory()
+    public void TemporaryDirectory_Dispose_WhenCalled_DeletesDirectory()
     {
         // Arrange
-        string dirPath;
-        using (var tmpDir = new TemporaryDirectory())
+        var tmpDir = new TemporaryDirectory();
+        var dirPath = tmpDir.DirectoryPath;
+        try
         {
-            dirPath = tmpDir.DirectoryPath;
             File.WriteAllText(tmpDir.GetFilePath("file.txt"), "content");
-        }
 
-        // Assert
-        Assert.False(Directory.Exists(dirPath),
-            "Directory should be deleted after disposal.");
+            // Act
+            tmpDir.Dispose();
+
+            // Assert
+            Assert.False(Directory.Exists(dirPath),
+                "Directory should be deleted after disposal.");
+        }
+        finally
+        {
+            // Ensure cleanup even if an assertion or setup step throws before Dispose() runs.
+            // Dispose() itself suppresses non-fatal IO/permission errors and is safe to call
+            // twice, so route cleanup through it rather than deleting the directory directly.
+            tmpDir.Dispose();
+        }
     }
 
     /// <summary>
@@ -132,8 +145,11 @@ public class TemporaryDirectoryTests
         var tmpDir = new TemporaryDirectory();
         Directory.Delete(tmpDir.DirectoryPath, recursive: true);
 
-        // Act + Assert: second disposal should not throw
-        var exception = Record.Exception(() => tmpDir.Dispose());
+        // Act
+        var act = () => tmpDir.Dispose();
+
+        // Assert: second disposal should not throw
+        var exception = Record.Exception(act);
         Assert.Null(exception);
     }
 }

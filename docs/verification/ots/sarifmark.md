@@ -42,7 +42,3 @@ artifacts.
 **Expected**: Exits 0 and produces a non-empty markdown report.
 
 **Requirement coverage**: `NuGetCache-OTS-SarifMark`.
-
-### Requirements Coverage
-
-- **`NuGetCache-OTS-SarifMark`**: SarifMark_SarifReading, SarifMark_MarkdownReportGeneration

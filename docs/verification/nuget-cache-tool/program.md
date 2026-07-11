@@ -32,8 +32,8 @@ The Program unit test suite passes when all of the following conditions are met:
 
 - All test scenarios defined in `ProgramTests.cs` pass.
 - Console output assertions match the expected content for every invocation pattern.
-- Every Program unit requirement listed in the Requirements Coverage section is covered by at
-  least one passing scenario.
+- Every Program unit requirement is covered by at least one passing scenario, per the ReqStream
+  trace matrix.
 
 ### Test Scenarios
 
@@ -96,13 +96,3 @@ is 0.
 **Expected**: Exit code 1; error output contains "Error".
 
 **Requirement coverage**: `NuGetCache-Program-ErrorOutput`.
-
-### Requirements Coverage
-
-- **`NuGetCache-Program-VersionDisplay`**: Program_Run_WithVersionFlag_DisplaysVersionOnly,
-  Program_Version_ReturnsNonEmptyString
-- **`NuGetCache-Program-HelpDisplay`**: Program_Run_WithHelpFlag_DisplaysUsageInformation
-- **`NuGetCache-Program-CachePackages`**: Program_Run_WithPackageArgument_CachesPackage
-- **`NuGetCache-Program-Banner`**: Program_Run_NoArguments_DisplaysDefaultBehavior
-- **`NuGetCache-Program-ErrorOutput`**: Program_Run_WithValidateAndUnsupportedResultsFormat_SetsErrorExitCode
-- **`NuGetCache-Program-SelfValidation`**: Program_Run_WithValidateFlag_RunsValidation

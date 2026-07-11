@@ -10,6 +10,12 @@ It defines test scenarios, dependency usage, and requirement coverage for
 exercise construction, file-path resolution, path-traversal rejection, and disposal directly
 against the file system under `Environment.CurrentDirectory`.
 
+The constructor's `InvalidOperationException` wrapping of `Directory.CreateDirectory` failures
+(see *TemporaryDirectory Design*) is a defensive guard, not a directly unit-tested scenario:
+reliably forcing that underlying call to fail requires environment-specific, OS-level
+file-system permission manipulation (for example, Windows `icacls`) that is itself flaky and
+platform-fragile, so this path is verified by code inspection rather than an automated test.
+
 #### Dependencies
 
 | Dependency    | Usage in Tests                                                         |
@@ -24,19 +30,19 @@ concurrent test runs sharing the same working directory.
 
 #### Acceptance Criteria
 
-All unit tests in `TemporaryDirectoryTests.cs` pass; all requirements listed in the
-Requirements Coverage section have at least one passing test scenario; no tests may be
-skipped or marked as expected failures.
+All unit tests in `TemporaryDirectoryTests.cs` pass; every requirement for this unit has at
+least one passing test scenario, per the ReqStream trace matrix; no tests may be skipped or
+marked as expected failures.
 
 #### Test Scenarios
 
-##### TemporaryDirectory_Constructor_CreatesDirectory
+##### TemporaryDirectory_Constructor_WhenCalled_CreatesDirectoryOnDisk
 
 **Scenario**: A `TemporaryDirectory` instance is constructed.
 
 **Expected**: `Directory.Exists(DirectoryPath)` returns `true`.
 
-##### TemporaryDirectory_Constructor_CreatesUniqueDirectories
+##### TemporaryDirectory_Constructor_MultipleInstances_CreatesUniqueDirectories
 
 **Scenario**: Two `TemporaryDirectory` instances are constructed in sequence.
 
@@ -61,7 +67,7 @@ skipped or marked as expected failures.
 
 **Expected**: `ArgumentException` is thrown.
 
-##### TemporaryDirectory_Dispose_DeletesDirectory
+##### TemporaryDirectory_Dispose_WhenCalled_DeletesDirectory
 
 **Scenario**: A `TemporaryDirectory` is created, a file is written inside it, and the
 instance is disposed.
@@ -73,17 +79,3 @@ instance is disposed.
 **Scenario**: The underlying directory is deleted manually before `Dispose` is called.
 
 **Expected**: No exception is thrown.
-
-#### Requirements Coverage
-
-- **`NuGetCache-TemporaryDirectory-DirectoryCreation`**:
-  TemporaryDirectory_Constructor_CreatesDirectory,
-  TemporaryDirectory_Constructor_CreatesUniqueDirectories.
-- **`NuGetCache-TemporaryDirectory-FilePathResolution`**:
-  TemporaryDirectory_GetFilePath_SimpleFile_ReturnsPathUnderDirectory,
-  TemporaryDirectory_GetFilePath_NestedPath_CreatesIntermediateDirectories.
-- **`NuGetCache-TemporaryDirectory-TraversalRejection`**:
-  TemporaryDirectory_GetFilePath_TraversalAttempt_ThrowsArgumentException.
-- **`NuGetCache-TemporaryDirectory-Disposal`**:
-  TemporaryDirectory_Dispose_DeletesDirectory,
-  TemporaryDirectory_Dispose_AlreadyDeleted_DoesNotThrow.

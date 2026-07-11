@@ -66,13 +66,35 @@ sections:
             tests:
               - Context_WriteError_SetsErrorExitCode
 
-          - id: NuGetCache-Context-InvalidArguments
-            title: The Context class shall reject unknown or malformed command-line arguments with a descriptive error.
+          - id: NuGetCache-Context-InvalidArguments-UnknownFlag
+            title: The Context class shall reject an unknown command-line flag with a descriptive error.
             justification: |
-              Providing clear feedback for invalid arguments helps users quickly correct
+              Providing clear feedback for an unrecognized flag helps users quickly correct
               mistakes and prevents silent misconfiguration.
             tests:
               - Context_Create_UnknownArgument_ThrowsArgumentException
+
+          - id: NuGetCache-Context-InvalidArguments-MissingLogValue
+            title: The Context class shall reject the --log flag when no file path value follows it.
+            justification: |
+              Providing clear feedback when --log is supplied without a value helps users
+              quickly correct mistakes and prevents silent misconfiguration.
+            tests:
               - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
+
+          - id: NuGetCache-Context-InvalidArguments-MissingResultsValue
+            title: The Context class shall reject the --results flag when no file path value follows it.
+            justification: |
+              Providing clear feedback when --results is supplied without a value helps users
+              quickly correct mistakes and prevents silent misconfiguration.
+            tests:
               - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
+
+          - id: NuGetCache-Context-InvalidArguments-MalformedPackage
+            title: The Context class shall reject a package argument that does not contain a colon separator.
+            justification: |
+              Users may accidentally supply a package argument without the required colon
+              separator. Providing clear feedback for this specific malformed-argument case
+              helps users correct their input without inspecting source code or documentation.
+            tests:
               - Context_Create_WithoutColonInPackage_ThrowsArgumentException

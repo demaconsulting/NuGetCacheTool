@@ -187,6 +187,8 @@ public class ProgramTests
     [Fact]
     public void Program_Version_ReturnsNonEmptyString()
     {
+        // Arrange - no setup required, reading a static property
+
         // Act
         var version = Program.Version;
 

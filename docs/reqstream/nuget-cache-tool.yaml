@@ -61,7 +61,7 @@ sections:
               - NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath
 
           - id: NuGetCache-Sys-PlatformSupport
-            title: The NuGet Cache Tool shall build and run on Windows, Linux, and macOS with .NET 8, .NET 9, and .NET 10.
+            title: The NuGet Cache Tool shall run on Windows, Linux, and macOS with .NET 8, .NET 9, and .NET 10.
             justification: |
               Supporting multiple operating systems and .NET runtimes ensures the tool is
               usable across the broadest range of developer workstations and CI/CD
@@ -129,13 +129,16 @@ sections:
 
           - id: NuGetCache-Sys-InvalidArguments
             title: >-
-              The NuGet Cache Tool shall reject unknown or malformed arguments
-              with a descriptive error and non-zero exit code.
+              The NuGet Cache Tool shall reject an unknown command-line argument with a descriptive error.
             justification: |
               Prevents silent misconfiguration by providing clear diagnostics when the tool is
               invoked incorrectly, enabling users to identify and correct usage errors quickly.
+              Non-zero exit code behavior on error is independently covered by
+              NuGetCache-Sys-ExitCode, so it is not restated here.
             children:
-              - NuGetCache-Cli-InvalidArguments
+              - NuGetCache-Cli-InvalidArguments-UnknownFlag
+              - NuGetCache-Cli-InvalidArguments-MissingLogValue
+              - NuGetCache-Cli-InvalidArguments-MissingResultsValue
             tests:
               - NuGetCacheTool_ErrorHandling_UnknownArgumentProvided_ReturnsError
 
@@ -158,6 +161,11 @@ sections:
             justification: |
               Ensures that callers and CI/CD pipelines can diagnose failure conditions via
               stderr output. Silent mode suppresses all console output including error messages.
+              `Runner.Run` merges stdout and stderr, so the system-level tests below can only
+              confirm that error output appears somewhere in the combined stream; direct proof
+              that the message specifically targets stderr is carried by the child requirements
+              (see *CLI Subsystem Verification* and *Program Verification*), whose unit tests
+              capture stdout and stderr separately.
             children:
               - NuGetCache-Cli-ErrorOutput
               - NuGetCache-Program-ErrorOutput
@@ -171,11 +179,15 @@ sections:
             justification: |
               When --silent is active, the log file remains the only persistent record of tool
               execution. Preserving log file writes in silent mode ensures output is always
-              captured for audit and debugging purposes.
+              captured for audit and debugging purposes. The combined --silent plus --log
+              interaction is proven precisely at the CLI subsystem level (see
+              NuGetCache-Cli-SilentLogInteraction and *CLI Subsystem Verification*), because
+              `Runner.Run` cannot isolate this interaction from combined console output at the
+              system level.
             children:
               - NuGetCache-Cli-SilentLogInteraction
             tests:
-              - NuGetCacheTool_LogFile_LogFlagProvided_WritesOutputToFile
+              - Cli_SilentAndLog_WritesToLogFileOnly
 
           - id: NuGetCache-Sys-PathSafety
             title: >-
@@ -199,6 +211,12 @@ sections:
               Idempotent operation is essential for CI/CD pipelines where the same command
               may be re-run. The tool must not treat an already-cached package as an error,
               allowing pipelines to be safely retried or re-executed without manual cleanup.
+              The system-level test below exercises the same package-caching path regardless of
+              whether the package was already present in the cache from a prior run, so it does
+              not by itself isolate the already-cached case; precise coverage of the caching
+              call itself is carried by NuGetCache-Program-CachePackages (see *Program
+              Verification*) together with the idempotent behavior of `NuGetCache.EnsureCachedAsync`
+              documented in *DemaConsulting.NuGet.Caching Integration Design*.
             children:
               - NuGetCache-Program-CachePackages
             tests:
