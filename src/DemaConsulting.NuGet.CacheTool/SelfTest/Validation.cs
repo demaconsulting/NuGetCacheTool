@@ -220,8 +220,15 @@ internal static class Validation
         string expectedVersion)
     {
         var trimmedPath = packagePath.TrimEnd('/', '\\');
-        var versionDirectoryName = Path.GetFileName(trimmedPath);
-        var packageIdDirectoryName = Path.GetFileName(Path.GetDirectoryName(trimmedPath));
+
+        // Path.GetFileName and Path.GetDirectoryName return nullable strings (GetDirectoryName
+        // returns null for a root path such as "/", and an empty string for a bare relative name
+        // with no parent segment); declare explicitly as string? so the nullability is
+        // self-documenting rather than relying on var inference. string.Equals safely treats a
+        // null or empty candidate as a non-match rather than throwing.
+        string? versionDirectoryName = Path.GetFileName(trimmedPath);
+        string? parentDirectory = Path.GetDirectoryName(trimmedPath);
+        string? packageIdDirectoryName = parentDirectory is null ? null : Path.GetFileName(parentDirectory);
 
         if (!string.Equals(versionDirectoryName, expectedVersion, StringComparison.OrdinalIgnoreCase) ||
             !string.Equals(packageIdDirectoryName, expectedPackageId, StringComparison.OrdinalIgnoreCase))

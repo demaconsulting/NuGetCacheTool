@@ -123,3 +123,24 @@ name does not match the expected package ID.
 **Expected**: Returns a non-null error message.
 
 **Requirement coverage**: `NuGetCache-Validation-SelfValidation`.
+
+##### Validation_ValidateCachePackagePath_NoParentDirectory_ReturnsError
+
+**Scenario**: `Validation.ValidateCachePackagePath` is called with a root path (`"/"`), for which
+`Path.GetDirectoryName` returns `null` rather than a parent directory name.
+
+**Expected**: Returns a non-null error message, proving the null-parent-directory case is handled
+as a non-match rather than throwing.
+
+**Requirement coverage**: `NuGetCache-Validation-SelfValidation`.
+
+##### Validation_ValidateCachePackagePath_BareRelativeName_ReturnsError
+
+**Scenario**: `Validation.ValidateCachePackagePath` is called with a bare relative directory name
+with no path separator (`"0.1.0"`), for which `Path.GetDirectoryName` returns an empty string
+rather than `null`.
+
+**Expected**: Returns a non-null error message, proving the empty-parent-directory-name case is
+handled as a non-match.
+
+**Requirement coverage**: `NuGetCache-Validation-SelfValidation`.

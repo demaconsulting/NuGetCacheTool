@@ -23,6 +23,8 @@ sections:
               - Validation_ValidateCachePackagePath_VersionSuffixSubstringMatch_ReturnsError
               - Validation_ValidateCachePackagePath_VersionPrefixSubstringMatch_ReturnsError
               - Validation_ValidateCachePackagePath_WrongPackageId_ReturnsError
+              - Validation_ValidateCachePackagePath_NoParentDirectory_ReturnsError
+              - Validation_ValidateCachePackagePath_BareRelativeName_ReturnsError
 
           - id: NuGetCache-Validation-ResultsFile
             title: The Validation class shall write validation results to a file in TRX or JUnit format.

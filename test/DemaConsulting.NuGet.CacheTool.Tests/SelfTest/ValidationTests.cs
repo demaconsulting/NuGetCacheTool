@@ -213,6 +213,44 @@ public class ValidationTests
     }
 
     /// <summary>
+    ///     Test that ValidateCachePackagePath rejects a root path with no parent directory
+    ///     segment at all (<see cref="Path.GetDirectoryName(string)"/> returns null for a root
+    ///     such as "/"), proving the null-parent-directory branch is handled as a non-match
+    ///     rather than throwing.
+    /// </summary>
+    [Fact]
+    public void Validation_ValidateCachePackagePath_NoParentDirectory_ReturnsError()
+    {
+        // Arrange: a root path, which has no parent directory segment
+        const string path = "/";
+
+        // Act: validate the path against the expected identity
+        var result = Validation.ValidateCachePackagePath(path, "DemaConsulting.NuGet.Caching", "0.1.0");
+
+        // Assert: an error is reported since there is no package ID directory to match
+        Assert.NotNull(result);
+    }
+
+    /// <summary>
+    ///     Test that ValidateCachePackagePath rejects a bare relative directory name with no
+    ///     path separator (<see cref="Path.GetDirectoryName(string)"/> returns an empty string,
+    ///     not null, for this case), proving the empty-parent-directory-name case is handled as
+    ///     a non-match.
+    /// </summary>
+    [Fact]
+    public void Validation_ValidateCachePackagePath_BareRelativeName_ReturnsError()
+    {
+        // Arrange: a bare directory name with no parent path segment
+        const string path = "0.1.0";
+
+        // Act: validate the path against the expected identity
+        var result = Validation.ValidateCachePackagePath(path, "DemaConsulting.NuGet.Caching", "0.1.0");
+
+        // Assert: an error is reported since the (empty) package ID directory does not match
+        Assert.NotNull(result);
+    }
+
+    /// <summary>
     ///     Test that Run prints a summary containing total, passed, and failed counts.
     /// </summary>
     [Fact]
