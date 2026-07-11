@@ -1,6 +1,6 @@
 ## SysML2Tools OTS Design
 
-DemaConsulting.SysML2Tools is a .NET dotnet global tool that lints a SysML2 architecture model
+DemaConsulting.SysML2Tools is a .NET local tool that lints a SysML2 architecture model
 and renders its declared views to SVG diagrams consumed by the design documentation.
 
 ### Purpose

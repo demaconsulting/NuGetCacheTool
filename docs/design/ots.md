@@ -17,7 +17,7 @@ Both `DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` satisfy all
 they are purpose-built libraries published by DEMA Consulting under the MIT License, each exposing
 a minimal, stable API that meets the NuGet Cache Tool's exact needs.
 
-`SysML2Tools` is a build-time dotnet global tool rather than a runtime NuGet package dependency. It
+`SysML2Tools` is a build-time dotnet local tool rather than a runtime NuGet package dependency. It
 is selected against the same criteria: it is published by DEMA Consulting, licensed compatibly, and
 exposes a minimal command-line surface (`lint`, `render`, and `query`) with no wrapper code
 required. The CI pipeline invokes `lint` and `render`; the `query` subcommand is used interactively
@@ -49,7 +49,7 @@ minimal and directly traceable from source to design:
 Error handling follows the conventions of the calling unit: exceptions thrown by OTS APIs are caught
 at the call site and reported via `context.WriteError`, which sets the process exit code to 1.
 
-`SysML2Tools` is a dotnet global tool invoked as a command-line executable from `lint.ps1` and
+`SysML2Tools` is a dotnet local tool invoked as a command-line executable from `lint.ps1` and
 `build.yaml`; no wrapper code is written, and it is not referenced by the main project file. A
 non-zero exit code from a `sysml2tools` invocation fails the build immediately, consistent with
 the GitHub Actions default `fail-fast` behavior.
@@ -90,7 +90,7 @@ Both `DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` are consume
 declared in the main project file
 (`src/DemaConsulting.NuGet.CacheTool/DemaConsulting.NuGet.CacheTool.csproj`).
 No wrapper layers or abstraction interfaces are introduced; the OTS APIs are called
-directly from the units that need them. `SysML2Tools` is instead installed as a dotnet global
+directly from the units that need them. `SysML2Tools` is instead installed as a dotnet local
 tool via `.config/dotnet-tools.json` and invoked directly from `lint.ps1` and `build.yaml`.
 
 OTS items are verified by integration-test evidence from the CI/CD pipeline. Each
