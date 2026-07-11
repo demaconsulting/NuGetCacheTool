@@ -195,16 +195,42 @@ internal static class Validation
                     return $"Cached package path '{packagePath}' does not exist on disk";
                 }
 
-                var normalizedPath = packagePath.Replace('\\', '/').ToLowerInvariant();
-                if (!normalizedPath.Contains(CachePackageTestId.ToLowerInvariant()) ||
-                    !normalizedPath.Contains(CachePackageTestVersion))
-                {
-                    return $"Cached package path '{packagePath}' does not reference the expected " +
-                        $"package '{CachePackageTestId}' version '{CachePackageTestVersion}'";
-                }
-
-                return null;
+                return ValidateCachePackagePath(packagePath, CachePackageTestId, CachePackageTestVersion);
             });
+    }
+
+    /// <summary>
+    ///     Verifies that <paramref name="packagePath"/> is named for the exact requested package
+    ///     identity by checking the directory name (version) and its parent directory name
+    ///     (package ID) explicitly, rather than a substring match against the full path. A
+    ///     substring match could produce false positives — for example, version "0.1.0" would
+    ///     also match a path for "0.1.0-beta" or "10.1.0" — which would silently defeat this
+    ///     regression check. Extracted as its own method (rather than an inline check) so it can
+    ///     be exercised directly by unit tests against known-good and known-bad paths, proving
+    ///     the check itself would catch a regression rather than only proving the overall
+    ///     self-test happens to pass today.
+    /// </summary>
+    /// <param name="packagePath">The resolved cached package directory path.</param>
+    /// <param name="expectedPackageId">The expected package ID.</param>
+    /// <param name="expectedVersion">The expected package version.</param>
+    /// <returns>An error message if the path does not match, or null if it does.</returns>
+    internal static string? ValidateCachePackagePath(
+        string packagePath,
+        string expectedPackageId,
+        string expectedVersion)
+    {
+        var trimmedPath = packagePath.TrimEnd('/', '\\');
+        var versionDirectoryName = Path.GetFileName(trimmedPath);
+        var packageIdDirectoryName = Path.GetFileName(Path.GetDirectoryName(trimmedPath));
+
+        if (!string.Equals(versionDirectoryName, expectedVersion, StringComparison.OrdinalIgnoreCase) ||
+            !string.Equals(packageIdDirectoryName, expectedPackageId, StringComparison.OrdinalIgnoreCase))
+        {
+            return $"Cached package path '{packagePath}' does not reference the expected " +
+                $"package '{expectedPackageId}' version '{expectedVersion}'";
+        }
+
+        return null;
     }
 
     /// <summary>
