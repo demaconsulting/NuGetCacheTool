@@ -320,7 +320,7 @@ public class ContextTests
         var exception = Assert.Throws<ArgumentException>(() => Context.Create(["notapackage"]));
 
         // Assert
-        Assert.NotNull(exception);
+        Assert.Contains("Unsupported argument", exception.Message);
     }
 
     /// <summary>
