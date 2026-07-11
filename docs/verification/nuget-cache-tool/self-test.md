@@ -29,8 +29,8 @@ The SelfTest subsystem test suite passes when all of the following conditions ar
 
 - All test scenarios defined in `SelfTestTests.cs` pass.
 - Results files generated during testing are created at the expected path with valid content.
-- Every SelfTest subsystem requirement listed in the Requirements Coverage section is covered by
-  at least one passing scenario.
+- Every SelfTest subsystem requirement is covered by at least one passing scenario, per the
+  ReqStream trace matrix.
 
 ### Test Scenarios
 

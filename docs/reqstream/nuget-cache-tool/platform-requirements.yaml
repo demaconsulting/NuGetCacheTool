@@ -9,7 +9,7 @@ sections:
       - title: Platform Support
         requirements:
           - id: NuGetCache-PLT-Windows
-            title: The tool shall build and run on Windows platforms.
+            title: The tool shall run on Windows platforms.
             justification: |
               DEMA Consulting tools must support Windows as a major development platform.
             tests:
@@ -18,7 +18,7 @@ sections:
               - "windows@NuGetCache_HelpDisplay"
 
           - id: NuGetCache-PLT-Linux
-            title: The tool shall build and run on Linux platforms.
+            title: The tool shall run on Linux platforms.
             justification: |
               DEMA Consulting tools must support Linux for CI/CD and containerized environments.
             tests:
@@ -27,7 +27,7 @@ sections:
               - "ubuntu@NuGetCache_HelpDisplay"
 
           - id: NuGetCache-PLT-MacOS
-            title: The tool shall build and run on macOS platforms.
+            title: The tool shall run on macOS platforms.
             justification: |
               DEMA Consulting tools must support macOS for developers using Apple platforms.
             tests:

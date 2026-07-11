@@ -32,8 +32,8 @@ The Program unit test suite passes when all of the following conditions are met:
 
 - All test scenarios defined in `ProgramTests.cs` pass.
 - Console output assertions match the expected content for every invocation pattern.
-- Every Program unit requirement listed in the Requirements Coverage section is covered by at
-  least one passing scenario.
+- Every Program unit requirement is covered by at least one passing scenario, per the ReqStream
+  trace matrix.
 
 ### Test Scenarios
 

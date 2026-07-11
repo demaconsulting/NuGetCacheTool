@@ -61,7 +61,7 @@ sections:
               - NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath
 
           - id: NuGetCache-Sys-PlatformSupport
-            title: The NuGet Cache Tool shall build and run on Windows, Linux, and macOS with .NET 8, .NET 9, and .NET 10.
+            title: The NuGet Cache Tool shall run on Windows, Linux, and macOS with .NET 8, .NET 9, and .NET 10.
             justification: |
               Supporting multiple operating systems and .NET runtimes ensures the tool is
               usable across the broadest range of developer workstations and CI/CD

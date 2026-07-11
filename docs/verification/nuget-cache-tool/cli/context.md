@@ -27,8 +27,8 @@ The Context unit test suite passes when all of the following conditions are met:
 
 - All test scenarios defined in `ContextTests.cs` pass.
 - Console and log-file output assertions match expected values for every flag combination.
-- Every Context unit requirement listed in the Requirements Coverage section is covered by at
-  least one passing scenario.
+- Every Context unit requirement is covered by at least one passing scenario, per the ReqStream
+  trace matrix.
 
 #### Test Scenarios
 
