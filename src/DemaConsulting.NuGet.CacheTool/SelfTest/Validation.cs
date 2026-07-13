@@ -112,7 +112,11 @@ internal static class Validation
             logContent =>
             {
                 // Verify version string is in log (version matches semantic version pattern)
-                if (System.Text.RegularExpressions.Regex.IsMatch(logContent.Trim(), @"\d+\.\d+\.\d+"))
+                if (System.Text.RegularExpressions.Regex.IsMatch(
+                        logContent.Trim(),
+                        @"\d+\.\d+\.\d+",
+                        System.Text.RegularExpressions.RegexOptions.None,
+                        TimeSpan.FromSeconds(1)))
                 {
                     return null;
                 }
