@@ -30,6 +30,8 @@ sections:
             justification: |
               The core purpose of the tool is to ensure NuGet packages are cached in the
               global packages folder for use by downstream build steps.
+            children:
+              - NuGetCache-OTS-NuGetCaching
             tests:
               - Program_Run_WithPackageArgument_CachesPackage
 
