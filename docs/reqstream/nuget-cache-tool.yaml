@@ -7,6 +7,8 @@ sections:
         requirements:
           - id: NuGetCache-Sys-Integration
             title: The NuGet Cache Tool shall execute all core operations end-to-end as a deployable dotnet tool.
+            tags:
+              - system
             justification: |
               System integration validation confirms that all subsystems and units work together
               correctly in the target deployment environment. Integration tests launch the full
@@ -25,6 +27,7 @@ sections:
               - NuGetCache-Sys-SilentLogInteraction
               - NuGetCache-Sys-PathSafety
               - NuGetCache-Sys-AlreadyCached
+              - NuGetCache-Sys-CommandLine
               - NuGetCache-Utilities-TempDirectory
             tests:
               - NuGetCacheTool_VersionDisplay_VersionFlagProvided_OutputsVersion
@@ -38,6 +41,8 @@ sections:
 
           - id: NuGetCache-Sys-CachePackage
             title: The NuGet Cache Tool shall cache each specified NuGet package to the global NuGet packages folder.
+            tags:
+              - system
             justification: |
               The core purpose of the tool is to ensure NuGet packages are available in the
               global packages folder before build steps that depend on them. Each package
@@ -50,6 +55,8 @@ sections:
 
           - id: NuGetCache-Sys-PackagePathOutput
             title: The NuGet Cache Tool shall write the path of each successfully cached package to stdout, one path per line.
+            tags:
+              - system
             justification: |
               Callers and downstream build steps must be able to locate each cached package
               after the tool runs. Writing the resolved cache path to stdout on a separate
@@ -62,6 +69,8 @@ sections:
 
           - id: NuGetCache-Sys-PlatformSupport
             title: The NuGet Cache Tool shall run on Windows, Linux, and macOS with .NET 8, .NET 9, and .NET 10.
+            tags:
+              - system
             justification: |
               Supporting multiple operating systems and .NET runtimes ensures the tool is
               usable across the broadest range of developer workstations and CI/CD
@@ -84,6 +93,8 @@ sections:
 
           - id: NuGetCache-Sys-ValidateResults
             title: The NuGet Cache Tool shall write self-validation results in TRX or JUnit XML format.
+            tags:
+              - system
             justification: |
               Enables integration with CI/CD systems that expect standard test result formats,
               allowing self-validation outcomes to feed into requirements traceability pipelines.
@@ -96,6 +107,8 @@ sections:
 
           - id: NuGetCache-Sys-SilentMode
             title: The NuGet Cache Tool shall support a silent mode that suppresses all console output.
+            tags:
+              - system
             justification: |
               Enables integration into automated pipelines where console output would interfere
               with other output processing. Silent mode is verified end-to-end at the system level.
@@ -106,6 +119,8 @@ sections:
 
           - id: NuGetCache-Sys-LogFile
             title: The NuGet Cache Tool shall support writing all output to a log file via --log.
+            tags:
+              - system
             justification: |
               Provides a persistent capture of tool output for debugging and audit purposes
               in automated environments where transient console output is insufficient.
@@ -118,6 +133,8 @@ sections:
           - id: NuGetCache-Sys-Banner
             title: >-
               The NuGet Cache Tool shall display a version banner when not invoked with the --version flag.
+            tags:
+              - system
             justification: |
               Identifies the tool and its version in output logs, aiding in reproducibility
               and troubleshooting of CI/CD pipeline executions.
@@ -130,6 +147,8 @@ sections:
           - id: NuGetCache-Sys-InvalidArguments
             title: >-
               The NuGet Cache Tool shall reject an unknown command-line argument with a descriptive error.
+            tags:
+              - system
             justification: |
               Prevents silent misconfiguration by providing clear diagnostics when the tool is
               invoked incorrectly, enabling users to identify and correct usage errors quickly.
@@ -145,6 +164,8 @@ sections:
           - id: NuGetCache-Sys-ExitCode
             title: >-
               The NuGet Cache Tool shall return a non-zero exit code when an error occurs.
+            tags:
+              - system
             justification: |
               Ensures that callers and CI/CD pipelines can detect failure conditions
               programmatically via the process exit code.
@@ -158,6 +179,8 @@ sections:
           - id: NuGetCache-Sys-StderrOutput
             title: >-
               The NuGet Cache Tool shall write error messages to stderr when not in silent mode.
+            tags:
+              - system
             justification: |
               Ensures that callers and CI/CD pipelines can diagnose failure conditions via
               stderr output. Silent mode suppresses all console output including error messages.
@@ -176,6 +199,8 @@ sections:
           - id: NuGetCache-Sys-SilentLogInteraction
             title: >-
               The NuGet Cache Tool shall continue writing to the log file when --silent suppresses console output.
+            tags:
+              - system
             justification: |
               When --silent is active, the log file remains the only persistent record of tool
               execution. Preserving log file writes in silent mode ensures output is always
@@ -193,6 +218,8 @@ sections:
             title: >-
               The NuGet Cache Tool shall prevent path-traversal attacks when combining user-supplied
               path components with trusted base paths.
+            tags:
+              - system
             justification: |
               Accepting user-controlled path components without validation could allow an attacker
               to read or write files outside intended directories. The observable behavior is that
@@ -207,6 +234,8 @@ sections:
           - id: NuGetCache-Sys-AlreadyCached
             title: The NuGet Cache Tool shall succeed without error when a specified package is already present in the global
               NuGet packages folder.
+            tags:
+              - system
             justification: |
               Idempotent operation is essential for CI/CD pipelines where the same command
               may be re-run. The tool must not treat an already-cached package as an error,
@@ -221,3 +250,36 @@ sections:
               - NuGetCache-Program-CachePackages
             tests:
               - NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath
+
+          - id: NuGetCache-Sys-CommandLine
+            title: >-
+              The NuGet Cache Tool shall support baseline command-line mechanics: version
+              display, help display, self-validation invocation, and non-zero exit codes
+              on error, independent of the package-caching workflow.
+            tags:
+              - system
+            justification: |
+              Every dotnet tool needs a minimum set of command-line mechanics - identifying
+              its own version, describing its own usage, offering an on-demand health check,
+              and signalling failure via the process exit code - regardless of whether any
+              packages are being cached. These are documented, user-facing behaviors (see
+              README.md) exercised by passing tests, but were not represented by any
+              System-level requirement; this requirement roots that CLI/Program/SelfTest
+              baseline instead of leaving it disconnected from product functionality.
+            children:
+              - NuGetCache-Cli-VersionFlag
+              - NuGetCache-Cli-HelpFlag
+              - NuGetCache-Cli-ErrorExitCode
+              - NuGetCache-Cli-ValidateFlag
+              - NuGetCache-Cli-ResultsFlag
+              - NuGetCache-Context-ErrorOutput
+              - NuGetCache-Program-VersionDisplay
+              - NuGetCache-Program-HelpDisplay
+              - NuGetCache-Program-ErrorExitCode
+              - NuGetCache-Program-InvalidPackageFormat
+              - NuGetCache-Program-SelfValidation
+              - NuGetCache-SelfTest-Validation
+            tests:
+              - NuGetCacheTool_VersionDisplay_VersionFlagProvided_OutputsVersion
+              - NuGetCacheTool_HelpDisplay_HelpFlagProvided_OutputsUsageInformation
+              - NuGetCacheTool_SelfValidation_ValidateFlagProvided_RunsValidation
