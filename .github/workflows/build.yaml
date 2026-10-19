@@ -189,6 +189,7 @@ jobs:
           --configuration Release
           --property:Version=${{ inputs.version }}
           --coverlet
+          --coverlet-include "[DemaConsulting.NuGet.CacheTool]*"
           --coverlet-output-format opencover
           --report-trx
           --report-trx-filename "${{ matrix.os }}_{asm}_{tfm}_{arch}.trx"
