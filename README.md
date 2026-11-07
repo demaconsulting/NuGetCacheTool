@@ -19,6 +19,10 @@ packages need to be pre-populated to enable offline or air-gapped operations. Th
 accepts one or more `package:version` arguments, downloads each package to the global
 NuGet cache if not already present, and optionally outputs the resolved cache path.
 
+![NuGet Cache Tool architecture: package:version arguments and NuGet feeds flow through the tool's caching logic
+into the global packages folder, with the resolved cache path printed to the console, supported by the Cli,
+Utilities, and SelfTest components][architecture]
+
 ## Features
 
 This tool provides:
@@ -123,6 +127,7 @@ By contributing to this project, you agree that your contributions will be licen
 [badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.NuGet.CacheTool?style=plastic
 
 <!-- Link References -->
+[architecture]: https://raw.githubusercontent.com/demaconsulting/NuGetCacheTool/main/docs/images/architecture.png
 [link-forks]: https://github.com/demaconsulting/NuGetCacheTool/network/members
 [link-stars]: https://github.com/demaconsulting/NuGetCacheTool/stargazers
 [link-contributors]: https://github.com/demaconsulting/NuGetCacheTool/graphs/contributors
