@@ -8,6 +8,14 @@ NuGet Cache Tool is a general-purpose .NET global tool for CI/CD pipelines that 
 NuGet packages are pre-cached in the global packages folder before build steps that depend
 on them.
 
+The figure below shows how the pieces fit together: the `nuget-cache` command takes `package:version`
+arguments, downloads each package from your NuGet feeds into the global packages folder if it is not
+already there, and optionally prints the resolved cache path.
+
+![NuGet Cache Tool architecture: package:version arguments and NuGet feeds flow through the tool's caching logic
+into the global packages folder, with the resolved cache path printed to the console, supported by the Cli,
+Utilities, and SelfTest components](architecture.svg)
+
 ## Scope
 
 This user guide covers:
