@@ -27,7 +27,8 @@ dotnet-tool restore and CI pipeline used by the other pipeline tools.
 
   ```text
   dotnet sysml2tools render --output docs/design/generated --format svg \
-    'docs/sysml2/model/**/*.sysml' 'docs/sysml2/views/design-views.sysml'
+    'docs/sysml2/common/**/*.sysml' 'docs/sysml2/model/**/*.sysml' \
+    'docs/sysml2/views/design-views.sysml'
   ```
 
 - Model querying via the `sysml2tools-query` skill, used by AI agents to answer structural and

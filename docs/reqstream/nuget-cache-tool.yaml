@@ -261,7 +261,7 @@ sections:
             justification: |
               Every dotnet tool needs a minimum set of command-line mechanics - identifying
               its own version, describing its own usage, offering an on-demand health check,
-              and signalling failure via the process exit code - regardless of whether any
+              and signaling failure via the process exit code - regardless of whether any
               packages are being cached. These are documented, user-facing behaviors (see
               README.md) exercised by passing tests, but were not represented by any
               System-level requirement; this requirement roots that CLI/Program/SelfTest
