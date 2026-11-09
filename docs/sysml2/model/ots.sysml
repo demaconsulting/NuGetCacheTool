@@ -1,4 +1,6 @@
 package OtsDependencies {
+    private import SoftwareItemMetadata::*;
+
     doc
     /*
      * Off-the-shelf (OTS) dependencies used by NuGetCacheTool.
@@ -15,16 +17,22 @@ package OtsDependencies {
     part def NuGetCaching {
         doc /* OTS: DemaConsulting.NuGet.Caching. */
 
-        comment designRef /* Design: docs/design/ots/nuget-caching.md */
-        comment verificationRef /* Verification: docs/verification/ots/nuget-caching.md */
-        comment reqRef /* Requirements: docs/reqstream/ots/nuget-caching.yaml */
+        metadata info : SoftwareInfo {
+            description = "OTS: DemaConsulting.NuGet.Caching.";
+            designFiles = ("docs/design/ots/nuget-caching.md");
+            verificationFiles = ("docs/verification/ots/nuget-caching.md");
+            requirementFiles = ("docs/reqstream/ots/nuget-caching.yaml");
+        }
     }
 
     part def TestResults {
         doc /* OTS: DemaConsulting.TestResults. */
 
-        comment designRef /* Design: docs/design/ots/test-results.md */
-        comment verificationRef /* Verification: docs/verification/ots/test-results.md */
-        comment reqRef /* Requirements: docs/reqstream/ots/test-results.yaml */
+        metadata info : SoftwareInfo {
+            description = "OTS: DemaConsulting.TestResults.";
+            designFiles = ("docs/design/ots/test-results.md");
+            verificationFiles = ("docs/verification/ots/test-results.md");
+            requirementFiles = ("docs/reqstream/ots/test-results.yaml");
+        }
     }
 }

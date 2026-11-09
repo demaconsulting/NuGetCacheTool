@@ -1,4 +1,5 @@
 package NuGetCacheTool {
+    private import SoftwareItemMetadata::*;
     import OtsDependencies::*;
 
     doc
@@ -10,10 +11,13 @@ package NuGetCacheTool {
     part def NuGetCacheToolSystem {
         doc /* The NuGetCacheTool system as a whole. */
 
-        comment testRef /* Test: test/DemaConsulting.NuGet.CacheTool.Tests/IntegrationTests.cs */
-        comment designRef /* Design: docs/design/nuget-cache-tool.md */
-        comment verificationRef /* Verification: docs/verification/nuget-cache-tool.md */
-        comment reqRef /* Requirements: docs/reqstream/nuget-cache-tool.yaml */
+        metadata info : SoftwareInfo {
+            description = "The NuGetCacheTool system as a whole.";
+            testFiles = ("test/DemaConsulting.NuGet.CacheTool.Tests/IntegrationTests.cs");
+            designFiles = ("docs/design/nuget-cache-tool.md");
+            verificationFiles = ("docs/verification/nuget-cache-tool.md");
+            requirementFiles = ("docs/reqstream/nuget-cache-tool.yaml");
+        }
 
         part program : Program;
         part cli : CliSubsystem;
