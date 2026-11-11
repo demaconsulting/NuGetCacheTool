@@ -18,7 +18,6 @@ package OtsDependencies {
         doc /* OTS: DemaConsulting.NuGet.Caching. */
 
         metadata info : SoftwareInfo {
-            description = "OTS: DemaConsulting.NuGet.Caching.";
             designFiles = ("docs/design/ots/nuget-caching.md");
             verificationFiles = ("docs/verification/ots/nuget-caching.md");
             requirementFiles = ("docs/reqstream/ots/nuget-caching.yaml");
@@ -29,7 +28,6 @@ package OtsDependencies {
         doc /* OTS: DemaConsulting.TestResults. */
 
         metadata info : SoftwareInfo {
-            description = "OTS: DemaConsulting.TestResults.";
             designFiles = ("docs/design/ots/test-results.md");
             verificationFiles = ("docs/verification/ots/test-results.md");
             requirementFiles = ("docs/reqstream/ots/test-results.yaml");

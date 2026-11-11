@@ -5,7 +5,6 @@ package NuGetCacheTool {
         doc /* Self-validation test runner exercising the full application stack. */
 
         metadata info : SoftwareInfo {
-            description = "Self-validation test runner exercising the full application stack.";
             sourceFiles = ("src/DemaConsulting.NuGet.CacheTool/SelfTest/Validation.cs");
             testFiles = ("test/DemaConsulting.NuGet.CacheTool.Tests/SelfTest/ValidationTests.cs");
             designFiles = ("docs/design/nuget-cache-tool/self-test/validation.md");

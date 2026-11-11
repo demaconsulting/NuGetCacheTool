@@ -12,7 +12,6 @@ package NuGetCacheTool {
         doc /* The NuGetCacheTool system as a whole. */
 
         metadata info : SoftwareInfo {
-            description = "The NuGetCacheTool system as a whole.";
             testFiles = ("test/DemaConsulting.NuGet.CacheTool.Tests/IntegrationTests.cs");
             designFiles = ("docs/design/nuget-cache-tool.md");
             verificationFiles = ("docs/verification/nuget-cache-tool.md");
