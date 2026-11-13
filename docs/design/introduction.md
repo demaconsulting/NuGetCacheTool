@@ -43,6 +43,17 @@ diagram or the prose below.
 
 ![Software Structure](SoftwareStructureView.svg)
 
+The diagram below complements the structure view by showing how data flows at run time: the
+`nuget-cache` Program entry point passes the command-line flags to the Cli subsystem, whose Context
+owns the output streams and exit code; for each `package:version` argument Program calls the
+DemaConsulting.NuGet.Caching OTS library, which ensures the package is in the global packages folder
+and returns its cache path; SelfTest runs the built-in checks using the Utilities helpers.
+
+![NuGet Cache Tool architecture: the nuget-cache Program entry point passes flags to the Cli subsystem,
+hands each package:version argument to the DemaConsulting.NuGet.Caching library which downloads it from
+the NuGet feeds into the global packages folder only if missing, and the tool produces the cached package,
+its cache path, and an exit code, with Utilities and SelfTest providing helpers and built-in checks](architecture.svg)
+
 ## Folder Layout
 
 - **src/** - source files and projects

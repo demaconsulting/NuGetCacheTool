@@ -68,7 +68,7 @@ sections:
               - NuGetCacheTool_PackageCaching_ValidPackageProvided_OutputsPath
 
           - id: NuGetCache-Sys-PlatformSupport
-            title: The NuGet Cache Tool shall run on Windows, Linux, and macOS with .NET 8, .NET 9, and .NET 10.
+            title: The NuGet Cache Tool shall run on Windows, Linux, and macOS with .NET 10 and .NET 11.
             tags:
               - system
             justification: |
@@ -80,16 +80,14 @@ sections:
               - NuGetCache-PLT-Windows
               - NuGetCache-PLT-Linux
               - NuGetCache-PLT-MacOS
-              - NuGetCache-PLT-Net8
-              - NuGetCache-PLT-Net9
               - NuGetCache-PLT-Net10
+              - NuGetCache-PLT-Net11
             tests:
               - "windows@NuGetCache_VersionDisplay"
               - "ubuntu@NuGetCache_VersionDisplay"
               - "macos@NuGetCache_VersionDisplay"
-              - "dotnet8.x@NuGetCache_VersionDisplay"
-              - "dotnet9.x@NuGetCache_VersionDisplay"
               - "dotnet10.x@NuGetCache_VersionDisplay"
+              - "dotnet11.x@NuGetCache_VersionDisplay"
 
           - id: NuGetCache-Sys-ValidateResults
             title: The NuGet Cache Tool shall write self-validation results in TRX or JUnit XML format.

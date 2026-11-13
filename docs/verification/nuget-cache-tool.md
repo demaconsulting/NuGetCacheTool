@@ -34,15 +34,12 @@ multi-platform requirements:
 
 | Runtime    | Platform |
 |------------|----------|
-| .NET 8.0   | Windows  |
-| .NET 8.0   | Linux    |
-| .NET 8.0   | macOS    |
-| .NET 9.0   | Windows  |
-| .NET 9.0   | Linux    |
-| .NET 9.0   | macOS    |
 | .NET 10.0  | Windows  |
 | .NET 10.0  | Linux    |
 | .NET 10.0  | macOS    |
+| .NET 11.0  | Windows  |
+| .NET 11.0  | Linux    |
+| .NET 11.0  | macOS    |
 
 All integration test scenarios are expected to produce identical results on all supported runtime
 and platform combinations.
@@ -52,7 +49,8 @@ and platform combinations.
 The system-level integration test suite passes when all of the following conditions are met:
 
 - All integration test scenarios defined in `IntegrationTests.cs` pass on every supported runtime
-  and platform combination (.NET 8, 9, and 10 on Windows, Linux, and macOS).
+  and platform combination (.NET 10 and 11 on Windows, Linux, and macOS, as exercised by the CI
+  matrix).
 - No test scenario produces an unexpected exit code or output pattern.
 - Every system-level requirement is covered by at least one passing scenario, per the ReqStream
   trace matrix.

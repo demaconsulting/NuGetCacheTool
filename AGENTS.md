@@ -2,9 +2,10 @@
 
 - **project-name**: NuGet Cache Tool
 - **organization**: DEMA Consulting
+- **project-tagline**: NuGet Package Caching Tool for .NET
 - **description**: A .NET global tool that ensures NuGet packages are cached in the global packages folder
 - **languages**: C#
-- **technologies**: .NET 8/9/10, NuGet, xUnit
+- **technologies**: .NET 10/11, NuGet, xUnit
 
 # Project Structure
 

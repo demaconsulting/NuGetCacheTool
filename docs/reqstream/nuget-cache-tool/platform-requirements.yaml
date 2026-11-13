@@ -41,32 +41,26 @@ sections:
               - "macos@NuGetCache_VersionDisplay"
               - "macos@NuGetCache_HelpDisplay"
 
-          - id: NuGetCache-PLT-Net8
-            title: The tool shall support .NET 8 runtime.
-            tags:
-              - system
-            justification: |
-              .NET 8 is an LTS release providing long-term stability for enterprise users.
-            tests:
-              - "dotnet8.x@NuGetCache_VersionDisplay"
-              - "dotnet8.x@NuGetCache_HelpDisplay"
-
-          - id: NuGetCache-PLT-Net9
-            title: The tool shall support .NET 9 runtime.
-            tags:
-              - system
-            justification: |
-              .NET 9 support enables users to leverage the latest .NET features.
-            tests:
-              - "dotnet9.x@NuGetCache_VersionDisplay"
-              - "dotnet9.x@NuGetCache_HelpDisplay"
-
           - id: NuGetCache-PLT-Net10
             title: The tool shall support .NET 10 runtime.
             tags:
               - system
             justification: |
-              .NET 10 support ensures the tool remains compatible with the latest .NET ecosystem.
+              .NET 10 is a Long-Term Support (LTS) release and the oldest supported .NET runtime,
+              providing long-term stability for enterprise users.
             tests:
+              # Tests link to "dotnet10.x" to ensure results come from the .NET 10 runtime
               - "dotnet10.x@NuGetCache_VersionDisplay"
               - "dotnet10.x@NuGetCache_HelpDisplay"
+
+          - id: NuGetCache-PLT-Net11
+            title: The tool shall support .NET 11 runtime.
+            tags:
+              - system
+            justification: |
+              .NET 11 support enables users to leverage the latest .NET features and performance
+              improvements.
+            tests:
+              # Tests link to "dotnet11.x" to ensure results come from the .NET 11 runtime
+              - "dotnet11.x@NuGetCache_VersionDisplay"
+              - "dotnet11.x@NuGetCache_HelpDisplay"
