@@ -68,7 +68,7 @@ args
 
 ### Platform Constraints
 
-- The tool targets .NET 8, .NET 9, and .NET 10 on Windows, Linux, and macOS (see
+- The tool targets .NET 10 and .NET 11 on Windows, Linux, and macOS (see
   *Platform and Runtime Targeting* below)
 - All platform-specific behavior is delegated to the .NET SDK and the
   `DemaConsulting.NuGet.Caching` library; the tool itself contains no platform-conditional code
@@ -100,10 +100,11 @@ the broadest possible developer and CI/CD environment coverage.
 | Dimension | Supported Values |
 | --------- | ---------------- |
 | Operating Systems | Windows, Linux, macOS |
-| .NET Runtimes | .NET 8, .NET 9, .NET 10 |
+| .NET Runtimes | .NET 10, .NET 11 |
 
 Multi-targeting is achieved through the `TargetFrameworks` MSBuild property in the
-project file. All platform-specific behavior is delegated to the .NET SDK and the
+project file, and `RollForward` is set to `LatestMajor` so the installed tool also runs on
+newer .NET runtimes. All platform-specific behavior is delegated to the .NET SDK and the
 `DemaConsulting.NuGet.Caching` library; the tool itself contains no platform-conditional
 code.
 

@@ -19,9 +19,14 @@ packages need to be pre-populated to enable offline or air-gapped operations. Th
 accepts one or more `package:version` arguments, downloads each package to the global
 NuGet cache if not already present, and optionally outputs the resolved cache path.
 
-![NuGet Cache Tool architecture: package:version arguments and NuGet feeds flow through the tool's caching logic
-into the global packages folder, with the resolved cache path printed to the console, supported by the Cli,
-Utilities, and SelfTest components][architecture]
+The workflow below shows how to use it: install the tool and choose the packages to cache, run `nuget-cache` on a
+build machine or in a CI job, and use the cached packages, their printed paths, and the exit code in later build
+steps, offline builds, and CI gates.
+
+![NuGet Cache Tool workflow: install the tool and choose package:version arguments and NuGet feeds, run nuget-cache
+with one or more packages and the optional log and silent options, get the packages cached in the global packages
+folder, one cache path per package, errors on stderr, and a pass/fail exit code, then use them in later build steps,
+offline builds, scripts and pipelines, or as a CI gate][workflow]
 
 ## Features
 
@@ -32,7 +37,7 @@ This tool provides:
 - **Package Path Output**: Output the path to each cached package
 - **Self-Validation**: Built-in validation tests with TRX/JUnit output
 - **Multi-Platform Support**: Builds and runs on Windows, Linux, and macOS
-- **Multi-Runtime Support**: Targets .NET 8, 9, and 10
+- **Multi-Runtime Support**: Targets .NET 10 and 11
 
 ## Installation
 
@@ -127,7 +132,7 @@ By contributing to this project, you agree that your contributions will be licen
 [badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.NuGet.CacheTool?style=plastic
 
 <!-- Link References -->
-[architecture]: https://raw.githubusercontent.com/demaconsulting/NuGetCacheTool/main/docs/images/architecture.png
+[workflow]: https://raw.githubusercontent.com/demaconsulting/NuGetCacheTool/main/docs/images/workflow.png
 [link-forks]: https://github.com/demaconsulting/NuGetCacheTool/network/members
 [link-stars]: https://github.com/demaconsulting/NuGetCacheTool/stargazers
 [link-contributors]: https://github.com/demaconsulting/NuGetCacheTool/graphs/contributors

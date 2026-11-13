@@ -1,6 +1,6 @@
 ---
 title: NuGet Cache Tool Code Quality Report
-subtitle: Code Quality Analysis Report
+subtitle: NuGet Package Caching Tool for .NET
 author: DEMA Consulting
 description: Code Quality Analysis Report for NuGet Cache Tool
 lang: en-US

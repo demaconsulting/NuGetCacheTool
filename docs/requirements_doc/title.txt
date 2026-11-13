@@ -1,6 +1,6 @@
 ---
 title: NuGet Cache Tool Requirements Document
-subtitle: Requirements Specification for the NuGet Cache Tool
+subtitle: NuGet Package Caching Tool for .NET
 author: DEMA Consulting
 description: Requirements Specification for the NuGet Cache Tool
 lang: en-US
