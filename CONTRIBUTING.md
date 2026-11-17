@@ -1,7 +1,7 @@
 # Contributing to NuGet Cache Tool
 
-Thank you for your interest in contributing to NuGet Cache Tool! We welcome contributions from the community and appreciate
-your help in making this project better.
+Thank you for your interest in contributing to NuGet Cache Tool! We welcome contributions from the community and
+appreciate your help in making this project better.
 
 ## Code of Conduct
 

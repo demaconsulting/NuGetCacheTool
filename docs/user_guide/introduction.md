@@ -112,15 +112,15 @@ nuget-cache --log output.log
 
 The following command-line options are supported:
 
-| Option                    | Description                                                  |
-| ------------------------- | ------------------------------------------------------------ |
-| `-v`, `--version`         | Display version information                                  |
-| `-?`, `-h`, `--help`      | Display help message                                         |
-| `--silent`                | Suppress console output                                      |
-| `--validate`              | Run self-validation                                          |
-| `--results <file>`        | Write validation results to file (.trx or .xml)              |
-| `--log <file>`            | Write output to log file                                     |
-| `[package]:[version]`     | Cache the specified NuGet package                            |
+| Option | Description |
+| --- | --- |
+| `-v`, `--version` | Display version information |
+| `-?`, `-h`, `--help` | Display help message |
+| `--silent` | Suppress console output |
+| `--validate` | Run self-validation |
+| `--results <file>` | Write validation results to file (.trx or .xml) |
+| `--log <file>` | Write output to log file |
+| `[package]:[version]` | Cache the specified NuGet package |
 
 # Examples
 

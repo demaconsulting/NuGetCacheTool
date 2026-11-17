@@ -51,7 +51,7 @@ Combines `basePath` and `relativePath`, rejecting any result that escapes the ba
 #### Security Properties
 
 | Property | Guarantee |
-| -------- | --------- |
+| --- | --- |
 | No parent traversal | Post-combine `GetRelativePath` check detects any traversal that escapes the base directory |
 | No absolute override | An upfront `Path.IsPathRooted(relativePath)` check rejects any rooted `relativePath` outright, even one that would resolve inside `basePath` |
 | Canonicalization check | `GetFullPath` normalizes paths; `GetRelativePath` checks `..`, `..`+sep, or rooted |
@@ -83,7 +83,7 @@ Combines `basePath` and `relativePath`, rejecting any result that escapes the ba
 #### Error Handling
 
 | Scenario | Exception thrown |
-| -------- | ---------------- |
+| --- | --- |
 | `basePath` is null | `ArgumentNullException` (parameter: `basePath`) |
 | `relativePath` is null | `ArgumentNullException` (parameter: `relativePath`) |
 | `relativePath` is empty | Returns `basePath` unchanged (no exception) |

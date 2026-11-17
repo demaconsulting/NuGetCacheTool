@@ -20,7 +20,7 @@ into structured options and commands that are executed by the top-level `Program
 **Units**:
 
 | Unit | Class | Description |
-| ---- | ----- | ----------- |
+| --- | --- | --- |
 | Context | `Context.cs` | Command-line argument parsing and output management |
 
 ### Interfaces
@@ -28,7 +28,7 @@ into structured options and commands that are executed by the top-level `Program
 The `Context` unit exposes the following public API:
 
 | Member | Type | Description |
-| ------ | ---- | ----------- |
+| --- | --- | --- |
 | `Create(string[] args)` | static factory | Parses arguments and returns a configured `Context` instance |
 | `Version` | `bool` property | True when `--version` or `-v` was supplied |
 | `Help` | `bool` property | True when `--help`, `-h`, or `-?` was supplied |
@@ -46,14 +46,14 @@ The `Context` unit exposes the following public API:
 #### Interactions
 
 | Dependency | Direction | Description |
-| ---------- | --------- | ----------- |
+| --- | --- | --- |
 | `Program` | Top-level unit (entry point) | Creates `Context` and dispatches to CLI subsystem |
 | `SelfTest` subsystem | Downstream | `Program` passes the `Context` it created (via CLI) to `Validation.Run`; `Validation` consumes `Context` for output and results-path resolution |
 
 #### Error Handling
 
 | Scenario | Behavior |
-| -------- | -------- |
+| --- | --- |
 | Unknown or malformed argument | `Create()` throws `ArgumentException` with a message |
 | | identifying the unsupported argument |
 | `--log` flag without a value | `Create()` throws `ArgumentException` |

@@ -50,7 +50,7 @@ attempt surfaced by `GetFilePath` is detected and rejected by `SafePathCombine`.
 #### Error Handling
 
 | Scenario | Behavior |
-| -------- | -------- |
+| --- | --- |
 | Directory cannot be created (I/O error, access denied) | Constructor throws `InvalidOperationException` wrapping the original exception |
 | `relativePath` is null | `GetFilePath` throws `ArgumentNullException` (from `PathHelpers`) |
 | `relativePath` escapes the boundary (e.g. `../escape`) | `GetFilePath` throws `ArgumentException` (from `PathHelpers`) |

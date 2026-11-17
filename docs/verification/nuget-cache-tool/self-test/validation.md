@@ -13,9 +13,9 @@ the exact-match identity check would catch a regression to substring matching.
 
 #### Dependencies
 
-| Dependency | Usage in Tests                                       |
-|------------|------------------------------------------------------|
-| `Context`  | Created from controlled argument arrays.             |
+| Dependency | Usage in Tests |
+| --- | --- |
+| `Context` | Created from controlled argument arrays. |
 
 No mocking is required; all collaborators execute real logic.
 

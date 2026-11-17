@@ -69,8 +69,8 @@ Deletes the temporary directory and all contents. `IOException` and
 
 #### Dependencies
 
-| Dependency    | Role                                                                             |
-| ------------- | -------------------------------------------------------------------------------- |
+| Dependency | Role |
+| --- | --- |
 | `PathHelpers` | `SafePathCombine` enforces the boundary between the temp dir and relative paths. |
 
 #### Callers

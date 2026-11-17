@@ -11,7 +11,7 @@ the entry point and all operational units.
 #### Data Model
 
 | Member | Type | Description |
-| ------ | ---- | ----------- |
+| --- | --- | --- |
 | `Version` | `bool` | True when `-v` or `--version` flag is present |
 | `Help` | `bool` | True when `-?`, `-h`, or `--help` flag is present |
 | `Silent` | `bool` | True when `--silent` flag is present; suppresses console output |
@@ -30,7 +30,8 @@ Parses command-line arguments and returns a configured `Context` instance.
 
 - **Preconditions**: `args` is a non-null string array
 - **Postconditions**: returns a `Context` with all flags and packages populated; log file open if `--log` was specified
-- **Algorithm**: instantiates `ArgumentParser` and processes `args` left-to-right, recognizing flags and package arguments; multi-token arguments (`--log`, `--results`) consume the following token as their value
+- **Algorithm**: instantiates `ArgumentParser` and processes `args` left-to-right, recognizing flags and package
+  arguments; multi-token arguments (`--log`, `--results`) consume the following token as their value
 
 ##### WriteLine(string message)
 
@@ -85,7 +86,7 @@ sets `_hasErrors = true`, which causes `ExitCode` to return `1`.
 #### Error Handling
 
 | Scenario | Behavior |
-| -------- | -------- |
+| --- | --- |
 | Unknown argument in `Create()` | Throws `ArgumentException` identifying the unsupported argument |
 | `--log` or `--results` flag without a value | Throws `ArgumentException` |
 | Log file cannot be opened | Throws `InvalidOperationException` wrapping the underlying I/O exception message |

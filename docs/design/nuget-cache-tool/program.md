@@ -13,7 +13,7 @@ operating system.
 `Program` is a static class with no instance state. Its only data member is:
 
 | Member | Type | Description |
-| ------ | ---- | ----------- |
+| --- | --- | --- |
 | `Version` (static property) | `string` | Informational version string read from `AssemblyInformationalVersionAttribute` at runtime |
 
 ### Key Methods
@@ -86,7 +86,7 @@ for unexpected failures without suppressing the error.
 ### Dependencies
 
 | Dependency | Usage |
-| ---------- | ----- |
+| --- | --- |
 | `Context` | Created in `Main`; passed to `Run` and all helpers |
 | `Validation` | Called when `context.Validate` is true |
 | `NuGetCache` | Called for each package in `context.Packages` |

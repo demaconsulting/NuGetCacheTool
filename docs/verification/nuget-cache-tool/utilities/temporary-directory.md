@@ -18,8 +18,8 @@ platform-fragile, so this path is verified by code inspection rather than an aut
 
 #### Dependencies
 
-| Dependency    | Usage in Tests                                                         |
-| ------------- | ---------------------------------------------------------------------- |
+| Dependency | Usage in Tests |
+| --- | --- |
 | `PathHelpers` | Invoked indirectly via `GetFilePath`; traversal rejection is verified. |
 
 #### Test Environment
