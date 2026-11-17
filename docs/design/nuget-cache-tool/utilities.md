@@ -51,7 +51,7 @@ attempt surfaced by `GetFilePath` is detected and rejected by `SafePathCombine`.
 
 | Scenario | Behavior |
 | --- | --- |
-| Directory cannot be created (I/O error, access denied) | Constructor throws `InvalidOperationException` wrapping the original exception |
+| Directory cannot be created (I/O error, access denied) | Constructor wraps the cause in `InvalidOperationException` |
 | `relativePath` is null | `GetFilePath` throws `ArgumentNullException` (from `PathHelpers`) |
-| `relativePath` escapes the boundary (e.g. `../escape`) | `GetFilePath` throws `ArgumentException` (from `PathHelpers`) |
+| `relativePath` escapes the boundary (e.g. `../x`) | `GetFilePath` throws `ArgumentException` (from `PathHelpers`) |
 | Directory deletion fails during disposal | `Dispose` suppresses `IOException` and `UnauthorizedAccessException` |

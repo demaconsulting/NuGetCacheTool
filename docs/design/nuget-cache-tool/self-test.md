@@ -24,16 +24,26 @@ The SelfTest subsystem exposes the following entry point:
 
 | Member | Description |
 | --- | --- |
-| `Validation.Run(Context context)` | Executes all self-validation tests and optionally writes results to the file specified by `context.ResultsFile`; writes the `Total Tests`/`Passed` summary lines via `context.WriteLine`, and the `Failed` summary line via `context.WriteError` when the failure count is greater than zero |
+| `Validation.Run(Context context)` | Runs all self-validation tests; writes the summary and optional results file |
+
+Entry point details:
+
+- **`Validation.Run(Context context)`**: optionally writes results to the file specified by `context.ResultsFile`;
+  writes the `Total Tests`/`Passed` summary lines via `context.WriteLine`, and the `Failed` summary line via
+  `context.WriteError` when the failure count is greater than zero.
 
 The subsystem consumes the following interfaces:
 
 | Dependency | Direction | Description |
 | --- | --- | --- |
 | `Context` (CLI subsystem) | Upstream | Provides `ResultsFile` path and output methods |
-| `Program` (top-level unit) | Downstream | `RunValidationTest` calls `Program.Run` in-process to exercise the full program path for each test |
+| `Program` (top-level unit) | Downstream | `RunValidationTest` calls `Program.Run` in-process for each test |
 | `DemaConsulting.TestResults` (OTS) | Downstream | `TrxSerializer`, `JUnitSerializer` for result output |
-| `TemporaryDirectory` (Utilities subsystem) | Downstream | `Validation` uses `TemporaryDirectory` for isolated test directories |
+| `TemporaryDirectory` (Utilities subsystem) | Downstream | `Validation` uses it for isolated test directories |
+
+Dependency details:
+
+- **`Program` (top-level unit)**: calling `Program.Run` in-process exercises the full program path for each test.
 
 ### Design
 

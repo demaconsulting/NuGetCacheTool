@@ -38,7 +38,7 @@ The `Context` unit exposes the following public API:
 | `ResultsFile` | `string?` property | Path to results file supplied with `--results`, or null |
 | `ExitCode` | `int` property | Current exit code; 0 = success, 1 = failure |
 | `WriteLine(string)` | method | Writes a line to stdout (and log file if open); suppressed in silent mode |
-| `WriteError(string)` | method | Writes a line to stderr (suppressed in silent mode), and to the log file (always); sets ExitCode to 1 |
+| `WriteError(string)` | method | Writes to stderr (unless silent) and always to the log file; sets ExitCode to 1 |
 | `Dispose()` | method | Flushes and closes the log file writer if open |
 
 ### Design
@@ -48,7 +48,11 @@ The `Context` unit exposes the following public API:
 | Dependency | Direction | Description |
 | --- | --- | --- |
 | `Program` | Top-level unit (entry point) | Creates `Context` and dispatches to CLI subsystem |
-| `SelfTest` subsystem | Downstream | `Program` passes the `Context` it created (via CLI) to `Validation.Run`; `Validation` consumes `Context` for output and results-path resolution |
+| `SelfTest` subsystem | Downstream | `Program` passes the `Context` it created (via CLI) to `Validation.Run` |
+
+Interaction details:
+
+- **`SelfTest` subsystem**: `Validation` consumes `Context` for output and results-path resolution.
 
 #### Error Handling
 

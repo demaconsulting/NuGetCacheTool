@@ -11,8 +11,15 @@ ReqStream) that expect standard test result file formats.
 
 | API | Signature | Usage |
 | --- | --- | --- |
-| `TrxSerializer` | `string Serialize(TestResults results)` | Called by `Validation.Run` when `context.ResultsFile` has a `.trx` extension; the returned XML content is then written to disk via `File.WriteAllText` |
-| `JUnitSerializer` | `string Serialize(TestResults results)` | Called by `Validation.Run` when `context.ResultsFile` has a `.xml` extension; the returned XML content is then written to disk via `File.WriteAllText` |
+| `TrxSerializer` | `string Serialize(TestResults results)` | Used by `Validation.Run` for a `.trx` results file |
+| `JUnitSerializer` | `string Serialize(TestResults results)` | Used by `Validation.Run` for a `.xml` results file |
+
+API usage details:
+
+- **`TrxSerializer`**: called by `Validation.Run` when `context.ResultsFile` has a `.trx` extension; the returned XML
+  content is then written to disk via `File.WriteAllText`.
+- **`JUnitSerializer`**: called by `Validation.Run` when `context.ResultsFile` has a `.xml` extension; the returned
+  XML content is then written to disk via `File.WriteAllText`.
 
 ### Integration Pattern
 

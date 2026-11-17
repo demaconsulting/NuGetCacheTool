@@ -90,7 +90,7 @@ sets `_hasErrors = true`, which causes `ExitCode` to return `1`.
 | Unknown argument in `Create()` | Throws `ArgumentException` identifying the unsupported argument |
 | `--log` or `--results` flag without a value | Throws `ArgumentException` |
 | Log file cannot be opened | Throws `InvalidOperationException` wrapping the underlying I/O exception message |
-| `WriteError()` called | Sets `_hasErrors = true` (causing `ExitCode` to return 1); writes message to stderr and log file |
+| `WriteError()` called | Sets `_hasErrors = true` (`ExitCode` then returns 1); writes message to stderr and log file |
 | `WriteLine()` called in silent mode | Suppresses console output; still writes to log file if open |
 | `Dispose()` called multiple times | Safe; the `StreamWriter` is set to null after first disposal |
 

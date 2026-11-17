@@ -11,7 +11,12 @@ avoids re-implementing NuGet client protocol handling within the NuGet Cache Too
 
 | API | Signature | Usage |
 | --- | --- | --- |
-| `NuGetCache.EnsureCachedAsync` | `Task<string> EnsureCachedAsync(string packageId, string version)` | Called by `Program.RunToolLogic` for each package argument; returns the path to the cached package in the global packages folder |
+| `NuGetCache.EnsureCachedAsync` | `Task<string> EnsureCachedAsync(string packageId, string version)` | Caching |
+
+API usage details:
+
+- **`NuGetCache.EnsureCachedAsync`**: called by `Program.RunToolLogic` for each package argument; returns the path
+  to the cached package in the global packages folder.
 
 ### Integration Pattern
 

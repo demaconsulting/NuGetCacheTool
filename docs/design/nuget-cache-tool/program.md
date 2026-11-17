@@ -14,7 +14,7 @@ operating system.
 
 | Member | Type | Description |
 | --- | --- | --- |
-| `Version` (static property) | `string` | Informational version string read from `AssemblyInformationalVersionAttribute` at runtime |
+| `Version` (static) | `string` | Informational version read at runtime from `AssemblyInformationalVersionAttribute` |
 
 ### Key Methods
 
