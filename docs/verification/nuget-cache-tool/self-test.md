@@ -11,10 +11,10 @@ self-validation execution and results file generation.
 
 ### Dependencies
 
-| Dependency     | Usage in Tests                                            |
-|----------------|-----------------------------------------------------------|
-| `Validation`   | Exercised directly; validates self-validation behavior.   |
-| `Context`      | Created from controlled argument arrays for each test.    |
+| Dependency | Usage in Tests |
+| --- | --- |
+| `Validation` | Exercised directly; validates self-validation behavior. |
+| `Context` | Created from controlled argument arrays for each test. |
 
 ### Test Environment
 

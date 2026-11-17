@@ -32,14 +32,14 @@ end-to-end behavior but do not, on their own, isolate these specific edge cases.
 Integration tests are executed across the following environments to satisfy multi-runtime and
 multi-platform requirements:
 
-| Runtime    | Platform |
-|------------|----------|
-| .NET 10.0  | Windows  |
-| .NET 10.0  | Linux    |
-| .NET 10.0  | macOS    |
-| .NET 11.0  | Windows  |
-| .NET 11.0  | Linux    |
-| .NET 11.0  | macOS    |
+| Runtime | Platform |
+| --- | --- |
+| .NET 10.0 | Windows |
+| .NET 10.0 | Linux |
+| .NET 10.0 | macOS |
+| .NET 11.0 | Windows |
+| .NET 11.0 | Linux |
+| .NET 11.0 | macOS |
 
 All integration test scenarios are expected to produce identical results on all supported runtime
 and platform combinations.

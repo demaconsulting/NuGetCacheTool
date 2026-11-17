@@ -1,7 +1,7 @@
 # Contributing to NuGet Cache Tool
 
-Thank you for your interest in contributing to NuGet Cache Tool! We welcome contributions from the community and appreciate
-your help in making this project better.
+Thank you for your interest in contributing to NuGet Cache Tool! We welcome contributions from the community and
+appreciate your help in making this project better.
 
 ## Code of Conduct
 
@@ -176,7 +176,7 @@ dotnet run --project src/DemaConsulting.NuGet.CacheTool \
 
 ### Markdown Guidelines
 
-All markdown files must follow these rules (enforced by markdownlint):
+All markdown files must follow these rules (enforced by LintMark):
 
 - Maximum line length: 120 characters
 - Use ATX-style headers (`# Header`)

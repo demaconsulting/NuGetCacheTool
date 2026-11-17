@@ -81,10 +81,10 @@ The pipeline additionally exercises `SysML2Tools` against the real NuGetCacheToo
 The NuGet Cache Tool integrates three OTS (off-the-shelf) software items:
 
 | OTS Item | Package | Purpose |
-| -------- | ------- | ------- |
+| --- | --- | --- |
 | DemaConsulting.NuGet.Caching | `DemaConsulting.NuGet.Caching` | NuGet package caching to the global packages folder |
-| DemaConsulting.TestResults | `DemaConsulting.TestResults` | Serialization of self-validation results to TRX and JUnit XML formats |
-| SysML2Tools | `demaconsulting.sysml2tools.tool` | Validates the SysML2 architecture model and renders its declared views to SVG diagrams |
+| DemaConsulting.TestResults | `DemaConsulting.TestResults` | Serializes self-validation results to TRX and JUnit XML |
+| SysML2Tools | `demaconsulting.sysml2tools.tool` | Validates the SysML2 model and renders its views to SVG diagrams |
 
 Both `DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` are consumed as NuGet packages
 declared in the main project file

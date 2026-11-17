@@ -41,7 +41,7 @@ When an OTS item is upgraded to a new version:
 ## OTS Items
 
 | OTS Item | Verification Document |
-| -------- | --------------------- |
+| --- | --- |
 | BuildMark | ots/buildmark.md |
 | FileAssert | ots/fileassert.md |
 | DemaConsulting.NuGet.Caching | ots/nuget-caching.md |

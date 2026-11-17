@@ -10,7 +10,7 @@ top-level unit, all residing in a single assembly.
 ### Major Components
 
 | Subsystem / Unit | Responsibility |
-| ---------------- | -------------- |
+| --- | --- |
 | **CLI** (subsystem) | Argument parsing and output management |
 | └─ Context | Command-line argument parsing and output management |
 | **SelfTest** (subsystem) | Self-validation test execution |
@@ -23,11 +23,16 @@ top-level unit, all residing in a single assembly.
 ## External Interfaces
 
 | Interface | Description |
-| --------- | ----------- |
-| CLI entry point (`nuget-cache [options] [package:version ...]`) | Main command-line invocation pattern accepted by the tool |
+| --- | --- |
+| CLI entry point (`nuget-cache [options] [package:version ...]`) | Main command-line invocation pattern |
 | stdout | Package paths are written one per line on success; banner and help text on non-version invocations |
-| stderr | Error messages are written to stderr when an error occurs and silent mode is not active; `Program.Main` prefixes caught top-level exceptions with `"Error: "`, while `Context.WriteError` writes caller-supplied text unchanged |
+| stderr | Error messages are written to stderr when an error occurs and silent mode is not active |
 | Exit code | 0 = success; non-zero = failure |
+
+Interface details:
+
+- **stderr**: `Program.Main` prefixes caught top-level exceptions with `"Error: "`, while `Context.WriteError`
+  writes caller-supplied text unchanged.
 
 ## Dependencies
 
@@ -98,7 +103,7 @@ The NuGet Cache Tool targets multiple platforms and .NET runtime versions to sup
 the broadest possible developer and CI/CD environment coverage.
 
 | Dimension | Supported Values |
-| --------- | ---------------- |
+| --- | --- |
 | Operating Systems | Windows, Linux, macOS |
 | .NET Runtimes | .NET 10, .NET 11 |
 
@@ -120,10 +125,15 @@ These tests use the same `Program.Run` path as normal usage, capturing output vi
 `--silent --log` and asserting on the log contents.
 
 | Test Name | Command | Validates |
-| --------- | ------- | --------- |
+| --- | --- | --- |
 | `NuGetCache_VersionDisplay` | `--version` | Version string is present and contains dots |
 | `NuGetCache_HelpDisplay` | `--help` | Output contains `Usage:` and `Options:` |
-| `NuGetCache_CachePackage` | `DemaConsulting.NuGet.Caching:{fixed test version}` | A non-empty package path is returned, using a fixed test version pinned independently of the tool's own dependency version |
+| `NuGetCache_CachePackage` | `DemaConsulting.NuGet.Caching:{fixed test version}` | Returns a non-empty package path |
+
+Test details:
+
+- **`NuGetCache_CachePackage`**: uses a fixed test version pinned independently of the tool's own dependency
+  version.
 
 When `--results` is supplied, these tests are emitted as test results (TRX (`.trx`)
 or JUnit XML (`.xml`), depending on the `--results` file extension) and serve as

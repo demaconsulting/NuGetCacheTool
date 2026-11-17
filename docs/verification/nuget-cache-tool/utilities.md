@@ -13,12 +13,12 @@ path-boundary enforcement flows end-to-end from `TemporaryDirectory.GetFilePath`
 
 ### Dependencies
 
-| Dependency           | Usage in Tests                                                                         |
-|----------------------|----------------------------------------------------------------------------------------|
-| `TemporaryDirectory` | Created directly; exercises directory creation, file-path resolution, and disposal.    |
-| `PathHelpers`        | Called directly via `SafePathCombine` in the path-safety scenario; also exercised      |
-|                      | indirectly through `TemporaryDirectory.GetFilePath` in all other scenarios.            |
-| Real filesystem      | All tests create and delete real directories under `Environment.CurrentDirectory`.     |
+| Dependency | Usage in Tests |
+| --- | --- |
+| `TemporaryDirectory` | Created directly; exercises directory creation, file-path resolution, and disposal. |
+| `PathHelpers` | Called directly via `SafePathCombine` in the path-safety scenario; also exercised |
+| | indirectly through `TemporaryDirectory.GetFilePath` in all other scenarios. |
+| Real filesystem | All tests create and delete real directories under `Environment.CurrentDirectory`. |
 
 ### Test Environment
 

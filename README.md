@@ -80,15 +80,15 @@ pwsh ./build.ps1
 
 ## Command-Line Options
 
-| Option                    | Description                                                  |
-| ------------------------- | ------------------------------------------------------------ |
-| `-v`, `--version`         | Display version information                                  |
-| `-?`, `-h`, `--help`      | Display help message                                         |
-| `--silent`                | Suppress console output                                      |
-| `--validate`              | Run self-validation                                          |
-| `--results <file>`        | Write results to file (`.trx`=TRX, `.xml`=JUnit XML)         |
-| `--log <file>`            | Write output to log file                                     |
-| `[package]:[version]`     | Cache the specified NuGet package                            |
+| Option | Description |
+| --- | --- |
+| `-v`, `--version` | Display version information |
+| `-?`, `-h`, `--help` | Display help message |
+| `--silent` | Suppress console output |
+| `--validate` | Run self-validation |
+| `--results <file>` | Write results to file (`.trx`=TRX, `.xml`=JUnit XML) |
+| `--log <file>` | Write output to log file |
+| `[package]:[version]` | Cache the specified NuGet package |
 
 ## Documentation
 
@@ -108,7 +108,8 @@ The NuGet Cache Tool User Guide is available on the
 
 ## Contributing
 
-See [CONTRIBUTING.md](https://github.com/demaconsulting/NuGetCacheTool/blob/main/CONTRIBUTING.md) for contribution guidelines.
+See [CONTRIBUTING.md](https://github.com/demaconsulting/NuGetCacheTool/blob/main/CONTRIBUTING.md) for contribution
+guidelines.
 
 ## License
 

@@ -14,8 +14,8 @@ work correctly in the deployment environment.
 execution:
 
 | Member | Type | Description |
-| ------ | ---- | ----------- |
-| `testResults` (local) | `DemaConsulting.TestResults.TestResults` | Accumulated pass/fail records for each test, populated by `RunValidationTest` |
+| --- | --- | --- |
+| `testResults` (local) | `DemaConsulting.TestResults.TestResults` | Pass/fail records added by `RunValidationTest` |
 
 `Validation` itself is a static class with no persistent instance state; the
 `testResults` container is scoped to a single `Run` invocation.
@@ -27,14 +27,19 @@ execution:
 Executes all self-validation tests and optionally writes results to the file specified by `context.ResultsFile`.
 
 - **Preconditions**: `context` is a valid, non-disposed `Context`
-- **Postconditions**: all three tests executed; pass/fail summary written via `context.WriteLine` (the `Failed` line is instead written via `context.WriteError` when the failed count is greater than zero); results file written if `context.ResultsFile` is non-null and has a supported extension
-- **Algorithm**: (1) create `testResults` container; (2) call `RunVersionTest`, `RunHelpTest`, `RunCachePackageTest` unconditionally; (3) write summary; (4) if `ResultsFile` is non-null, write TRX (`.trx`) or JUnit XML (`.xml`) via the appropriate serializer; unsupported extensions call `context.WriteError`
+- **Postconditions**: all three tests executed; pass/fail summary written via `context.WriteLine` (the `Failed` line is
+  instead written via `context.WriteError` when the failed count is greater than zero); results file written if
+  `context.ResultsFile` is non-null and has a supported extension
+- **Algorithm**: (1) create `testResults` container; (2) call `RunVersionTest`, `RunHelpTest`, `RunCachePackageTest`
+  unconditionally; (3) write summary; (4) if `ResultsFile` is non-null, write TRX (`.trx`) or JUnit XML (`.xml`) via the
+  appropriate serializer; unsupported extensions call `context.WriteError`
 
 ##### RunValidationTest(Context context, TestResults testResults, string testName, string displayName, string[] additionalArgs, Func\<string, string?\> validator)
 
 Common runner for all three self-validation tests.
 
-- **Preconditions**: `context` and `testResults` are non-null; `testName` and `displayName` are non-null; `additionalArgs` is a valid argument array; `validator` is non-null
+- **Preconditions**: `context` and `testResults` are non-null; `testName` and `displayName` are non-null;
+  `additionalArgs` is a valid argument array; `validator` is non-null
 - **Postconditions**: a `TestResult` (pass or fail) is appended to the shared `testResults` container
 - **Algorithm**: (1) create a `TemporaryDirectory` for isolation; (2) obtain log file path via
   `tempDir.GetFilePath`; (3) call `Program.Run` in-process with `--silent --log` and `additionalArgs`;
@@ -78,10 +83,15 @@ matching (for example, expected version `0.1.0` must not match a path segment of
 Three tests are executed unconditionally:
 
 | Test | Validates |
-| ---- | --------- |
+| --- | --- |
 | `RunVersionTest` | `--version` flag outputs the version string |
 | `RunHelpTest` | `--help` flag outputs usage information |
-| `RunCachePackageTest` | Caching a known package produces a valid, correctly-identified path (exact directory/parent-directory match via `ValidateCachePackagePath`, not substring matching) |
+| `RunCachePackageTest` | Caching a known package produces a valid, correctly-identified path |
+
+Test details:
+
+- **`RunCachePackageTest`**: the path must be an exact directory/parent-directory match via
+  `ValidateCachePackagePath`, not a substring match.
 
 #### RunValidationTest Pattern
 
@@ -105,10 +115,10 @@ After all tests complete, `Validation.Run` writes the results file if
 #### Dependencies
 
 | Dependency | Usage |
-| ---------- | ----- |
+| --- | --- |
 | `Context` | Provides `ResultsFile` path and output methods |
-| `PathHelpers` (Utilities subsystem) | `SafePathCombine` constructs temp log file paths via `TemporaryDirectory.GetFilePath` |
-| `TemporaryDirectory` | Used by `RunValidationTest` to create and manage isolated temporary directories for each test scenario |
+| `PathHelpers` (Utilities subsystem) | `SafePathCombine` builds temp log paths via `TemporaryDirectory.GetFilePath` |
+| `TemporaryDirectory` | Creates and manages an isolated temporary directory for each `RunValidationTest` |
 | `Program` | Called in-process; `RunValidationTest` calls `Program.Run(testContext)` for each test |
 | `DemaConsulting.TestResults` (OTS) | `TrxSerializer`, `JUnitSerializer` for result output |
 
@@ -120,11 +130,15 @@ other callers of `Validation` in production code.
 #### Error Handling
 
 | Scenario | Behavior |
-| -------- | -------- |
-| A self-validation test assertion fails | `RunValidationTest` records a failed `TestResult` and continues with remaining tests |
-| `Program.Run` throws an unhandled exception | `RunValidationTest` catches the exception, records a failed `TestResult`, and continues |
-| `context.ResultsFile` extension is not `.trx` or `.xml` | `Run` calls `context.WriteError` with an unsupported-extension message; no file is written |
+| --- | --- |
+| A self-validation test assertion fails | `RunValidationTest` records a failed `TestResult` and continues |
+| `Program.Run` throws an exception | `RunValidationTest` catches it, records a failed `TestResult`, and continues |
+| `context.ResultsFile` extension is not `.trx` or `.xml` | `Run` calls `context.WriteError`; no file is written |
 | `context.ResultsFile` is null | Results file writing is skipped entirely |
+
+Error handling details:
+
+- **Unsupported results file extension**: the `context.WriteError` message reports the unsupported extension.
 
 Test failures are always accumulated rather than propagated; the overall exit code
 reflects the aggregate pass/fail outcome via `context.WriteError`.
