@@ -9,8 +9,7 @@ sections:
           - title: TemporaryDirectory Unit Requirements
             requirements:
               - id: NuGetCache-TemporaryDirectory-DirectoryCreation
-                title: The TemporaryDirectory class shall create a unique temporary directory under the current working directory
-                  on construction.
+                title: The TemporaryDirectory class shall create a unique temporary directory under the current working directory on construction.
                 justification: |
                   Using Environment.CurrentDirectory as the base — rather than Path.GetTempPath() —
                   avoids the macOS /tmp → /private/tmp symlink issue that causes path-comparison
@@ -21,8 +20,7 @@ sections:
                   - TemporaryDirectory_Constructor_MultipleInstances_CreatesUniqueDirectories
 
               - id: NuGetCache-TemporaryDirectory-FilePathResolution
-                title: The TemporaryDirectory class shall resolve relative paths to absolute paths within the temporary directory,
-                  creating any required intermediate subdirectories.
+                title: The TemporaryDirectory class shall resolve relative paths to absolute paths within the temporary directory, creating any required intermediate subdirectories.
                 justification: |
                   Callers need a safe way to obtain a full path for a file that may be nested
                   arbitrarily deep within the temporary directory. Auto-creating intermediate
@@ -32,8 +30,7 @@ sections:
                   - TemporaryDirectory_GetFilePath_NestedPath_CreatesIntermediateDirectories
 
               - id: NuGetCache-TemporaryDirectory-TraversalRejection
-                title: The TemporaryDirectory class shall reject relative paths that escape the temporary directory boundary
-                  with an ArgumentException.
+                title: The TemporaryDirectory class shall reject relative paths that escape the temporary directory boundary with an ArgumentException.
                 justification: |
                   GetFilePath delegates to PathHelpers.SafePathCombine, which enforces the
                   boundary. Surfacing ArgumentException ensures callers receive a clear diagnostic
@@ -50,8 +47,7 @@ sections:
                   - TemporaryDirectory_Dispose_WhenCalled_DeletesDirectory
 
               - id: NuGetCache-TemporaryDirectory-Disposal-IdempotentWhenMissing
-                title: The TemporaryDirectory class shall not throw when disposed after the temporary directory no longer
-                  exists.
+                title: The TemporaryDirectory class shall not throw when disposed after the temporary directory no longer exists.
                 justification: |
                   Suppressing cleanup errors ensures disposal does not mask the original outcome or
                   break using blocks when the directory has already been removed (for example, by
