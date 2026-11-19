@@ -230,8 +230,7 @@ sections:
               - PathHelpers_SafePathCombine_UnixAbsolutePath_ThrowsArgumentException
 
           - id: NuGetCache-Sys-AlreadyCached
-            title: The NuGet Cache Tool shall succeed without error when a specified package is already present in the global
-              NuGet packages folder.
+            title: The NuGet Cache Tool shall succeed without error when a specified package is already present in the global NuGet packages folder.
             tags:
               - system
             justification: |

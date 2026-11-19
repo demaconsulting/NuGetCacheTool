@@ -19,8 +19,7 @@ sections:
           - Utilities_PathSafety_SafePathCombine_StaysWithinBase
 
       - id: NuGetCache-Utilities-TempDirectory
-        title: The Utilities subsystem shall provide a disposable temporary directory facility for use by self-test and test
-          code.
+        title: The Utilities subsystem shall provide a disposable temporary directory facility for use by self-test and test code.
         justification: |
           A shared TemporaryDirectory utility prevents both production self-test code and
           test infrastructure from duplicating directory-lifecycle management and ensures

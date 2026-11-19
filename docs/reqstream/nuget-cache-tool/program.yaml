@@ -63,8 +63,7 @@ sections:
               - Program_Run_WithValidateAndUnsupportedResultsFormat_SetsErrorExitCode
 
           - id: NuGetCache-Program-InvalidPackageFormat
-            title: The Program shall report an error when a package argument does not conform to the [package-name]:[version]
-              format.
+            title: The Program shall report an error when a package argument does not conform to the [package-name]:[version] format.
             justification: |
               Users may accidentally supply a package argument without the required colon
               separator. A clear error message for each malformed argument allows users to
