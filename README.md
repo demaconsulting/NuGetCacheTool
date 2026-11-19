@@ -9,6 +9,12 @@
 [![Security][badge-security]][link-security]
 [![NuGet][badge-nuget]][link-nuget]
 
+![NuGet Cache Tool banner: the NuGetCacheTool name with the tagline 'Every package, cached. Every build, offline.'
+and the command 'nuget-cache Newtonsoft.Json:13.0.3'. Package:version arguments, NuGet feeds serving .nupkg files,
+and the --log and --silent options flow on curved arrows into the nuget-cache .NET tool, and arrows lead out to the
+packages cached in the global packages folder, one cache path per package on standard output, a pass or fail exit
+code, and a log file][hero]
+
 DEMA Consulting NuGet cache management tool for .NET developers.
 
 ## Overview
@@ -133,6 +139,7 @@ By contributing to this project, you agree that your contributions will be licen
 [badge-nuget]: https://img.shields.io/nuget/v/DemaConsulting.NuGet.CacheTool?style=plastic
 
 <!-- Link References -->
+[hero]: https://raw.githubusercontent.com/demaconsulting/NuGetCacheTool/main/docs/images/hero.png
 [workflow]: https://raw.githubusercontent.com/demaconsulting/NuGetCacheTool/main/docs/images/workflow.png
 [link-forks]: https://github.com/demaconsulting/NuGetCacheTool/network/members
 [link-stars]: https://github.com/demaconsulting/NuGetCacheTool/stargazers
