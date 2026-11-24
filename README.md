@@ -81,7 +81,7 @@ nuget-cache --silent --log output.log
 ## Building
 
 ```pwsh
-pwsh ./build.ps1
+pwsh ./build.ps1 -All
 ```
 
 ## Command-Line Options
