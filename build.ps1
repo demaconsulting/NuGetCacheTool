@@ -127,6 +127,8 @@ if (-not $buildError) {
     Write-Host "Running unit tests..."
     dotnet test --configuration Release --report-trx --results-directory artifacts/tests
     if ($LASTEXITCODE -ne 0) { $buildError = $true }
+} else {
+    Write-Host "Skipping tests: the build failed."
 }
 
 # [PROJECT-SPECIFIC] Add additional test or post-build steps here.
