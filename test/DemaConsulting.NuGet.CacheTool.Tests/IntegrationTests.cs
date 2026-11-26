@@ -18,6 +18,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
+using System.IO.Compression;
+using DemaConsulting.HelpCards.Catalog;
+using DemaConsulting.HelpCards.Testing;
+using DemaConsulting.NuGet.CacheTool.Cli;
 using DemaConsulting.NuGet.CacheTool.Utilities;
 
 namespace DemaConsulting.NuGet.CacheTool.Tests;
@@ -327,5 +331,92 @@ public class IntegrationTests
         // Assert
         Assert.NotEqual(0, exitCode);
         Assert.Contains("Error", output);
+    }
+
+    /// <summary>
+    ///     Test that the help verb lists the help topics.
+    /// </summary>
+    [Fact]
+    public void NuGetCacheTool_HelpTopics_HelpVerb_ListsTopics()
+    {
+        // Arrange: (none — constructor initializes _dllPath)
+
+        // Act: run the tool with the help verb
+        var exitCode = Runner.Run(
+            out var output,
+            "dotnet",
+            _dllPath,
+            "help");
+
+        // Assert: every topic is listed with its command, without the banner
+        Assert.Equal(0, exitCode);
+        foreach (var topic in HelpCommand.RootCardIds)
+        {
+            Assert.Contains($"{HelpCommand.ToolName} help {topic}", output);
+        }
+
+        Assert.DoesNotContain("Copyright", output);
+    }
+
+    /// <summary>
+    ///     Test that an unknown help topic returns the usage-error exit code.
+    /// </summary>
+    [Fact]
+    public void NuGetCacheTool_HelpTopics_UnknownTopic_ReturnsUsageError()
+    {
+        // Arrange: (none — constructor initializes _dllPath)
+
+        // Act: ask for a topic that does not exist
+        var exitCode = Runner.Run(
+            out var output,
+            "dotnet",
+            _dllPath,
+            "help",
+            "no-such-topic");
+
+        // Assert: exit code 2 and a message that names the topic
+        Assert.Equal(2, exitCode);
+        Assert.Contains("no-such-topic", output);
+    }
+
+    /// <summary>
+    ///     Test that every command example in the help cards gives the result that its card states.
+    /// </summary>
+    [Fact]
+    public void NuGetCacheTool_HelpExamples_AllCommandExamples_GiveStatedResults()
+    {
+        // Arrange: the catalog the tool ships, and the manifest of the demo package that the examples cache
+        var catalog = HelpCatalog.Create(HelpCommand.CreateOptions().GetCatalogConfiguration());
+        var nuspecPath = PathHelpers.SafePathCombine(
+            PathHelpers.SafePathCombine(
+                PathHelpers.SafePathCombine(AppContext.BaseDirectory, "TestData"),
+                "HelpExamples"),
+            "Demo.Package.nuspec");
+
+        // Act: run every command example against the built tool in the runner's scratch folder; the runner
+        // compares the exit codes and the 'expect' fragments. Before every command the demo package is packed
+        // into the 'feed' folder, the local feed of the nuget.config that a card saves there.
+        var report = HelpExampleRunner.Run(catalog, invocation =>
+        {
+            var feedPath = PathHelpers.SafePathCombine(invocation.WorkingDirectory, "feed");
+            var packagePath = PathHelpers.SafePathCombine(feedPath, "demo.package.1.0.0.nupkg");
+            if (!File.Exists(packagePath))
+            {
+                Directory.CreateDirectory(feedPath);
+                using var package = ZipFile.Open(packagePath, ZipArchiveMode.Create);
+                package.CreateEntryFromFile(nuspecPath, "Demo.Package.nuspec");
+            }
+
+            var exitCode = Runner.RunInDirectory(
+                out var output,
+                invocation.WorkingDirectory,
+                "dotnet",
+                [_dllPath, .. invocation.Arguments]);
+            return new HelpExampleOutcome(exitCode, output);
+        });
+
+        // Assert: the cards hold command examples, and every one gave the result its card states
+        Assert.True(report.CommandsRun > 0, "The help cards contain no command examples.");
+        report.AssertSucceeded();
     }
 }
