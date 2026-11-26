@@ -16,12 +16,14 @@ into structured options and commands that are executed by the top-level `Program
 - Provide structured command/context information for top-level operations such as version
   display, help display, package caching, and self-validation
 - Write output to a log file when --log is specified, even in silent mode
+- Answer the built-in `help` command from the help cards embedded in the tool assembly
 
 **Units**:
 
 | Unit | Class | Description |
 | --- | --- | --- |
 | Context | `Context.cs` | Command-line argument parsing and output management |
+| HelpCommand | `HelpCommand.cs` | Built-in help command served from embedded help cards |
 
 ### Interfaces
 
@@ -41,18 +43,37 @@ The `Context` unit exposes the following public API:
 | `WriteError(string)` | method | Writes to stderr (unless silent) and always to the log file; sets ExitCode to 1 |
 | `Dispose()` | method | Flushes and closes the log file writer if open |
 
+The `HelpCommand` unit exposes the following API on its shared `HelpCommand.Default` instance:
+
+| Member | Type | Description |
+| --- | --- | --- |
+| `TryRun(string[] args, out int exitCode)` | method | Answers the `help` command from the built-in help cards |
+| `Footer` | `string` property | The one-line pointer to the help command that ends the usage text |
+
+HelpCommand API details:
+
+- **`TryRun`**: returns `false`, writing nothing, when the first argument is not `help`; otherwise writes the answer
+  to the console, returns `true`, and sets the exit code (see *Help command* in the system design). It does not
+  throw for user input and does not use `Context`.
+- **`Footer`**: reading it never builds the help catalog.
+
 ### Design
 
 #### Interactions
 
 | Dependency | Direction | Description |
 | --- | --- | --- |
-| `Program` | Top-level unit (entry point) | Creates `Context` and dispatches to CLI subsystem |
+| `Program` | Top-level unit (entry point) | Offers the arguments to `HelpCommand`, then creates `Context` |
 | `SelfTest` subsystem | Downstream | `Program` passes the `Context` it created (via CLI) to `Validation.Run` |
+| HelpCards (OTS) | Downstream | `HelpCommand` serves the help cards through the HelpCards library |
 
 Interaction details:
 
 - **`SelfTest` subsystem**: `Validation` consumes `Context` for output and results-path resolution.
+- **`Context` and `HelpCommand`**: the two units do not call each other. When the help command answers, the
+  invocation ends with its exit code and no `Context` is created. `HelpCommand` writes its answers to the console
+  itself, the one exception to `Context` owning all output, because the `help` command is answered before a
+  `Context` exists. `HelpCommand` reads the tool version from `Program.Version`.
 
 #### Error Handling
 

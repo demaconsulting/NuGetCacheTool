@@ -10,6 +10,12 @@ System-level verification uses end-to-end integration tests that invoke the tool
 via the `Runner.Run` helper in `IntegrationTests.cs`. Each test exercises the full stack — argument
 parsing, dispatch, execution, and output — and validates both exit code and console output.
 
+The help tests use `Runner.RunInDirectory`, which runs the tool in a given working directory. The
+example-runner test gives the HelpCards example runner a delegate that runs every command example
+of the help cards against the built tool in the scratch folder of its card, after packing the demo
+package `Demo.Package` 1.0.0 from `TestData/HelpExamples/Demo.Package.nuspec` into the `feed`
+folder of that scratch folder.
+
 This approach ensures that system requirements are verified at the system boundary without assuming
 any internal implementation detail. The tests treat the tool as a black box and assert on
 observable outputs only.
@@ -52,6 +58,9 @@ The system-level integration test suite passes when all of the following conditi
   and platform combination (.NET 10 and 11 on Windows, Linux, and macOS, as exercised by the CI
   matrix).
 - No test scenario produces an unexpected exit code or output pattern.
+- The `help` command lists the help topics with exit code 0, and an unknown topic exits with
+  code 2.
+- Every command example in the help cards gives the exit code and output that its card states.
 - Every system-level requirement is covered by at least one passing scenario, per the ReqStream
   trace matrix.
 
@@ -66,7 +75,9 @@ implementations:
   The `--results` and `--log` flags are exercised with real file paths under a temporary folder.
 - **Process exit code** — Returned by `Runner.Run` and asserted directly.
 - **NuGet package cache** — Real NuGet packages are downloaded and cached during tests that
-  exercise the cache command.
+  exercise the cache command. The help examples instead use the `nuget.config` of their card,
+  which names only the local `feed` folder and a `cache` folder in the scratch folder, so they
+  need no network.
 - **Path construction** — The `IntegrationTests` constructor uses `PathHelpers.SafePathCombine`
   (Utilities subsystem) to locate the tool DLL at a path derived from `AppContext.BaseDirectory`.
 
@@ -147,3 +158,25 @@ passed.
 `/nonexistent_dir_xyz_abc/invalid.log`.
 
 **Expected**: Exit code non-zero; combined output contains "Error".
+
+### NuGetCacheTool_HelpTopics_HelpVerb_ListsTopics
+
+**Scenario**: The `help` command is passed as the sole argument.
+
+**Expected**: Exit code 0; combined output contains `nuget-cache help <topic>` for every root
+topic and does not contain "Copyright".
+
+### NuGetCacheTool_HelpTopics_UnknownTopic_ReturnsUsageError
+
+**Scenario**: The arguments `help no-such-topic` are passed.
+
+**Expected**: Exit code 2; combined output names `no-such-topic`.
+
+### NuGetCacheTool_HelpExamples_AllCommandExamples_GiveStatedResults
+
+**Scenario**: Every command example of the shipped help cards is run against the built tool in
+the scratch folder of its card, which holds the saved source examples of the card and a `feed`
+folder with the demo package.
+
+**Expected**: At least one command example runs, and every example gives the exit code and the
+output fragments that its card states.

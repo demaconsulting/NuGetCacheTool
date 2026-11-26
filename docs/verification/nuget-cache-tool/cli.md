@@ -9,6 +9,8 @@ traceability is tracked in the ReqStream trace matrix, not in this document.
 The CLI subsystem is verified with subsystem integration tests defined in `CliTests.cs`. These
 tests exercise the public API of the `Context` class directly, simulating all supported
 command-line argument combinations and verifying the resulting context state and output behavior.
+The help test creates a `HelpCommand` with `HelpCommand.Create`, which writes to in-memory writers
+instead of the console.
 
 No mocking is required; the tests exercise the full CLI parsing and output management logic.
 
@@ -17,6 +19,7 @@ No mocking is required; the tests exercise the full CLI parsing and output manag
 | Dependency | Usage in Tests |
 | --- | --- |
 | `Context` | Exercised directly through the `Context.Create` factory. |
+| `HelpCommand` | Exercised through `HelpCommand.Create`, with the real help cards and HelpCards. |
 
 ### Test Environment
 
@@ -31,6 +34,7 @@ The CLI subsystem test suite passes when all of the following conditions are met
 
 - All test scenarios defined in `CliTests.cs` pass.
 - No scenario produces an unexpected context state, exit code, or console output.
+- The help command prints a requested topic from the built-in help cards.
 - Every CLI subsystem requirement is covered by at least one passing scenario, as tracked in the
   ReqStream trace matrix.
 
@@ -133,3 +137,10 @@ The CLI subsystem test suite passes when all of the following conditions are met
 called.
 
 **Expected**: Message does not appear on stdout; log file is created and contains the message.
+
+#### Cli_HelpCommand_TopicRequested_PrintsTopic
+
+**Scenario**: A `HelpCommand` that writes to memory is run with `["help", "command-line"]`.
+
+**Expected**: The command is answered with exit code 0, and the output contains the
+"# Command-line options" heading of the topic card.

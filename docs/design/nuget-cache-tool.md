@@ -13,6 +13,7 @@ top-level unit, all residing in a single assembly.
 | --- | --- |
 | **CLI** (subsystem) | Argument parsing and output management |
 | └─ Context | Command-line argument parsing and output management |
+| └─ HelpCommand | Built-in help command served from embedded help cards |
 | **SelfTest** (subsystem) | Self-validation test execution |
 | └─ Validation | Self-validation test execution |
 | **Utilities** (subsystem) | Shared utilities: temporary directory and path safety |
@@ -25,12 +26,20 @@ top-level unit, all residing in a single assembly.
 | Interface | Description |
 | --- | --- |
 | CLI entry point (`nuget-cache [options] [package:version ...]`) | Main command-line invocation pattern |
+| Help command (`nuget-cache help [topic]`) | Built-in help, answered from help cards embedded in the tool assembly |
 | stdout | Package paths are written one per line on success; banner and help text on non-version invocations |
 | stderr | Error messages are written to stderr when an error occurs and silent mode is not active |
 | Exit code | 0 = success; non-zero = failure |
 
 Interface details:
 
+- **CLI entry point**: unknown arguments, an option without its value, and a log file that cannot be opened cause
+  exit code 1 and an error message on stderr. These errors are found before `--silent` and `--log` take effect, so
+  they are always printed and never logged.
+- **Help command**: `nuget-cache help` prints the topic index and `nuget-cache help <topic>` prints a topic card
+  with its examples; HelpCards adds `--example`, `--search`, and `--json`. Returns exit code 0 for success, 2 for a
+  wrong help argument or an unknown topic, and 70 for a defective card catalog. `help` must be the first argument.
+  It is answered before the options are parsed, so `--silent` and `--log` do not apply and no banner is printed.
 - **stderr**: `Program.Main` prefixes caught top-level exceptions with `"Error: "`, while `Context.WriteError`
   writes caller-supplied text unchanged.
 
@@ -42,6 +51,8 @@ Interface details:
 - **DemaConsulting.TestResults**: provides `TrxSerializer` and `JUnitSerializer` used by the
   SelfTest subsystem to emit validation results in TRX and JUnit XML formats — see
   *DemaConsulting.TestResults Integration Design*
+- **DemaConsulting.HelpCards**: loads, validates, and serves the built-in help cards for the
+  `help` command — see *DemaConsulting.HelpCards Integration Design*
 
 ## Risk Control Measures
 
@@ -61,9 +72,11 @@ is required beyond the security constraint described above.
 
 ```text
 args
+ ├─► HelpCommand.TryRun(args)
+ │    └── first argument is "help" ──► print help answer, exit 0 / 2 / 70
  └─► Context.Create(args)
       ├── Version=true  ──► Program.Run ──► display version, exit 0
-      ├── Help=true     ──► Program.Run ──► display banner + help, exit 0
+      ├── Help=true     ──► Program.Run ──► display banner + help + help pointer, exit 0
       ├── Validate=true ──► Program.Run ──► display banner + Validation.Run(), exit code
       └── (default)     ──► Program.Run ──► display banner + RunToolLogic(), exit code
                                                    └─► NuGetCache.EnsureCachedAsync per package
@@ -87,9 +100,11 @@ args
   `DemaConsulting.NuGet.CacheTool.SelfTest`, and `DemaConsulting.NuGet.CacheTool.Utilities`
 - Console output is normally managed through `Context.WriteLine` and `Context.WriteError`;
   `Program.Main` may write directly to `Console.Error` if `Context` creation fails or
-  has not yet completed
+  has not yet completed, and `HelpCommand` writes its answers to the console itself because
+  the `help` command is answered before a `Context` exists
 - Exit codes are normally controlled via `Context.ExitCode`; `Program.Main` may return
-  a non-zero exit code directly when `Context` cannot be created
+  a non-zero exit code directly when `Context` cannot be created, and returns the exit code of
+  `HelpCommand` for the `help` command
 
 ### Security Constraints
 
@@ -141,7 +156,8 @@ system-level evidence that all units work correctly together in the target envir
 
 ## Integration Patterns
 
-The tool integrates with the NuGet ecosystem via `DemaConsulting.NuGet.Caching` and
-with CI/CD test infrastructure via `DemaConsulting.TestResults`. Self-validation
+The tool integrates with the NuGet ecosystem via `DemaConsulting.NuGet.Caching`, with
+CI/CD test infrastructure via `DemaConsulting.TestResults`, and serves its built-in help
+with `DemaConsulting.HelpCards`. Self-validation
 tests use the tool's own binary to verify end-to-end behavior in the deployment
 environment.

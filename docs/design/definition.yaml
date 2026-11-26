@@ -18,6 +18,7 @@ input-files:
   - docs/design/nuget-cache-tool/program.md
   - docs/design/nuget-cache-tool/cli.md
   - docs/design/nuget-cache-tool/cli/context.md
+  - docs/design/nuget-cache-tool/cli/help-command.md
   - docs/design/nuget-cache-tool/self-test.md
   - docs/design/nuget-cache-tool/self-test/validation.md
   - docs/design/nuget-cache-tool/utilities.md
@@ -26,6 +27,7 @@ input-files:
   - docs/design/ots.md
   - docs/design/ots/nuget-caching.md
   - docs/design/ots/test-results.md
+  - docs/design/ots/help-cards.md
   - docs/design/ots/sysml2tools.md
 template: template.html
 table-of-contents: true

@@ -25,5 +25,6 @@ package NuGetCacheTool {
 
         part nuGetCaching : NuGetCaching;
         part testResults : TestResults;
+        part helpCards : HelpCards;
     }
 }

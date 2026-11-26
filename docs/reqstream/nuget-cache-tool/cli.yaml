@@ -1,7 +1,8 @@
 ---
 # NuGet Cache Tool CLI Subsystem Requirements
 #
-# Requirements for the CLI subsystem: command-line argument parsing and output management.
+# Requirements for the CLI subsystem: command-line argument parsing and output management (Context.cs),
+# and the built-in help command (HelpCommand.cs).
 
 sections:
   - title: NuGet Cache Tool Requirements
@@ -142,3 +143,14 @@ sections:
               - NuGetCache-Context-SilentOutput
             tests:
               - Cli_SilentAndLog_WritesToLogFileOnly
+
+          - id: NuGetCache-Cli-HelpTopics
+            title: The CLI shall answer the `help` command from built-in help cards.
+            justification: |
+              Users and AI agents need help topics with worked examples from the installed tool.
+            children:
+              - NuGetCache-HelpCommand-HelpVerb
+              - NuGetCache-HelpCommand-ValidCards
+              - NuGetCache-HelpCommand-LineWidth
+            tests:
+              - Cli_HelpCommand_TopicRequested_PrintsTopic

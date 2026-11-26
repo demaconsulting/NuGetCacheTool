@@ -13,9 +13,9 @@ OTS items are selected for the NuGet Cache Tool based on the following criteria:
 - **Minimal API surface**: the OTS item should expose a small, well-defined API that is directly
   callable without wrapper or adapter layers
 
-Both `DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` satisfy all four criteria:
-they are purpose-built libraries published by DEMA Consulting under the MIT License, each exposing
-a minimal, stable API that meets the NuGet Cache Tool's exact needs.
+`DemaConsulting.NuGet.Caching`, `DemaConsulting.TestResults`, and `DemaConsulting.HelpCards` satisfy
+all four criteria: they are purpose-built libraries published by DEMA Consulting under the MIT
+License, each exposing a minimal, stable API that meets the NuGet Cache Tool's exact needs.
 
 `SysML2Tools` is a build-time dotnet local tool rather than a runtime NuGet package dependency. It
 is selected against the same criteria: it is published by DEMA Consulting, licensed compatibly, and
@@ -31,6 +31,8 @@ is managed in SBOMs outside of design documentation. Dependabot monitors publish
 raises pull requests for version upgrades. Each upgrade pull request is evaluated against the full
 CI/CD test suite before merging; major-version upgrades additionally require a design review to
 confirm that the API surface used by the NuGet Cache Tool remains compatible.
+`DemaConsulting.HelpCards` is a pre-release package pinned to an exact version; upgrading it
+requires re-running the help tests and a review of its integration design.
 
 `SysML2Tools` is pinned to an exact version in `.config/dotnet-tools.json`
 (`demaconsulting.sysml2tools.tool`) and restored with `dotnet tool restore` at the start of each
@@ -38,13 +40,14 @@ CI job, providing the same reproducibility and audit trail as the other pipeline
 
 ## General Integration Approach
 
-Both `DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` are consumed as NuGet packages
-declared in the project file. No wrapper classes or abstraction interfaces are introduced; OTS
-APIs are called directly from the units that require them. This keeps the integration surface
-minimal and directly traceable from source to design:
+The runtime OTS libraries are consumed as NuGet packages declared in the project file. No wrapper classes or abstraction
+interfaces are introduced; OTS APIs are called directly from the units that require them. This keeps the integration
+surface minimal and directly traceable from source to design:
 
 - `DemaConsulting.NuGet.Caching` is called directly from `Program.RunToolLogic`
 - `DemaConsulting.TestResults` serializers are called directly from `Validation.Run`
+- `DemaConsulting.HelpCards` is called only from `HelpCommand`, which answers the `help` command
+  before a `Context` exists and therefore reports its errors itself
 
 Error handling follows the conventions of the calling unit: exceptions thrown by OTS APIs are caught
 at the call site and reported via `context.WriteError`, which sets the process exit code to 1.
@@ -57,13 +60,16 @@ the GitHub Actions default `fail-fast` behavior.
 ## Qualification Strategy
 
 OTS items are qualified through integration-test evidence produced by the CI/CD pipeline. The
-NuGet Cache Tool's self-validation tests (`--validate`) exercise the two runtime OTS items
+NuGet Cache Tool's self-validation tests (`--validate`) exercise two of the runtime OTS items
 end-to-end in the deployment environment:
 
 - `DemaConsulting.NuGet.Caching` is exercised by `NuGetCache_CachePackage`, which calls
   `NuGetCache.EnsureCachedAsync` against the live NuGet feed
 - `DemaConsulting.TestResults` is exercised by `--results` output from `Validation.Run`, which
   invokes `TrxSerializer` or `JUnitSerializer` and asserts the structure of the produced file
+
+`DemaConsulting.HelpCards` is not exercised by self-validation; it is qualified by the help tests of
+the tool, which validate the shipped cards and run every command example against the built tool.
 
 Self-validation results are emitted as machine-readable test result files (TRX or JUnit XML)
 consumed by the ReqStream traceability tool, providing traceable OTS qualification evidence.
@@ -78,16 +84,17 @@ The pipeline additionally exercises `SysML2Tools` against the real NuGetCacheToo
 
 ## Integration Strategy
 
-The NuGet Cache Tool integrates three OTS (off-the-shelf) software items:
+The NuGet Cache Tool integrates four OTS (off-the-shelf) software items:
 
 | OTS Item | Package | Purpose |
 | --- | --- | --- |
 | DemaConsulting.NuGet.Caching | `DemaConsulting.NuGet.Caching` | NuGet package caching to the global packages folder |
 | DemaConsulting.TestResults | `DemaConsulting.TestResults` | Serializes self-validation results to TRX and JUnit XML |
+| DemaConsulting.HelpCards | `DemaConsulting.HelpCards` | Serves the built-in `help` command from embedded help cards |
 | SysML2Tools | `demaconsulting.sysml2tools.tool` | Validates the SysML2 model and renders its views to SVG diagrams |
 
-Both `DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` are consumed as NuGet packages
-declared in the main project file
+`DemaConsulting.NuGet.Caching`, `DemaConsulting.TestResults`, and `DemaConsulting.HelpCards` are
+consumed as NuGet packages declared in the main project file
 (`src/DemaConsulting.NuGet.CacheTool/DemaConsulting.NuGet.CacheTool.csproj`).
 No wrapper layers or abstraction interfaces are introduced; the OTS APIs are called
 directly from the units that need them. `SysML2Tools` is instead installed as a dotnet local
@@ -97,4 +104,4 @@ OTS items are verified by integration-test evidence from the CI/CD pipeline. Eac
 OTS item's verification document lists the integration test scenarios that demonstrate
 the item functions correctly in the deployment environment — see
 *DemaConsulting.NuGet.Caching Integration Design*, *DemaConsulting.TestResults Integration Design*,
-and *SysML2Tools OTS Design*.
+*DemaConsulting.HelpCards Integration Design*, and *SysML2Tools OTS Design*.

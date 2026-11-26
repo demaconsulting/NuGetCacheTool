@@ -12,7 +12,9 @@ vendor-supplied self-validation evidence and local integration tests. Where an O
 a built-in `--validate` command, the CI pipeline runs that command and records results in a TRX
 file consumed by ReqStream. Where self-validation is not available, the OTS item is exercised
 through its integration with the build pipeline; downstream FileAssert assertions and a passing
-ReqStream enforcement step constitute evidence that the item is functioning correctly.
+ReqStream enforcement step constitute evidence that the item is functioning correctly. Runtime libraries without a
+self-validation mode, such as `DemaConsulting.HelpCards`, are verified by the tests of the tool,
+which use the real library.
 
 ## Qualification Evidence
 
@@ -44,6 +46,7 @@ When an OTS item is upgraded to a new version:
 | --- | --- |
 | BuildMark | ots/buildmark.md |
 | FileAssert | ots/fileassert.md |
+| DemaConsulting.HelpCards | ots/help-cards.md |
 | DemaConsulting.NuGet.Caching | ots/nuget-caching.md |
 | Pandoc | ots/pandoc.md |
 | ReqStream | ots/reqstream.md |
