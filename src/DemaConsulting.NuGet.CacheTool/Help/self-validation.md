@@ -53,10 +53,11 @@ see [[nuget-config]]. That is why the examples here are not run offline.
 
 **Report.** The output is Markdown. It starts with a heading and a table of
 the tool version, machine name, operating system, .NET runtime, and time
-stamp. Each test prints one line, `✓ <test> - PASSED` or
-`✗ <test> - FAILED: <reason>`, and the report ends with `Total Tests`,
-`Passed`, and `Failed` lines. The exit code is 0 only when every test
-passes.
+stamp. Each test prints one line with its display name, such as
+`✓ Version Display Test - PASSED` or
+`✗ Cache Package Test - FAILED: <reason>`, and the report ends with
+`Total Tests`, `Passed`, and `Failed` lines. The exit code is 0 only when
+every test passes.
 
 **Results files.** `--results <file>` also writes the outcome; the
 extension chooses the format. `.trx` writes a Visual Studio TRX file and
@@ -64,7 +65,7 @@ extension chooses the format. `.trx` writes a Visual Studio TRX file and
 extension is an error after the tests ran. The folder of the file must
 exist. Without `--validate`, `--results` is ignored.
 
-**Evidence.** The tests have stable names, `NuGetCache_VersionDisplay`,
-`NuGetCache_HelpDisplay`, and `NuGetCache_CachePackage`, so a
-requirements file can list them as the tests that prove the tool works in
-its environment.
+**Evidence.** The `--results` file records each test under a stable name,
+`NuGetCache_VersionDisplay`, `NuGetCache_HelpDisplay`, and
+`NuGetCache_CachePackage`, so a requirements file can list them as the
+tests that prove the tool works in its environment.

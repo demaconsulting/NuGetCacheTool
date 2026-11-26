@@ -407,9 +407,12 @@ public class IntegrationTests
                 package.CreateEntryFromFile(nuspecPath, "Demo.Package.nuspec");
             }
 
+            // Remove NUGET_PACKAGES so the globalPackagesFolder of the saved nuget.config applies and the demo
+            // package never reaches a real global packages folder
             var exitCode = Runner.RunInDirectory(
                 out var output,
                 invocation.WorkingDirectory,
+                new Dictionary<string, string?> { ["NUGET_PACKAGES"] = null },
                 "dotnet",
                 [_dllPath, .. invocation.Arguments]);
             return new HelpExampleOutcome(exitCode, output);

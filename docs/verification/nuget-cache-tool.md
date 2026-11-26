@@ -14,7 +14,9 @@ The help tests use `Runner.RunInDirectory`, which runs the tool in a given worki
 example-runner test gives the HelpCards example runner a delegate that runs every command example
 of the help cards against the built tool in the scratch folder of its card, after packing the demo
 package `Demo.Package` 1.0.0 from `TestData/HelpExamples/Demo.Package.nuspec` into the `feed`
-folder of that scratch folder.
+folder of that scratch folder. It also removes `NUGET_PACKAGES` from the environment of the tool,
+so the `globalPackagesFolder` of the saved `nuget.config` applies and the demo package never
+reaches a real global packages folder.
 
 This approach ensures that system requirements are verified at the system boundary without assuming
 any internal implementation detail. The tests treat the tool as a black box and assert on
@@ -75,9 +77,10 @@ implementations:
   The `--results` and `--log` flags are exercised with real file paths under a temporary folder.
 - **Process exit code** — Returned by `Runner.Run` and asserted directly.
 - **NuGet package cache** — Real NuGet packages are downloaded and cached during tests that
-  exercise the cache command. The help examples instead use the `nuget.config` of their card,
-  which names only the local `feed` folder and a `cache` folder in the scratch folder, so they
-  need no network.
+  exercise the cache command. The `nuget-config` help examples use the `nuget.config` that their
+  card saves, which names only the local `feed` folder and a `cache` folder in the scratch
+  folder. Every other command example ends before any feed is contacted, so no help example
+  needs the network.
 - **Path construction** — The `IntegrationTests` constructor uses `PathHelpers.SafePathCombine`
   (Utilities subsystem) to locate the tool DLL at a path derived from `AppContext.BaseDirectory`.
 

@@ -32,7 +32,7 @@ examples:
     exit: 1
     expect: "Error: Unsupported argument '--unknown'"
 ---
-Options start with `--` (or a single letter after `-`) and may be given in
+Options start with `--` (or one character after `-`) and may be given in
 any order, mixed with the packages to cache.
 
 | Option | Meaning |
