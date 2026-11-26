@@ -197,6 +197,45 @@ spell-checking failure. Doing so defeats the purpose of spell-checking and reduc
   correctly, raise a **proposal** (e.g. comment in a pull request) explaining why the word should be added. The
   proposal must be reviewed and approved before the word is added to the list.
 
+### Help Cards
+
+The built-in help (`nuget-cache help`) is served from Markdown help cards in
+`src/DemaConsulting.NuGet.CacheTool/Help/`, which the DemaConsulting.HelpCards package embeds in the tool assembly.
+`Cli/HelpCommand.cs` is the only code that uses the package.
+
+- **One file per topic.** The path below `Help/`, without `.md`, is the card id. `_source.md` names the source
+  (`name:`) and sets `schema: 2`.
+- **Front matter.** Every card has a `title`, a `summary` (at most 80 characters for a topic, 100 otherwise), and
+  exactly one purpose tag: `tutorial`, `reference`, or `troubleshooting`. Add `aliases` for topic names that users
+  commonly guess, such as `examples`, so `help <name>` finds the card.
+- **New topics.** Add the id of every new top-level card to `HelpCommand.RootCardIds`, the one list of topics; a
+  missing or extra topic fails the tests.
+- **Examples.** Give every task a runnable `command` example, one command per example: no pipes, redirection, or
+  `&&`. Wrap `content` in single quotes and use double quotes inside the command, which bash, PowerShell, and cmd
+  read alike. State the result when it matters with `exit:` (default 0) and `expect:`, a short fragment that must
+  appear somewhere in the console output; `expect` cannot check a file that the command writes. Keep each
+  `description` to about 50 characters.
+- **Getting started.** Say how to install the tool for CI: the .NET version it needs (from `TargetFrameworks`), a
+  local tool manifest with `dotnet tool restore` before `dotnet nuget-cache`, and the global install as the
+  alternative. Mark the install commands as `snippet` examples so that the example runner does not run them.
+- **Network.** The example runner must work offline. An example that needs nuget.org, a private feed, or
+  credentials is a `snippet` with `save-as`, so the runner does not run it; explain what it needs in the prose.
+  Never put real credentials in a card or a test.
+- **Input files.** Show complete files only for formats that users author, such as `nuget.config`; describe what
+  the tool produces in prose. The `nuget-config` card saves a `nuget.config` that names a local `feed` folder; the
+  example-runner test packs the demo package from
+  `test/DemaConsulting.NuGet.CacheTool.Tests/TestData/HelpExamples/Demo.Package.nuspec` into that folder of
+  `invocation.WorkingDirectory` before running the tool.
+- **Width.** A printed card may not be wider than 120 characters. Links print as full commands (`[[#name]]` as
+  about 50 characters) and `{{version}}` of a development build as about 46, so keep body lines near 75 characters
+  with at most one link each.
+- **Text.** Cards are linted and spell-checked like any Markdown file: no body line starting with `#`, no wide
+  tables, and every fenced block names its language.
+
+Run `pwsh ./build.ps1 -Changed` after changing a card. The `HelpCommand` unit tests validate every card, with
+warnings treated as errors, and check its printed width; an integration test runs every command example against
+the built tool and compares the result with the card.
+
 ## Quality Checks
 
 Before submitting a pull request, ensure all quality checks pass.

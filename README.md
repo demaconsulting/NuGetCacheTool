@@ -42,6 +42,8 @@ This tool provides:
 - **Multiple Packages**: Specify multiple packages in a single command
 - **Package Path Output**: Output the path to each cached package
 - **Self-Validation**: Built-in validation tests with TRX/JUnit output
+- **Built-in Help**: `nuget-cache help` serves Markdown help cards ([DemaConsulting.HelpCards][link-helpcards])
+  with runnable examples, search, and JSON output for AI agents
 - **Multi-Platform Support**: Builds and runs on Windows, Linux, and macOS
 - **Multi-Runtime Support**: Targets .NET 10 and 11
 
@@ -67,6 +69,10 @@ nuget-cache --version
 
 # Display help
 nuget-cache --help
+
+# List the built-in help topics, then read one
+nuget-cache help
+nuget-cache help getting-started
 
 # Run self-validation
 nuget-cache --validate
@@ -149,3 +155,4 @@ By contributing to this project, you agree that your contributions will be licen
 [link-quality]: https://sonarcloud.io/dashboard?id=demaconsulting_NuGetCacheTool
 [link-security]: https://sonarcloud.io/dashboard?id=demaconsulting_NuGetCacheTool
 [link-nuget]: https://www.nuget.org/packages/DemaConsulting.NuGet.CacheTool
+[link-helpcards]: https://www.nuget.org/packages/DemaConsulting.HelpCards
