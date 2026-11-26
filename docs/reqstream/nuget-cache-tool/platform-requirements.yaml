@@ -5,62 +5,60 @@
 
 sections:
   - title: NuGet Cache Tool Requirements
-    sections:
-      - title: Platform Support
-        requirements:
-          - id: NuGetCache-PLT-Windows
-            title: The tool shall run on Windows platforms.
-            tags:
-              - system
-            justification: |
-              DEMA Consulting tools must support Windows as a major development platform.
-            tests:
-              # Tests link to "windows" to ensure results come from Windows platform
-              - "windows@NuGetCache_VersionDisplay"
-              - "windows@NuGetCache_HelpDisplay"
+    requirements:
+      - id: NuGetCache-PLT-Windows
+        title: The tool shall run on Windows platforms.
+        tags:
+          - system
+        justification: |
+          DEMA Consulting tools must support Windows as a major development platform.
+        tests:
+          # Tests link to "windows" to ensure results come from Windows platform
+          - "windows@NuGetCache_VersionDisplay"
+          - "windows@NuGetCache_HelpDisplay"
 
-          - id: NuGetCache-PLT-Linux
-            title: The tool shall run on Linux platforms.
-            tags:
-              - system
-            justification: |
-              DEMA Consulting tools must support Linux for CI/CD and containerized environments.
-            tests:
-              # Tests link to "ubuntu" to ensure results come from Linux platform
-              - "ubuntu@NuGetCache_VersionDisplay"
-              - "ubuntu@NuGetCache_HelpDisplay"
+      - id: NuGetCache-PLT-Linux
+        title: The tool shall run on Linux platforms.
+        tags:
+          - system
+        justification: |
+          DEMA Consulting tools must support Linux for CI/CD and containerized environments.
+        tests:
+          # Tests link to "ubuntu" to ensure results come from Linux platform
+          - "ubuntu@NuGetCache_VersionDisplay"
+          - "ubuntu@NuGetCache_HelpDisplay"
 
-          - id: NuGetCache-PLT-MacOS
-            title: The tool shall run on macOS platforms.
-            tags:
-              - system
-            justification: |
-              DEMA Consulting tools must support macOS for developers using Apple platforms.
-            tests:
-              # Tests link to "macos" to ensure results come from macOS platform
-              - "macos@NuGetCache_VersionDisplay"
-              - "macos@NuGetCache_HelpDisplay"
+      - id: NuGetCache-PLT-MacOS
+        title: The tool shall run on macOS platforms.
+        tags:
+          - system
+        justification: |
+          DEMA Consulting tools must support macOS for developers using Apple platforms.
+        tests:
+          # Tests link to "macos" to ensure results come from macOS platform
+          - "macos@NuGetCache_VersionDisplay"
+          - "macos@NuGetCache_HelpDisplay"
 
-          - id: NuGetCache-PLT-Net10
-            title: The tool shall support .NET 10 runtime.
-            tags:
-              - system
-            justification: |
-              .NET 10 is a Long-Term Support (LTS) release and the oldest supported .NET runtime,
-              providing long-term stability for enterprise users.
-            tests:
-              # Tests link to "dotnet10.x" to ensure results come from the .NET 10 runtime
-              - "dotnet10.x@NuGetCache_VersionDisplay"
-              - "dotnet10.x@NuGetCache_HelpDisplay"
+      - id: NuGetCache-PLT-Net10
+        title: The tool shall support .NET 10 runtime.
+        tags:
+          - system
+        justification: |
+          .NET 10 is a Long-Term Support (LTS) release and the oldest supported .NET runtime,
+          providing long-term stability for enterprise users.
+        tests:
+          # Tests link to "dotnet10.x" to ensure results come from the .NET 10 runtime
+          - "dotnet10.x@NuGetCache_VersionDisplay"
+          - "dotnet10.x@NuGetCache_HelpDisplay"
 
-          - id: NuGetCache-PLT-Net11
-            title: The tool shall support .NET 11 runtime.
-            tags:
-              - system
-            justification: |
-              .NET 11 support enables users to leverage the latest .NET features and performance
-              improvements.
-            tests:
-              # Tests link to "dotnet11.x" to ensure results come from the .NET 11 runtime
-              - "dotnet11.x@NuGetCache_VersionDisplay"
-              - "dotnet11.x@NuGetCache_HelpDisplay"
+      - id: NuGetCache-PLT-Net11
+        title: The tool shall support .NET 11 runtime.
+        tags:
+          - system
+        justification: |
+          .NET 11 support enables users to leverage the latest .NET features and performance
+          improvements.
+        tests:
+          # Tests link to "dotnet11.x" to ensure results come from the .NET 11 runtime
+          - "dotnet11.x@NuGetCache_VersionDisplay"
+          - "dotnet11.x@NuGetCache_HelpDisplay"

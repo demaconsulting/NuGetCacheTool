@@ -19,6 +19,7 @@ OTS items:
 
 - **DemaConsulting.NuGet.Caching**: integration and usage design.
 - **DemaConsulting.TestResults**: integration and usage design.
+- **DemaConsulting.HelpCards**: integration and usage design.
 - **SysML2Tools**: integration and usage design (the one build-time-only OTS tool with a
   dedicated design document, since it generates the SysML2 model and diagrams referenced
   below).
@@ -58,7 +59,8 @@ its cache path, and an exit code, with Utilities and SelfTest providing helpers 
 
 - **src/** - source files and projects
   - **DemaConsulting.NuGet.CacheTool/** - NuGetCacheTool system source
-    - **Cli/** - CLI subsystem
+    - **Cli/** - CLI subsystem (`Context.cs` and `HelpCommand.cs`)
+    - **Help/** - built-in help cards, embedded in the tool assembly
     - **SelfTest/** - SelfTest subsystem
     - **Utilities/** - Utilities subsystem
 
@@ -75,11 +77,11 @@ Each local software item has corresponding artifacts in parallel directory trees
 OTS items have integration/usage design documentation parallel to system folders:
 
 - Requirements: `docs/reqstream/ots/nuget-caching.yaml`, `docs/reqstream/ots/test-results.yaml`,
-  `docs/reqstream/ots/sysml2tools.yaml`
+  `docs/reqstream/ots/help-cards.yaml`, `docs/reqstream/ots/sysml2tools.yaml`
 - Design: `docs/design/ots/nuget-caching.md`, `docs/design/ots/test-results.md`,
-  `docs/design/ots/sysml2tools.md`
+  `docs/design/ots/help-cards.md`, `docs/design/ots/sysml2tools.md`
 - Verification: `docs/verification/ots/nuget-caching.md`, `docs/verification/ots/test-results.md`,
-  `docs/verification/ots/sysml2tools.md`
+  `docs/verification/ots/help-cards.md`, `docs/verification/ots/sysml2tools.md`
 
 Review-sets: defined in `.reviewmark.yaml`
 

@@ -9,6 +9,7 @@ needs-review:
   - "README.md"                    # Project readme
   - "requirements.yaml"            # Root requirements file
   - "**/*.cs"                      # All C# source and test files
+  - "src/**/Help/**"               # Built-in help cards
   - "docs/reqstream/**/*.yaml"     # Requirements files
   - "docs/sysml2/**/*.sysml"       # SysML2 architecture model
   - "docs/design/**/*.md"          # Design documents
@@ -137,6 +138,21 @@ reviews:
       - "src/**/Cli/Context.cs"
       - "test/**/Cli/ContextTests.cs"
 
+  - id: NuGetCacheTool-Cli-HelpCommand
+    title: Review that NuGetCacheTool Cli HelpCommand Implementation is Correct
+    context:
+      - "docs/design/nuget-cache-tool.md"
+      - "docs/reqstream/nuget-cache-tool.yaml"
+      - "docs/design/nuget-cache-tool/cli.md"
+      - "docs/reqstream/nuget-cache-tool/cli.yaml"
+    paths:
+      - "docs/reqstream/nuget-cache-tool/cli/help-command.yaml"
+      - "docs/design/nuget-cache-tool/cli/help-command.md"
+      - "docs/verification/nuget-cache-tool/cli/help-command.md"
+      - "src/**/Cli/HelpCommand.cs"
+      - "src/**/Help/**"
+      - "test/**/Cli/HelpCommandTests.cs"
+
   # NuGetCacheTool - SelfTest
   - id: NuGetCacheTool-SelfTest
     title: Review that NuGetCacheTool SelfTest Satisfies Subsystem Requirements
@@ -215,6 +231,13 @@ reviews:
     paths:
       - "docs/reqstream/ots/fileassert.yaml"
       - "docs/verification/ots/fileassert.md"
+
+  - id: OTS-HelpCards
+    title: Review that DemaConsulting.HelpCards Provides Required Functionality
+    paths:
+      - "docs/reqstream/ots/help-cards.yaml"
+      - "docs/design/ots/help-cards.md"
+      - "docs/verification/ots/help-cards.md"
 
   - id: OTS-NuGetCaching
     title: Review that DemaConsulting.NuGet.Caching Provides Required Functionality

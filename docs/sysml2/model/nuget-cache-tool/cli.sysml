@@ -2,7 +2,7 @@ package NuGetCacheTool {
     private import SoftwareItemMetadata::*;
 
     part def CliSubsystem {
-        doc /* Command-line argument parsing and output-management subsystem. */
+        doc /* Command-line argument parsing, output management, and built-in help subsystem. */
 
         metadata info : SoftwareInfo {
             testFiles = ("test/DemaConsulting.NuGet.CacheTool.Tests/Cli/CliTests.cs");
@@ -12,5 +12,6 @@ package NuGetCacheTool {
         }
 
         part context : Context;
+        part helpCommand : HelpCommand;
     }
 }

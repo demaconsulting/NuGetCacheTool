@@ -4,9 +4,9 @@
 
 ### Purpose
 
-`Program` is the main entry point and orchestration unit. It creates the `Context`,
-dispatches execution to the appropriate handler, and returns the exit code to the
-operating system.
+`Program` is the main entry point and orchestration unit. It hands the `help` command to
+`HelpCommand`; otherwise it creates the `Context`, dispatches execution to the appropriate
+handler, and returns the exit code to the operating system.
 
 ### Data Model
 
@@ -31,11 +31,16 @@ semantic version of the tool.
 
 #### Main(string[] args)
 
-Application entry point. Creates `Context`, delegates to `Run`, returns exit code.
+Application entry point (`internal`, so the tests can call it). Answers the `help` command,
+or creates `Context`, delegates to `Run`, and returns the exit code.
 
 - **Preconditions**: invoked by .NET runtime with command-line arguments
-- **Postconditions**: returns 0 on success, non-zero on failure
-- **Algorithm**: wraps `Context.Create(args)` and `Run(context)` in try/catch;
+- **Postconditions**: returns 0 on success, non-zero on failure; for the `help` command, the
+  exit code of `HelpCommand` (see *Help command* in the system design)
+- **Algorithm**: first calls `HelpCommand.Default.TryRun(args, out exitCode)`; the `help`
+  command is not an option, so `Context.Create` would reject it, and when the help command
+  answers, `Main` returns its exit code. Otherwise wraps `Context.Create(args)` and
+  `Run(context)` in try/catch;
   catches `ArgumentException` and `InvalidOperationException`, writes `"Error: {message}"`
   to `Console.Error`, returns 1; catches any other `Exception`, writes
   `"Unexpected error: {message}"` to `Console.Error`, re-throws
@@ -58,7 +63,8 @@ Writes the tool name, version, and copyright notice to output.
 
 #### PrintHelp(Context context)
 
-Writes usage information and the options list to output.
+Writes the usage synopsis (including `nuget-cache help [topic]`) and the options list to
+output, and ends with `HelpCommand.Default.Footer`, the pointer to the help command.
 
 - **Preconditions**: `context` is valid
 - **Postconditions**: usage text written via `context.WriteLine`
@@ -87,6 +93,7 @@ for unexpected failures without suppressing the error.
 
 | Dependency | Usage |
 | --- | --- |
+| `HelpCommand` | `Main` calls `TryRun` before parsing options; `PrintHelp` writes `Footer` |
 | `Context` | Created in `Main`; passed to `Run` and all helpers |
 | `Validation` | Called when `context.Validate` is true |
 | `NuGetCache` | Called for each package in `context.Packages` |
@@ -94,7 +101,8 @@ for unexpected failures without suppressing the error.
 ### Callers
 
 `Program.Main` is the application entry point, invoked directly by the .NET runtime. There
-are no other callers of `Main` in production code.
+are no other callers of `Main` in production code; the unit tests call it to verify the `help`
+command.
 
 `Program.Run(Context)` is called from `Main` in normal operation and also called
 in-process by `Validation.RunValidationTest` during self-validation, allowing the full

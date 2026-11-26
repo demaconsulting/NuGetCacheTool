@@ -35,7 +35,28 @@ internal static class Runner
     /// <param name="arguments">Program arguments.</param>
     /// <returns>Program exit code.</returns>
     /// <exception cref="InvalidOperationException">Thrown when process fails to start.</exception>
-    public static int Run(out string output, string program, params string[] arguments)
+    public static int Run(out string output, string program, params string[] arguments) =>
+        RunInDirectory(out output, null, null, program, arguments);
+
+    /// <summary>
+    ///     Runs the specified program in a working directory and captures its output.
+    /// </summary>
+    /// <param name="output">Program output (stdout and stderr combined).</param>
+    /// <param name="workingDirectory">Working directory for the process, or null for the current directory.</param>
+    /// <param name="environment">
+    ///     Environment variables to set for the process, where a null value removes the variable, or null to keep
+    ///     the inherited environment.
+    /// </param>
+    /// <param name="program">Program name or path.</param>
+    /// <param name="arguments">Program arguments.</param>
+    /// <returns>Program exit code.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when process fails to start.</exception>
+    public static int RunInDirectory(
+        out string output,
+        string? workingDirectory,
+        IReadOnlyDictionary<string, string?>? environment,
+        string program,
+        params string[] arguments)
     {
         // Construct the start information
         var startInfo = new ProcessStartInfo(program)
@@ -45,6 +66,28 @@ internal static class Runner
             UseShellExecute = false,
             CreateNoWindow = true
         };
+
+        // Set the working directory if one was provided
+        if (workingDirectory != null)
+        {
+            startInfo.WorkingDirectory = workingDirectory;
+        }
+
+        // Apply the environment overrides; a null value removes the variable from the process
+        if (environment != null)
+        {
+            foreach (var (name, value) in environment)
+            {
+                if (value == null)
+                {
+                    startInfo.Environment.Remove(name);
+                }
+                else
+                {
+                    startInfo.Environment[name] = value;
+                }
+            }
+        }
 
         // Add the arguments
         foreach (var argument in arguments)

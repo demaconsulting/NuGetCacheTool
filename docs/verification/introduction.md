@@ -19,6 +19,7 @@ This document covers the verification design for the same software items describ
 - **NuGetCacheTool** — the system as a whole
 - **CLI** — command-line interface subsystem
   - **Context** — argument parser and I/O owner
+  - **HelpCommand** — built-in help command
 - **SelfTest** — self-validation subsystem
   - **Validation** — self-validation test runner
 - **Utilities** — shared utilities subsystem
@@ -30,10 +31,11 @@ The following OTS items are covered, matching the *NuGet Cache Tool Software Des
 
 - **DemaConsulting.NuGet.Caching** — integration and usage verification.
 - **DemaConsulting.TestResults** — integration and usage verification.
+- **DemaConsulting.HelpCards** — integration and usage verification.
 - **SysML2Tools** — integration and usage verification.
 
-`DemaConsulting.NuGet.Caching` and `DemaConsulting.TestResults` are runtime OTS packages that
-this project's own source code integrates with directly, so each has requirement-linked,
+`DemaConsulting.NuGet.Caching`, `DemaConsulting.TestResults`, and `DemaConsulting.HelpCards` are
+runtime OTS packages that this project's own source code integrates with directly, so each has requirement-linked,
 unit-level verification design here. `SysML2Tools` is invoked from `lint.ps1` and
 `.github/workflows/build.yaml` — build/pipeline-integrated rather than called by the shipped
 tool's runtime code — but it still has its own verification design here because it generates
@@ -65,9 +67,9 @@ Each local software item has corresponding artifacts in parallel directory trees
 OTS items have integration/usage verification documentation parallel to system folders:
 
 - Requirements: `docs/reqstream/ots/nuget-caching.yaml`, `docs/reqstream/ots/test-results.yaml`,
-  `docs/reqstream/ots/sysml2tools.yaml`
+  `docs/reqstream/ots/help-cards.yaml`, `docs/reqstream/ots/sysml2tools.yaml`
 - Verification: `docs/verification/ots/nuget-caching.md`, `docs/verification/ots/test-results.md`,
-  `docs/verification/ots/sysml2tools.md`
+  `docs/verification/ots/help-cards.md`, `docs/verification/ots/sysml2tools.md`
 
 Review-sets: defined in `.reviewmark.yaml`
 

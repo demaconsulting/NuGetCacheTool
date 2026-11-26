@@ -16,6 +16,7 @@ codes.
 | --- | --- |
 | `Context` | Used directly (not mocked) — created from the argument array under test. |
 | `Validation` | Used directly (not mocked) — called when the validate flag is set. |
+| `HelpCommand` | Used directly (not mocked) — answers `help` in `Main` and supplies the footer. |
 
 No test doubles are introduced at the `Program` level; all collaborators execute their real logic.
 
@@ -50,10 +51,19 @@ is non-empty; exit code is 0.
 
 **Scenario**: `Program.Run` is called with a context created from `["--help"]`.
 
-**Expected**: Standard output contains "Usage:", "Options:", "--version", and "--help"; exit code
-is 0.
+**Expected**: Standard output contains "Usage:", "Options:", "--version", "--help", and the
+`nuget-cache help [topic]` usage line, and ends with the help footer; exit code is 0.
 
-**Requirement coverage**: `NuGetCache-Program-HelpDisplay`.
+**Requirement coverage**: `NuGetCache-Program-HelpDisplay`, `NuGetCache-Program-HelpFooter`.
+
+#### Program_Main_WithHelpVerb_PrintsHelpIndex
+
+**Scenario**: `Program.Main` is called with `["help"]`.
+
+**Expected**: Standard output contains the `nuget-cache help getting-started` line of the topic
+index and does not contain "Copyright"; exit code is 0.
+
+**Requirement coverage**: `NuGetCache-Program-HelpCommand`.
 
 #### Program_Run_WithValidateFlag_RunsValidation
 
