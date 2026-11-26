@@ -49,6 +49,9 @@ examples:
 | 1 | An error, a package not cached, or a failed self-test. |
 | 2 | A wrong `help` argument or an unknown help topic. |
 
+An unexpected error, such as a relative `NUGET_PACKAGES` path, ends with
+`Unexpected error:`, an unhandled exception, and another non-zero code.
+
 Errors are printed to standard error and set the exit code. Errors found
 during a run, such as a package that is not found, are hidden by
 `--silent` and kept in the `--log` file. Errors in the arguments, an
@@ -72,6 +75,9 @@ command that [[#silent-error]] prints shows.
 - `HTTP 401 (Unauthorized)` or `HTTP 403 (Forbidden)`: the feed needs
   credentials, or rejected them. Check `packageSourceCredentials` or the
   credential provider; see [[nuget-config]].
+- `'NUGET_PACKAGES' must contain an absolute path`: set
+  `NUGET_PACKAGES` to an absolute folder, such as `$PWD/.offline-cache`
+  or `${{ github.workspace }}/.offline-cache`; see [[nuget-config]].
 - `Unsupported results file format`: `--results` takes `.trx` or `.xml`.
 - `Failed to write results file`: the folder of `--results` does not
   exist or the file is locked.

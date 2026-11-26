@@ -47,6 +47,11 @@ at the first `:`, and both parts must be present. The command that
 [[#many]] prints need nuget.org, or the feeds of your
 `nuget.config`; see [[nuget-config]].
 
+**Dependencies.** Only the packages named on the command line are
+cached. Their dependencies are not resolved and not downloaded. List
+every package that you need, each with its exact version, as in
+[[#many]].
+
 **Versions.** The version must be exact, such as `13.0.3` or
 `2.0.0-beta.1`. Ranges, wildcards such as `13.*`, and `latest` are not
 accepted ([[#latest]]). A short version is normalized: `1.0` is cached

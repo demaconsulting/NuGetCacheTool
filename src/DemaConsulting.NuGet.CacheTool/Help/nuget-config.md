@@ -44,6 +44,13 @@ examples:
     content: '{{tool}} Demo.Package:2.0.0'
     exit: 1
     expect: 'was not found in any configured NuGet source'
+  - name: env-cache
+    kind: snippet
+    language: shell
+    save-as: env-cache.sh
+    description: Cache into an absolute folder for this command only.
+    content: |
+      NUGET_PACKAGES="$PWD/.offline-cache" {{tool}} Newtonsoft.Json:13.0.3
   - name: credentials
     kind: snippet
     language: xml
@@ -84,6 +91,15 @@ Put `demo.package.1.0.0.nupkg` in `feed`, and the command that
 `.nuget/packages` in your home folder. `globalPackagesFolder` in
 `nuget.config` changes it, and the `NUGET_PACKAGES` environment variable
 overrides both.
+
+**NUGET_PACKAGES.** The value must be an absolute path. A relative path,
+such as `.offline-cache`, stops the tool before it caches anything: it
+prints `Unexpected error: 'NUGET_PACKAGES' must contain an absolute path`
+and an unhandled exception, and exits with a code other than 0, 1, or 2.
+Build the path from an absolute folder: `$PWD/.offline-cache` in a
+shell, as in [[#env-cache]], or `${{ github.workspace }}/.offline-cache`
+in GitHub Actions. Set the variable only on the command or CI step that
+runs the tool. Then the other restores keep their usual cache folder.
 
 **Credentials.** A private feed needs credentials in
 `packageSourceCredentials`, under the key of the source, as in

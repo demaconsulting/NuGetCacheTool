@@ -22,14 +22,24 @@ examples:
     content: |
       dotnet new tool-manifest
       dotnet tool install --local DemaConsulting.NuGet.CacheTool
-  - name: run-in-ci
+  - name: ci-steps
     kind: snippet
-    language: shell
-    save-as: run-in-ci.sh
-    description: Restore the manifest tools in CI, then run the tool.
+    language: yaml
+    save-as: ci-steps.yaml
+    description: GitHub Actions steps that set up .NET and cache packages with the tool.
     content: |
-      dotnet tool restore
-      dotnet {{tool}} --version
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.x
+      - name: Restore the local .NET tools
+        run: dotnet tool restore
+      - name: Cache the packages
+        run: dotnet {{tool}} Newtonsoft.Json:13.0.3 NuGet.Common:6.12.1
+        env:
+          NUGET_PACKAGES: ${{ github.workspace }}/.offline-cache
   - name: version
     kind: command
     language: shell
@@ -61,16 +71,20 @@ It writes packages into the global packages folder and only the files that
 options name, apart from a `tmp-...` folder that `--validate` creates in the
 current folder and deletes.
 
-1. **Install it.** The tool needs the .NET 10 SDK or later. In CI, set it
-   up first when the runner has an older .NET, for example with
-   `actions/setup-dotnet` and `dotnet-version: 10.x`.
-   For a repository or CI, install it as a local tool. Run the commands
+1. **Install it.** The tool needs the .NET 10 SDK or later. For a
+   repository or CI, install it as a local tool. Run the commands
    that [[#install-local]] prints once, without
    `dotnet new tool-manifest` when `.config/dotnet-tools.json` exists, and
-   commit that file. In CI, run `dotnet tool restore` first, then run the
-   tool as `dotnet {{tool}}`, as in the commands that
-   [[#run-in-ci]] prints. For one machine, install it globally and
-   run it as `{{tool}}`:
+   commit that file. In GitHub Actions, copy the steps that
+   [[#ci-steps]] prints. They set up .NET 10 with
+   `actions/setup-dotnet`, run `dotnet tool restore`, and then run
+   `dotnet {{tool}}` with `NUGET_PACKAGES` set on that step only, to an
+   absolute folder; see [[nuget-config]]. `dotnet tool install` and
+   `dotnet tool restore` read the `nuget.config` of the repository: when
+   it clears the sources or maps packages away from nuget.org, install
+   the tool from outside the repository, or map
+   `DemaConsulting.NuGet.CacheTool` to nuget.org. For one machine,
+   install it globally and run it as `{{tool}}`:
 
    ```bash
    dotnet tool install -g DemaConsulting.NuGet.CacheTool
@@ -83,6 +97,7 @@ current folder and deletes.
 3. **Cache a package.** Give each package as `<id>:<version>`. The
    command from [[#first-cache]] downloads one package from nuget.org,
    unless it is already cached, and prints its folder; see [[caching]].
+   Only the packages that you name are cached, not their dependencies.
    The feeds, credentials, and cache folder come from your NuGet
    configuration; see [[nuget-config]], which also has an example that
    works offline with a local feed folder.
