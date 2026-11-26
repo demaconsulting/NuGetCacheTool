@@ -6,95 +6,97 @@
 sections:
   - title: NuGet Cache Tool Requirements
     sections:
-      - title: Context
-        requirements:
-          - id: NuGetCache-Context-ArgumentParsing
-            title: The Context class shall parse command-line arguments for the tool.
-            justification: |
-              Callers need a single, consistent mechanism to translate raw command-line
-              arguments into typed settings so that the rest of the application can act on
-              user intent without re-parsing the argument list.
-            tests:
-              - Context_Create_NoArguments_ReturnsDefaultContext
-              - Context_Create_VersionFlag_SetsVersionTrue
-              - Context_Create_ShortVersionFlag_SetsVersionTrue
-              - Context_Create_HelpFlag_SetsHelpTrue
-              - Context_Create_ShortHelpFlag_H_SetsHelpTrue
-              - Context_Create_ShortHelpFlag_Question_SetsHelpTrue
-              - Context_Create_SilentFlag_SetsSilentTrue
-              - Context_Create_ValidateFlag_SetsValidateTrue
-              - Context_Create_ResultsFlag_SetsResultsFile
-              - Context_Create_LogFlag_OpensLogFile
-              - Context_Create_PackageArgument_AddsToPackagesList
+      - title: Cli Subsystem Requirements
+        sections:
+          - title: Context Unit Requirements
+            requirements:
+              - id: NuGetCache-Context-ArgumentParsing
+                title: The Context class shall parse command-line arguments for the tool.
+                justification: |
+                  Callers need a single, consistent mechanism to translate raw command-line
+                  arguments into typed settings so that the rest of the application can act on
+                  user intent without re-parsing the argument list.
+                tests:
+                  - Context_Create_NoArguments_ReturnsDefaultContext
+                  - Context_Create_VersionFlag_SetsVersionTrue
+                  - Context_Create_ShortVersionFlag_SetsVersionTrue
+                  - Context_Create_HelpFlag_SetsHelpTrue
+                  - Context_Create_ShortHelpFlag_H_SetsHelpTrue
+                  - Context_Create_ShortHelpFlag_Question_SetsHelpTrue
+                  - Context_Create_SilentFlag_SetsSilentTrue
+                  - Context_Create_ValidateFlag_SetsValidateTrue
+                  - Context_Create_ResultsFlag_SetsResultsFile
+                  - Context_Create_LogFlag_OpensLogFile
+                  - Context_Create_PackageArgument_AddsToPackagesList
 
-          - id: NuGetCache-Context-SilentOutput
-            title: The Context class shall suppress console output when --silent is specified.
-            justification: |
-              Enables automated scripts and CI/CD pipelines to run the tool without
-              cluttering output logs. Silent mode applies to both standard output and
-              error output written through the Context.
-            tests:
-              - Context_Create_SilentFlag_SetsSilentTrue
-              - Context_WriteLine_NotSilent_WritesToConsole
-              - Context_WriteLine_Silent_DoesNotWriteToConsole
-              - Context_WriteError_Silent_DoesNotWriteToConsole
+              - id: NuGetCache-Context-SilentOutput
+                title: The Context class shall suppress console output when --silent is specified.
+                justification: |
+                  Enables automated scripts and CI/CD pipelines to run the tool without
+                  cluttering output logs. Silent mode applies to both standard output and
+                  error output written through the Context.
+                tests:
+                  - Context_Create_SilentFlag_SetsSilentTrue
+                  - Context_WriteLine_NotSilent_WritesToConsole
+                  - Context_WriteLine_Silent_DoesNotWriteToConsole
+                  - Context_WriteError_Silent_DoesNotWriteToConsole
 
-          - id: NuGetCache-Context-LogFile
-            title: The Context class shall write output to a log file when --log is specified.
-            justification: |
-              Provides persistent logging for debugging and audit trails. The log file
-              captures all output (standard and error) regardless of silent mode.
-            tests:
-              - Context_Create_LogFlag_OpensLogFile
-              - Context_WriteError_WritesToLogFile
+              - id: NuGetCache-Context-LogFile
+                title: The Context class shall write output to a log file when --log is specified.
+                justification: |
+                  Provides persistent logging for debugging and audit trails. The log file
+                  captures all output (standard and error) regardless of silent mode.
+                tests:
+                  - Context_Create_LogFlag_OpensLogFile
+                  - Context_WriteError_WritesToLogFile
 
-          - id: NuGetCache-Context-ErrorOutput
-            title: The Context class shall write error messages to stderr when an error occurs and silent mode is not active.
-            justification: |
-              Users and automated callers must receive a descriptive error message. Error
-              messages are routed to stderr to allow separation from standard output in
-              shell pipelines.
-            tests:
-              - Context_WriteError_NotSilent_WritesToConsole
+              - id: NuGetCache-Context-ErrorOutput
+                title: The Context class shall write error messages to stderr when an error occurs and silent mode is not active.
+                justification: |
+                  Users and automated callers must receive a descriptive error message. Error
+                  messages are routed to stderr to allow separation from standard output in
+                  shell pipelines.
+                tests:
+                  - Context_WriteError_NotSilent_WritesToConsole
 
-          - id: NuGetCache-Context-ErrorTracking
-            title: The Context class shall track errors and expose a non-zero exit code when any error has occurred.
-            justification: |
-              Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
-              programmatically via the process exit code. A single WriteError call is
-              sufficient to cause ExitCode to return 1 for the lifetime of the context.
-            tests:
-              - Context_WriteError_SetsErrorExitCode
+              - id: NuGetCache-Context-ErrorTracking
+                title: The Context class shall track errors and expose a non-zero exit code when any error has occurred.
+                justification: |
+                  Callers (scripts, CI/CD pipelines) must be able to detect failure conditions
+                  programmatically via the process exit code. A single WriteError call is
+                  sufficient to cause ExitCode to return 1 for the lifetime of the context.
+                tests:
+                  - Context_WriteError_SetsErrorExitCode
 
-          - id: NuGetCache-Context-InvalidArguments-UnknownFlag
-            title: The Context class shall reject an unknown command-line flag with a descriptive error.
-            justification: |
-              Providing clear feedback for an unrecognized flag helps users quickly correct
-              mistakes and prevents silent misconfiguration.
-            tests:
-              - Context_Create_UnknownArgument_ThrowsArgumentException
+              - id: NuGetCache-Context-InvalidArguments-UnknownFlag
+                title: The Context class shall reject an unknown command-line flag with a descriptive error.
+                justification: |
+                  Providing clear feedback for an unrecognized flag helps users quickly correct
+                  mistakes and prevents silent misconfiguration.
+                tests:
+                  - Context_Create_UnknownArgument_ThrowsArgumentException
 
-          - id: NuGetCache-Context-InvalidArguments-MissingLogValue
-            title: The Context class shall reject the --log flag when no file path value follows it.
-            justification: |
-              Providing clear feedback when --log is supplied without a value helps users
-              quickly correct mistakes and prevents silent misconfiguration.
-            tests:
-              - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
+              - id: NuGetCache-Context-InvalidArguments-MissingLogValue
+                title: The Context class shall reject the --log flag when no file path value follows it.
+                justification: |
+                  Providing clear feedback when --log is supplied without a value helps users
+                  quickly correct mistakes and prevents silent misconfiguration.
+                tests:
+                  - Context_Create_LogFlag_WithoutValue_ThrowsArgumentException
 
-          - id: NuGetCache-Context-InvalidArguments-MissingResultsValue
-            title: The Context class shall reject the --results flag when no file path value follows it.
-            justification: |
-              Providing clear feedback when --results is supplied without a value helps users
-              quickly correct mistakes and prevents silent misconfiguration.
-            tests:
-              - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
+              - id: NuGetCache-Context-InvalidArguments-MissingResultsValue
+                title: The Context class shall reject the --results flag when no file path value follows it.
+                justification: |
+                  Providing clear feedback when --results is supplied without a value helps users
+                  quickly correct mistakes and prevents silent misconfiguration.
+                tests:
+                  - Context_Create_ResultsFlag_WithoutValue_ThrowsArgumentException
 
-          - id: NuGetCache-Context-InvalidArguments-MalformedPackage
-            title: The Context class shall reject a package argument that does not contain a colon separator.
-            justification: |
-              Users may accidentally supply a package argument without the required colon
-              separator. Providing clear feedback for this specific malformed-argument case
-              helps users correct their input without inspecting source code or documentation.
-            tests:
-              - Context_Create_WithoutColonInPackage_ThrowsArgumentException
+              - id: NuGetCache-Context-InvalidArguments-MalformedPackage
+                title: The Context class shall reject a package argument that does not contain a colon separator.
+                justification: |
+                  Users may accidentally supply a package argument without the required colon
+                  separator. Providing clear feedback for this specific malformed-argument case
+                  helps users correct their input without inspecting source code or documentation.
+                tests:
+                  - Context_Create_WithoutColonInPackage_ThrowsArgumentException

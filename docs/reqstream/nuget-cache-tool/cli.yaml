@@ -6,7 +6,7 @@
 sections:
   - title: NuGet Cache Tool Requirements
     sections:
-      - title: CLI
+      - title: Cli Subsystem Requirements
         requirements:
           - id: NuGetCache-Cli-VersionFlag
             title: The CLI shall support -v and --version flags to display version information.

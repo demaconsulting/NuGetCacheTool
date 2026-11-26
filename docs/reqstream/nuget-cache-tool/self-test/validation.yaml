@@ -6,37 +6,39 @@
 sections:
   - title: NuGet Cache Tool Requirements
     sections:
-      - title: Validation
-        requirements:
-          - id: NuGetCache-Validation-SelfValidation
-            title: The Validation class shall execute self-validation tests when --validate is specified.
-            justification: |
-              Provides a built-in mechanism to verify the tool is functioning correctly
-              in the deployment environment. Self-validation runs the core operations
-              end-to-end and reports pass/fail results.
-            tests:
-              - NuGetCache_VersionDisplay
-              - NuGetCache_HelpDisplay
-              - NuGetCache_CachePackage
-              - Validation_Run_CachePackageSelfTest_PassesWithRealCachedPackagePath
-              - Validation_ValidateCachePackagePath_ExactMatch_ReturnsNull
-              - Validation_ValidateCachePackagePath_VersionSuffixSubstringMatch_ReturnsError
-              - Validation_ValidateCachePackagePath_VersionPrefixSubstringMatch_ReturnsError
-              - Validation_ValidateCachePackagePath_WrongPackageId_ReturnsError
-              - Validation_ValidateCachePackagePath_NoParentDirectory_ReturnsError
-              - Validation_ValidateCachePackagePath_BareRelativeName_ReturnsError
+      - title: SelfTest Subsystem Requirements
+        sections:
+          - title: Validation Unit Requirements
+            requirements:
+              - id: NuGetCache-Validation-SelfValidation
+                title: The Validation class shall execute self-validation tests when --validate is specified.
+                justification: |
+                  Provides a built-in mechanism to verify the tool is functioning correctly
+                  in the deployment environment. Self-validation runs the core operations
+                  end-to-end and reports pass/fail results.
+                tests:
+                  - NuGetCache_VersionDisplay
+                  - NuGetCache_HelpDisplay
+                  - NuGetCache_CachePackage
+                  - Validation_Run_CachePackageSelfTest_PassesWithRealCachedPackagePath
+                  - Validation_ValidateCachePackagePath_ExactMatch_ReturnsNull
+                  - Validation_ValidateCachePackagePath_VersionSuffixSubstringMatch_ReturnsError
+                  - Validation_ValidateCachePackagePath_VersionPrefixSubstringMatch_ReturnsError
+                  - Validation_ValidateCachePackagePath_WrongPackageId_ReturnsError
+                  - Validation_ValidateCachePackagePath_NoParentDirectory_ReturnsError
+                  - Validation_ValidateCachePackagePath_BareRelativeName_ReturnsError
 
-          - id: NuGetCache-Validation-ResultsFile
-            title: The Validation class shall write validation results to a file in TRX or JUnit format.
-            justification: |
-              Enables integration with CI/CD systems that expect standard test result formats,
-              allowing self-validation outcomes to feed into requirements traceability pipelines.
-              The --results flag specifies the output file; .trx produces TRX format, .xml produces
-              JUnit XML. An unsupported extension results in an error.
-            children:
-              - NuGetCache-OTS-TestResults-Trx
-              - NuGetCache-OTS-TestResults-JUnit
-            tests:
-              - Validation_Run_TrxResultsRequested_WritesTrxFile
-              - Validation_Run_JUnitResultsRequested_WritesJUnitFile
-              - Validation_Run_UnsupportedResultsFormat_ReportsError
+              - id: NuGetCache-Validation-ResultsFile
+                title: The Validation class shall write validation results to a file in TRX or JUnit format.
+                justification: |
+                  Enables integration with CI/CD systems that expect standard test result formats,
+                  allowing self-validation outcomes to feed into requirements traceability pipelines.
+                  The --results flag specifies the output file; .trx produces TRX format, .xml produces
+                  JUnit XML. An unsupported extension results in an error.
+                children:
+                  - NuGetCache-OTS-TestResults-Trx
+                  - NuGetCache-OTS-TestResults-JUnit
+                tests:
+                  - Validation_Run_TrxResultsRequested_WritesTrxFile
+                  - Validation_Run_JUnitResultsRequested_WritesJUnitFile
+                  - Validation_Run_UnsupportedResultsFormat_ReportsError

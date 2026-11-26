@@ -6,7 +6,7 @@
 sections:
   - title: NuGet Cache Tool Requirements
     sections:
-      - title: SelfTest
+      - title: SelfTest Subsystem Requirements
         requirements:
           - id: NuGetCache-SelfTest-Validation
             title: The SelfTest subsystem shall execute self-validation tests to verify deployment health.

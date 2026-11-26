@@ -6,7 +6,7 @@
 sections:
   - title: NuGet Cache Tool Requirements
     sections:
-      - title: Program
+      - title: Program Unit Requirements
         requirements:
           - id: NuGetCache-Program-VersionDisplay
             title: The Program shall display version information when the version flag is specified.
